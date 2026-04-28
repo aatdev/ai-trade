@@ -1,0 +1,14 @@
+node_modules
+results
+analysis
+tmp
+screenshots
+skills
+.claude
+.idea
+package-lock.json
+skills-lock.json
+russel2000.json
+safety-check-log.json
+discovery-log.json
+temp_*

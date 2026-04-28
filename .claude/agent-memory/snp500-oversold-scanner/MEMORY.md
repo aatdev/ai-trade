@@ -1,0 +1,8 @@
+- [Financials Sector Scan Apr 2026](project_fin_scan_apr2026.md) — банки перекуплены, двойное дно у ARES/APO/LNC, альт-управляющие — главная зона перепроданности в Financials
+- [Consumer Discretionary Scan Apr 2026](project_cons_disc_scan_apr2026.md) — NKE единственный с 4 критериями (RSI 24, Stoch 7), MCD/TSLA/BBY на мониторинге
+- [Communication Services Scan Apr 2026](project_comm_scan_apr2026.md) — телекомы (VZ/T/TMUS) единственный перепроданный сегмент, техно-имена (GOOGL/META/NFLX) перекуплены
+- [Industrials Sector Scan Apr 2026](project_ind_scan_apr2026.md) — авиация (DAL/LUV/UAL) и BWA слабейшие, после V-отскока использовать Stochastic 4H<20 вместо RSI D<35
+- [Consumer Staples Sector Scan Apr 2026](project_cs_scan_apr2026.md) — мегакапы нейтральны (KO/PEP/PG/WMT), HRL двойное дно 4H, CAG/CPB RSI<26 без паттерна = фундаментальные проблемы
+- [Energy Sector Scan Apr 2026](project_energy_scan_apr2026.md) — газовые E&P (AR/EQT/RRC) наиболее перепроданные, RSI 4H 27-33, Stoch D 1-4, нефтяные сервисы нейтральны
+- [Utilities Sector Scan Apr 2026](project_utl_scan_apr2026.md) — AWK/NEE единственные перепроданные (4 и 3 критерия), большинство сектора нейтральное/перекупленное после ралли
+- [Materials Sector Scan Apr 2026](project_mat_scan_apr2026.md) — MOS единственный кандидат (4 критерия, двойное дно $23.06/$23.55), весь металл/золото/сталь перекуплен после V-отскока

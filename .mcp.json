@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+        "tradingview": {
+            "command": "/opt/homebrew/bin/node",
+            "args": ["/Users/alex/Projects/Repos/tradingview-mcp-jackson/src/server.js"]
+        }
+    }
+}
