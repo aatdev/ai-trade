@@ -168,7 +168,7 @@ Overall: Cautious session. BTC leading bearish, SOL the exception — watch for 
 
 ## How Claude Knows Which Tool to Use
 
-Claude reads `CLAUDE.md` automatically when working in this project. It contains the full decision tree.
+Claude loads the `tradingview-mcp` skill (`.claude/skills/tradingview-mcp/SKILL.md`) on demand when working with chart, indicator, OHLCV, Pine, replay, drawing, alert, or screening tasks. It contains the full decision tree.
 
 | You say... | Claude uses... |
 |------------|---------------|

@@ -28,7 +28,8 @@ import { disconnect } from '../src/connection.js';
 
 const OS_BASE = process.env.OPENSEARCH_URL ?? 'http://tw.spitch-dev.ai:9200';
 const BARS_FULL = 1000;
-const BARS_UPDATE = 30; // 10 overlap + ~20 new bars
+const UPDATE_OVERLAP = 5; // safety overlap added to missing-days count
+const UPDATE_MIN = 10; // never fetch fewer than this in update mode
 const SLEEP_CHART = 2500; // ms to wait after symbol switch
 const SLEEP_BETWEEN = 800;
 
@@ -63,6 +64,16 @@ function barDate(tsSec) {
 
 function candleId(ticker, tsSec) {
   return `${ticker}_${tsSec}`;
+}
+
+function todayDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function daysBetween(fromDateStr, toDateStr) {
+  const from = new Date(fromDateStr + 'T00:00:00Z');
+  const to = new Date(toDateStr + 'T00:00:00Z');
+  return Math.round((to - from) / 86400000);
 }
 
 // ─── OpenSearch client ────────────────────────────────────────────────────────
@@ -247,6 +258,7 @@ async function fetchBars(symbol, count) {
 
 async function processTicker(ticker, meta, opts) {
   const state = await getState(ticker);
+  const today = todayDate();
 
   // Decide how many bars to fetch
   let barsToFetch = BARS_FULL;
@@ -257,7 +269,19 @@ async function processTicker(ticker, meta, opts) {
       process.stdout.write('skip\n');
       return 'skipped';
     }
-    barsToFetch = BARS_UPDATE;
+
+    // Already refreshed today — nothing to do
+    const collectedDate = state.last_collected_at?.slice(0, 10);
+    if (collectedDate === today) {
+      process.stdout.write('skip (today)\n');
+      return 'skipped';
+    }
+
+    // Fetch only missing days (+ overlap); fall back to full if gap is too large
+    const missing = state.last_bar_date ? daysBetween(state.last_bar_date, today) : null;
+    if (missing != null && missing > 0 && missing + UPDATE_OVERLAP < BARS_FULL) {
+      barsToFetch = Math.max(missing + UPDATE_OVERLAP, UPDATE_MIN);
+    }
     isUpdate = true;
   }
 
@@ -290,7 +314,7 @@ async function processTicker(ticker, meta, opts) {
 
   const tag = isUpdate ? 'upd' : 'new';
   process.stdout.write(
-    `✓  [${tag}] bars=${saved}  last=${barDate(lastBar.time)}  price=${quote.last ?? quote.close}\n`
+    `✓  [${tag}] bars=${saved}/${barsToFetch}  last=${barDate(lastBar.time)}  price=${quote.last ?? quote.close}\n`
   );
   return 'done';
 }
@@ -299,7 +323,7 @@ async function main() {
   const opts = parseArgs();
 
   // Load tickers
-  const russelPath = resolve('russel2000.json');
+  const russelPath = resolve('state/russel2000.json');
   const allTickers = JSON.parse(readFileSync(russelPath, 'utf-8'));
   console.log(`Loaded ${allTickers.length} tickers from russel2000.json`);
 
@@ -322,7 +346,7 @@ async function main() {
 
   const mode = opts.update ? 'UPDATE' : 'COLLECT';
   console.log(
-    `\nMode: ${mode} | Tickers: ${tickers.length} | Bars: ${opts.update ? BARS_UPDATE + ' (update)' : BARS_FULL}\n`
+    `\nMode: ${mode} | Tickers: ${tickers.length} | Bars: ${opts.update ? 'auto (missing days + ' + UPDATE_OVERLAP + ' overlap)' : BARS_FULL}\n`
   );
 
   // Ensure indices exist

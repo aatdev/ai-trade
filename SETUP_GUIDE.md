@@ -124,6 +124,6 @@ Then `tv status`, `tv quote`, `tv pine compile`, etc. work from anywhere.
 ## What to Read Next
 
 - `rules.json` — Your personal trading rules (fill this in before using morning_brief)
-- `CLAUDE.md` — Decision tree for which tool to use when (auto-loaded by Claude Code)
+- `.claude/skills/tradingview-mcp/SKILL.md` — Decision tree for which tool to use when (loaded on demand by Claude Code)
 - `README.md` — Full tool reference including morning brief workflow
 - `RESEARCH.md` — Research context and open questions
