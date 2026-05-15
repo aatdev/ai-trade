@@ -1,0 +1,1 @@
+- [Создание алертов в TradingView](feedback_create_alerts.md) — штатный alert_create сломан (хэшированные CSS-классы), использовать ui_click + ui_evaluate с фильтром по offsetParent
