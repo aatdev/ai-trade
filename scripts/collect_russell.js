@@ -28,7 +28,7 @@ import { disconnect } from '../src/connection.js';
 
 const OS_BASE = process.env.OPENSEARCH_URL ?? 'http://tw.spitch-dev.ai:9200';
 const BARS_FULL = 1000;
-const UPDATE_OVERLAP = 5; // safety overlap added to missing-days count
+const UPDATE_OVERLAP = 21; // safety overlap added to missing-days count
 const UPDATE_MIN = 10; // never fetch fewer than this in update mode
 const SLEEP_CHART = 2500; // ms to wait after symbol switch
 const SLEEP_BETWEEN = 800;
