@@ -22,8 +22,32 @@ const VISIBLE_FN = `
   }
 `;
 
-const MAIN_DIALOG_SELECTOR = '.dialog-qyCw0PaN';
+const MAIN_DIALOG_SELECTOR = '.dialog-qyCw0PaN:not(.messagePopup-n3DR6Ngd):not(.conditionPopup-n3DR6Ngd)';
 const SUB_DIALOG_SELECTOR = '.conditionPopup-n3DR6Ngd';
+const MESSAGE_POPUP_SELECTOR = '.messagePopup-n3DR6Ngd';
+
+async function readDialogTitle() {
+  return await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var dlg = Array.from(document.querySelectorAll('${MAIN_DIALOG_SELECTOR}')).filter(visible)[0];
+      if (!dlg) return null;
+      return (dlg.textContent || '').trim().substring(0, 80);
+    })()
+  `);
+}
+
+async function pressAltA() {
+  const c = await getClient();
+  await c.Input.dispatchKeyEvent({ type: 'keyDown', modifiers: 1, key: 'a', code: 'KeyA', windowsVirtualKeyCode: 65 });
+  await c.Input.dispatchKeyEvent({ type: 'keyUp', modifiers: 1, key: 'a', code: 'KeyA' });
+}
+
+async function pressEscape() {
+  const c = await getClient();
+  await c.Input.dispatchKeyEvent({ type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  await c.Input.dispatchKeyEvent({ type: 'keyUp', key: 'Escape', code: 'Escape' });
+}
 
 async function openAlertDialog() {
   const opened = await evaluate(`
@@ -37,12 +61,38 @@ async function openAlertDialog() {
   `);
 
   if (!opened) {
-    const client = await getClient();
-    await client.Input.dispatchKeyEvent({ type: 'keyDown', modifiers: 1, key: 'a', code: 'KeyA', windowsVirtualKeyCode: 65 });
-    await client.Input.dispatchKeyEvent({ type: 'keyUp', key: 'a', code: 'KeyA' });
+    await pressAltA();
   }
 
   await sleep(1500);
+
+  // TradingView may open Edit dialog if an alert on the symbol is "selected".
+  // Detect by title and retry via Alt+A keyboard shortcut.
+  const title = await readDialogTitle();
+  if (title && /edit alert/i.test(title)) {
+    await pressEscape();
+    await sleep(400);
+    await pressAltA();
+    await sleep(1500);
+    const retryTitle = await readDialogTitle();
+    if (retryTitle && /edit alert/i.test(retryTitle)) {
+      await pressEscape();
+      await sleep(400);
+      // Last resort: deselect any list item then try again
+      await evaluate(`
+        (function() {
+          var sel = document.querySelector('[data-name="alert-item"][aria-selected="true"]');
+          if (sel) sel.click();
+          document.body.click();
+          return true;
+        })()
+      `);
+      await sleep(300);
+      await pressAltA();
+      await sleep(1500);
+    }
+  }
+
   return !!opened;
 }
 
@@ -282,6 +332,177 @@ async function clickSubDialogApplyOrAdd() {
   return r;
 }
 
+async function openMessagePopup() {
+  const r = await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var dlg = Array.from(document.querySelectorAll('${MAIN_DIALOG_SELECTOR}')).filter(visible)[0];
+      if (!dlg) return { ok: false, reason: 'no_main_dialog' };
+      var legs = Array.from(dlg.querySelectorAll('legend')).filter(function(l){
+        return /^(message|сообщение)$/i.test((l.textContent||'').trim());
+      });
+      if (!legs.length) return { ok: false, reason: 'no_message_legend' };
+      var fset = legs[0].closest('fieldset');
+      if (!fset) return { ok: false, reason: 'no_fieldset' };
+      var btn = fset.querySelector('button.button-KijOUKJc') || fset.querySelector('button');
+      if (!btn) return { ok: false, reason: 'no_message_button' };
+      btn.click();
+      return { ok: true };
+    })()
+  `);
+  if (r?.ok) await sleep(500);
+  return r;
+}
+
+async function getMessageTextareaRect() {
+  return await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var popup = Array.from(document.querySelectorAll('${MESSAGE_POPUP_SELECTOR}')).filter(visible)[0];
+      if (!popup) return null;
+      var tas = Array.from(popup.querySelectorAll('textarea')).filter(visible);
+      if (!tas.length) return null;
+      function isMessageTa(t) {
+        var p = t;
+        for (var i = 0; i < 6 && p; i++) {
+          var leg = p.querySelector ? p.querySelector('legend, label') : null;
+          if (leg && /^(message|сообщение)$/i.test((leg.textContent||'').trim())) return true;
+          p = p.parentElement;
+        }
+        return false;
+      }
+      var ta = tas.filter(isMessageTa)[0] || tas[tas.length - 1];
+      var r = ta.getBoundingClientRect();
+      return {
+        x: r.left + Math.min(20, r.width / 2),
+        y: r.top + r.height / 2,
+        value: ta.value
+      };
+    })()
+  `);
+}
+
+async function clickMessagePopupApply() {
+  const r = await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var popup = Array.from(document.querySelectorAll('${MESSAGE_POPUP_SELECTOR}')).filter(visible)[0];
+      if (!popup) return { ok: false, reason: 'no_popup' };
+      var btn = Array.from(popup.querySelectorAll('button'))
+        .filter(visible)
+        .filter(function(b){ return /^apply$/i.test((b.textContent||'').trim()); })[0];
+      if (!btn) return { ok: false, reason: 'no_apply_btn' };
+      btn.click();
+      return { ok: true };
+    })()
+  `);
+  if (r?.ok) await sleep(500);
+  return r;
+}
+
+async function cancelMessagePopup() {
+  return await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var popup = Array.from(document.querySelectorAll('${MESSAGE_POPUP_SELECTOR}')).filter(visible)[0];
+      if (!popup) return false;
+      var btn = Array.from(popup.querySelectorAll('button'))
+        .filter(visible)
+        .filter(function(b){ return /^cancel$/i.test((b.textContent||'').trim()); })[0];
+      if (btn) { btn.click(); return true; }
+      return false;
+    })()
+  `);
+}
+
+async function readMessageButtonText() {
+  return await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var dlg = Array.from(document.querySelectorAll('${MAIN_DIALOG_SELECTOR}')).filter(visible)[0];
+      if (!dlg) return null;
+      var legs = Array.from(dlg.querySelectorAll('legend')).filter(function(l){
+        return /^(message|сообщение)$/i.test((l.textContent||'').trim());
+      });
+      if (!legs.length) return null;
+      var fset = legs[0].closest('fieldset');
+      if (!fset) return null;
+      var btn = fset.querySelector('button.button-KijOUKJc') || fset.querySelector('button');
+      return btn ? (btn.textContent || '').trim() : null;
+    })()
+  `);
+}
+
+async function fillMessageTextarea(messageText) {
+  if (messageText == null || messageText === '') return { ok: true, skipped: 'no_message' };
+
+  const opened = await openMessagePopup();
+  if (!opened?.ok) return { ok: false, reason: opened?.reason || 'open_failed' };
+
+  const rect = await getMessageTextareaRect();
+  if (!rect) {
+    await cancelMessagePopup();
+    return { ok: false, reason: 'no_textarea_in_popup' };
+  }
+
+  const c = await getClient();
+  // Triple-click to select all existing text inside the textarea reliably.
+  await c.Input.dispatchMouseEvent({ type: 'mousePressed', x: rect.x, y: rect.y, button: 'left', clickCount: 1 });
+  await c.Input.dispatchMouseEvent({ type: 'mouseReleased', x: rect.x, y: rect.y, button: 'left', clickCount: 1 });
+  await c.Input.dispatchMouseEvent({ type: 'mousePressed', x: rect.x, y: rect.y, button: 'left', clickCount: 2 });
+  await c.Input.dispatchMouseEvent({ type: 'mouseReleased', x: rect.x, y: rect.y, button: 'left', clickCount: 2 });
+  await c.Input.dispatchMouseEvent({ type: 'mousePressed', x: rect.x, y: rect.y, button: 'left', clickCount: 3 });
+  await c.Input.dispatchMouseEvent({ type: 'mouseReleased', x: rect.x, y: rect.y, button: 'left', clickCount: 3 });
+  await sleep(150);
+  // Belt-and-suspenders: also Cmd+A in case triple-click only selected one line.
+  await c.Input.dispatchKeyEvent({ type: 'keyDown', modifiers: 4, key: 'a', code: 'KeyA', windowsVirtualKeyCode: 65 });
+  await c.Input.dispatchKeyEvent({ type: 'keyUp', modifiers: 4, key: 'a', code: 'KeyA' });
+  await sleep(80);
+  await c.Input.dispatchKeyEvent({ type: 'keyDown', key: 'Delete', code: 'Delete', windowsVirtualKeyCode: 46 });
+  await c.Input.dispatchKeyEvent({ type: 'keyUp', key: 'Delete', code: 'Delete' });
+  await sleep(80);
+  await c.Input.insertText({ text: String(messageText) });
+  await sleep(250);
+
+  await evaluate(`
+    (function() {
+      ${VISIBLE_FN}
+      var popup = Array.from(document.querySelectorAll('${MESSAGE_POPUP_SELECTOR}')).filter(visible)[0];
+      if (!popup) return false;
+      var tas = Array.from(popup.querySelectorAll('textarea')).filter(visible);
+      if (!tas.length) return false;
+      function isMessageTa(t) {
+        var p = t;
+        for (var i = 0; i < 6 && p; i++) {
+          var leg = p.querySelector ? p.querySelector('legend, label') : null;
+          if (leg && /^(message|сообщение)$/i.test((leg.textContent||'').trim())) return true;
+          p = p.parentElement;
+        }
+        return false;
+      }
+      var ta = tas.filter(isMessageTa)[0] || tas[tas.length - 1];
+      var setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set;
+      setter.call(ta, ta.value);
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+      ta.dispatchEvent(new Event('change', { bubbles: true }));
+      return true;
+    })()
+  `);
+
+  const apply = await clickMessagePopupApply();
+  await sleep(400);
+
+  const after = await readMessageButtonText();
+  const probe = String(messageText).substring(0, Math.min(24, String(messageText).length));
+  const ok = !!after && after.indexOf(probe) !== -1;
+  return {
+    ok,
+    apply,
+    value_before: rect.value,
+    value_after: after
+  };
+}
+
 async function readMainDialogSummary() {
   return await evaluate(`
     (function() {
@@ -362,6 +583,10 @@ export async function create({ condition, price, volume, message, price_conditio
     }
   }
 
+  if (message) {
+    result.steps.message_filled = await fillMessageTextarea(message);
+  }
+
   result.dialog_summary = await readMainDialogSummary();
 
   const createRes = await clickMainCreate();
@@ -378,7 +603,12 @@ export async function create({ condition, price, volume, message, price_conditio
   } catch {}
 
   if (message) {
-    result.message_note = 'default dialog does not expose textarea — custom message ignored';
+    if (result.steps.message_filled?.ok) {
+      result.message_note = 'custom message set via dialog message field';
+    } else {
+      const reason = result.steps.message_filled?.reason || 'unknown';
+      result.message_note = `custom message not applied — ${reason} (dialog may not expose a message field)`;
+    }
   }
 
   return {

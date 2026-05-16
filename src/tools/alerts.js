@@ -12,7 +12,7 @@ export function registerAlertTools(server) {
       volume: z.coerce.number().optional().describe('Volume threshold for the volume leg. When combined with "price" the volume leg is added via the multi-condition dialog.'),
       price_condition: z.string().optional().describe('Condition for price leg, e.g. "Greater Than", "Less Than", "Crossing Up". Default: Crossing.'),
       volume_condition: z.string().optional().describe('Condition for volume leg, e.g. "Crossing Up", "Crossing Down". Volume supports only Crossing variants — Greater Than is not available. Default: Crossing.'),
-      message: z.string().optional().describe('Alert message (note: default dialog does not expose textarea — custom messages may be ignored).'),
+      message: z.string().optional().describe('Custom alert message. Opens the Message popup, types the text and clicks Apply. Verified against the dialog button label after Apply.'),
     },
     async ({ condition, price, volume, message, price_condition, volume_condition }) => {
       try {

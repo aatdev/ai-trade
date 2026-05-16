@@ -39,6 +39,12 @@ metadata:
 - Multi-condition price + volume: `mcp__tradingview__alert_create({ price: 63, volume: 5900000, price_condition: "Greater Than", volume_condition: "Crossing Up" })` — создаст ОДИН алерт с message типа `"SYMBOL Greater Than 63.00 AND Volume Crossing Up 5.9 M on SYMBOL, 1D"` и condition.type="greater" в REST API.
 - Volume поддерживает ТОЛЬКО Crossing/Crossing Up/Crossing Down — нет Greater Than. Семантика "volume >= X" эквивалентна "Crossing Up X".
 
+**Custom `message` (исправлено 2026-05-16):** TradingView вынес поле Message в отдельный popup `.messagePopup-n3DR6Ngd`, открывающийся по клику на `button.button-KijOUKJc` внутри fieldset с `<legend>Message</legend>`. В popup — `textarea.textarea-bPZKra3q`, кнопки Cancel/Apply. Алгоритм `fillMessageTextarea` в `src/core/alerts.js`: openMessagePopup → triple-click + Cmd+A + Delete + Input.insertText → dispatch input/change → click Apply. Без triple-click (только Cmd+A) — текст добавлялся в конец дефолтного, не заменял его. После Apply popup закрывается, главный диалог возвращается, проверка успеха — `readMessageButtonText()` сравнивает с probe(messageText[0..24]).
+
+**MAIN_DIALOG_SELECTOR теперь** `.dialog-qyCw0PaN:not(.messagePopup-n3DR6Ngd):not(.conditionPopup-n3DR6Ngd)` — потому что popup и sub-dialog тоже имеют класс `.dialog-qyCw0PaN`, и без :not() отбираются они вместо main dialog.
+
+**Edit vs Create:** иногда `[aria-label="Create Alert"]` открывает диалог Edit (если на символе есть «selected» алерт). `openAlertDialog` определяет по `/edit alert/i.test(title)` и через Escape → Alt+A открывает Create-диалог. На втором retry дополнительно снимает selection с alert-item.
+
 **Проверка успеха:** в ответе `dialog_summary` должен содержать ожидаемые значения ДО клика Create. Также `created_alert.message` после создания.
 
 **Удаление мусорных алертов** (REST endpoints `/remove_alert` etc. отдают `no_such_endpoint`; `alert_delete delete_all=true` снесёт ВСЕ алерты пользователя — опасно): через UI —
