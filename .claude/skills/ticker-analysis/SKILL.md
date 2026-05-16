@@ -367,6 +367,8 @@ node .claude/skills/signals-alerts/scripts/create_alerts.mjs \
 
 `price_condition`: для Long — Trigger/T1/T2/T3 `Crossing Up`, Stop `Crossing Down`. Для Short — зеркально.
 
+**Trigger с объёмным фильтром (multi-condition).** Если в строке `**Trigger для Long/Short:**` в `signals.md` указан объёмный порог («на объёме > 40M», «при vol > 25M», «на volume >= 5.9M», «на V > 30M»), `parse_signals.mjs` распознает абсолютное значение (40M → 40 000 000), направление (`>`/`≥` → `Greater Than`, `<`/`≤` → `Less Than`) и положит их в Trigger-алерт как `volume` + `volume_condition`. `create_alerts.mjs` затем создаст **один** Trigger-алерт с двумя условиями (price + volume через «Add condition» в UI), а не два отдельных. В `message` Trigger автоматически добавляется суффикс ` + vol > 40M` — он входит в ключ дедупликации, и при смене порога объёма алерт корректно пересоздаётся через sync. Если объёма в Trigger-строке нет или он нечисловой («≥ avg») — Trigger остаётся одноусловным по цене.
+
 #### Если Entry — диапазон ($X.XX–$Y.YY)
 
 Отдельный Entry-алерт не нужен: Trigger уже покрывает активацию, а Stop — нижнюю границу инвалидации. План `parse_signals.mjs` всегда 5 алертов (Trigger / Stop / T1 / T2 / T3); если T3 не указан в `signals.md` — будет 4.
@@ -382,11 +384,13 @@ node .claude/skills/signals-alerts/scripts/create_alerts.mjs \
 
 | Уровень | Цена | Условие | Действие при срабатывании | Статус |
 |---|---|---|---|---|
-| Trigger | $XX.XX | Crossing Up/Down | сигнал на покупку (лонг) / сигнал на продажу (шорт) | ✅ создан / ✅ без изм. |
+| Trigger | $XX.XX (+ vol > NM, если задан) | Crossing Up/Down (+ Greater Than для vol) | сигнал на покупку (лонг) / сигнал на продажу (шорт) | ✅ создан / ✅ без изм. |
 | Stop | $XX.XX | Crossing Down/Up | закрытие позиции по стопу (лонг/шорт) | ✅ создан / ✅ без изм. |
 | T1 | $XX.XX | Crossing Up/Down | закрытие позиции по T1 (лонг/шорт) | ✅ создан / ✅ без изм. |
 | T2 | $XX.XX | Crossing Up/Down | закрытие позиции по T2 (лонг/шорт) | ✅ создан / ✅ без изм. |
 | T3 | $XX.XX | Crossing Up/Down | закрытие позиции по T3 (лонг/шорт) | ✅ создан / ✅ без изм. |
+
+Если Trigger — multi-condition (price + volume), это **один** алерт с двумя условиями (в TradingView UI второе условие добавляется через «Add condition»). В строке Trigger таблицы укажи оба порога одним блоком: например, `$428.50 + vol > 40M`, условие — `Crossing Up + Greater Than (Vol)`.
 
 **Итог:** создано N, удалено M, без изменений K. Алерты привязаны к символу `EXCHANGE:TICKER`, таймфрейм 1D. При срабатывании TradingView Desktop выдаст pop-up + звук, в тексте уведомления — действие из колонки выше.
 ```

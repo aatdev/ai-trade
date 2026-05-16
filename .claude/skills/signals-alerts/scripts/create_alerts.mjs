@@ -42,11 +42,16 @@ async function listExistingForTicker(ticker) {
 
 async function createOneAlert(spec, attempt = 1) {
   try {
-    const res = await alerts.create({
+    const params = {
       price: spec.price,
       price_condition: spec.price_condition,
       message: spec.message,
-    });
+    };
+    if (spec.volume != null) {
+      params.volume = spec.volume;
+      params.volume_condition = spec.volume_condition || 'Greater Than';
+    }
+    const res = await alerts.create(params);
     return { ok: !!res?.success, dialog_summary: res?.dialog_summary, created_alert: res?.created_alert };
   } catch (e) {
     if (attempt < 2) {
@@ -92,7 +97,12 @@ async function processTicker(sig, { dedupe }) {
     }
     const r = await createOneAlert(spec);
     if (r.ok) {
-      result.created.push({ level: spec.level, price: spec.price, message: spec.message });
+      const created = { level: spec.level, price: spec.price, message: spec.message };
+      if (spec.volume != null) {
+        created.volume = spec.volume;
+        created.volume_condition = spec.volume_condition || 'Greater Than';
+      }
+      result.created.push(created);
     } else {
       result.errors.push({ level: spec.level, price: spec.price, error: r.error || 'create failed' });
     }

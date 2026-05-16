@@ -64,6 +64,33 @@ function allDollarNumbers(s) {
   return out;
 }
 
+// Extracts a volume threshold from a trigger string.
+// Matches phrases like "на объёме > 40M", "при vol > 25M", "на volume >= 5.9M",
+// "на V > 30M". Suffix M/K/B is converted to absolute shares. Returns null when
+// no numeric volume threshold is present (e.g. "при объёме ≥ avg").
+function parseVolumeThreshold(s) {
+  if (!s) return null;
+  const re = /(?:объ[её]м[а-яё]{0,3}|vol(?:ume)?|\bV)\s*(>=|>|≥|<=|<|≤)\s*(\d+(?:\.\d+)?)\s*([MmKkBb]?)\b/i;
+  const m = s.match(re);
+  if (!m) return null;
+  const op = m[1];
+  let value = parseFloat(m[2]);
+  const suffix = (m[3] || '').toLowerCase();
+  if (suffix === 'k') value *= 1_000;
+  else if (suffix === 'm') value *= 1_000_000;
+  else if (suffix === 'b') value *= 1_000_000_000;
+  const less = op === '<' || op === '<=' || op === '≤';
+  return { volume: value, volume_condition: less ? 'Less Than' : 'Greater Than' };
+}
+
+function fmtVolume(n) {
+  if (n == null) return null;
+  if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+  return String(n);
+}
+
 function parseBlock(block) {
   const lines = block.split('\n');
   const headerLine = lines.find((l) => /^##\s+\d{4}-\d{2}-\d{2}\s*[—\-]/.test(l));
@@ -99,6 +126,7 @@ function parseBlock(block) {
   if (!direction) direction = triggerDirection;
 
   const trigger = firstDollarNumber(triggerLine);
+  const triggerVolume = parseVolumeThreshold(triggerLine);
 
   let stop = null;
   for (const l of lines) {
@@ -127,7 +155,7 @@ function parseBlock(block) {
     return { ticker, date, skip: true, reason: `неполные уровни (trigger=${trigger}, stop=${stop}, t1=${t1})` };
   }
 
-  return { ticker, date, direction, trigger, stop, t1, t2, t3, skip: false };
+  return { ticker, date, direction, trigger, triggerVolume, stop, t1, t2, t3, skip: false };
 }
 
 function buildAlerts(sig) {
@@ -138,13 +166,21 @@ function buildAlerts(sig) {
   const buySell = isLong ? 'покупку' : 'продажу';
 
   const fmt = (n) => fmtPrice(n);
+  const triggerVolSuffix = sig.triggerVolume
+    ? ` + vol ${sig.triggerVolume.volume_condition === 'Less Than' ? '<' : '>'} ${fmtVolume(sig.triggerVolume.volume)}`
+    : '';
+  const triggerAlert = {
+    level: 'Trigger',
+    price: sig.trigger,
+    price_condition: upDir,
+    message: `${sig.ticker}: сигнал на ${buySell} (${dirRu}) — Trigger $${fmt(sig.trigger)}${triggerVolSuffix}`,
+  };
+  if (sig.triggerVolume) {
+    triggerAlert.volume = sig.triggerVolume.volume;
+    triggerAlert.volume_condition = sig.triggerVolume.volume_condition;
+  }
   const out = [
-    {
-      level: 'Trigger',
-      price: sig.trigger,
-      price_condition: upDir,
-      message: `${sig.ticker}: сигнал на ${buySell} (${dirRu}) — Trigger $${fmt(sig.trigger)}`,
-    },
+    triggerAlert,
     {
       level: 'Stop',
       price: sig.stop,
@@ -200,6 +236,8 @@ function main() {
       date: parsed.date,
       direction: parsed.direction,
       trigger: parsed.trigger,
+      trigger_volume: parsed.triggerVolume ? parsed.triggerVolume.volume : null,
+      trigger_volume_condition: parsed.triggerVolume ? parsed.triggerVolume.volume_condition : null,
       stop: parsed.stop,
       t1: parsed.t1,
       t2: parsed.t2,

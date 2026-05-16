@@ -56,9 +56,10 @@ node .claude/skills/signals-alerts/scripts/parse_signals.mjs [--tickers BSX,LULU
     {
       "ticker": "BSX",
       "direction": "LONG",
-      "trigger": 54.5, "stop": 51.9, "t1": 57, "t2": 60, "t3": 64.2,
+      "trigger": 54.5, "trigger_volume": 25000000, "trigger_volume_condition": "Greater Than",
+      "stop": 51.9, "t1": 57, "t2": 60, "t3": 64.2,
       "alerts": [
-        { "level": "Trigger", "price": 54.5,  "price_condition": "Crossing Up",   "message": "BSX: сигнал на покупку (лонг) — Trigger $54.50" },
+        { "level": "Trigger", "price": 54.5,  "price_condition": "Crossing Up",   "volume": 25000000, "volume_condition": "Greater Than", "message": "BSX: сигнал на покупку (лонг) — Trigger $54.50 + vol > 25M" },
         { "level": "Stop",    "price": 51.9,  "price_condition": "Crossing Down", "message": "BSX: закрытие позиции по стопу (лонг) — Stop $51.90" },
         { "level": "T1",      "price": 57,    "price_condition": "Crossing Up",   "message": "BSX: закрытие позиции по T1 (лонг) — $57.00" },
         { "level": "T2",      "price": 60,    "price_condition": "Crossing Up",   "message": "BSX: закрытие позиции по T2 (лонг) — $60.00" },
@@ -72,6 +73,10 @@ node .claude/skills/signals-alerts/scripts/parse_signals.mjs [--tickers BSX,LULU
 
 Для **SHORT** направления `price_condition` зеркальный: Trigger/T1/T2/T3 — `Crossing Down`, Stop — `Crossing Up`. Шаблоны `message`: `сигнал на продажу (шорт)`, `закрытие позиции по стопу (шорт)`, `закрытие позиции по TN (шорт)`.
 
+**Multi-condition Trigger (price + volume).** Если в строке `**Trigger для Long/Short:**` указан объёмный фильтр («на объёме > 40M», «при vol > 25M», «на volume >= 5.9M», «на V > 30M»), парсер вытащит абсолютное значение объёма (40M → 40 000 000), определит `volume_condition` (`Greater Than` для `>`/`≥`, `Less Than` для `<`/`≤`) и положит их в Trigger-алерт. `create_alerts.mjs` затем создаст **один** алерт с двумя условиями (price + volume через "Add condition") — а не два отдельных. Suffix `K/M/B` (case-insensitive) поддерживается. Если в Trigger-строке объёма нет либо он не числовой («≥ avg») — Trigger остаётся одноусловным по цене.
+
+В `message` Trigger-алерта добавляется суффикс ` + vol > 40M` — он входит в ключ дедупликации, поэтому смена объёма автоматически пересоздаёт алерт через sync.
+
 Если у сигнала нет одного из обязательных полей (Trigger / Stop / T1) — попадает в `skipped` с указанием причины. T2/T3 — опциональны.
 
 ### create_alerts.mjs
@@ -84,7 +89,7 @@ node .claude/skills/signals-alerts/scripts/parse_signals.mjs --tickers BSX,LULU 
 Что делает на каждый сигнал из плана:
 1. `chart.setSymbol(ticker)` → `chart.setTimeframe("D")`.
 2. Дедупликация (если не указан `--no-dedupe`): тащит `alerts.list()`, отфильтровывает по префиксу `TICKER:` в message, и не создаёт повторно тот, чей message уже есть.
-3. Для каждого `alert` из плана — `alerts.create({ price, price_condition, message })`. Пауза ~0.9 с между вызовами.
+3. Для каждого `alert` из плана — `alerts.create({ price, price_condition, message })`. Если у `alert` есть поля `volume` + `volume_condition` (обычно — только у Trigger при наличии объёмного фильтра в `signals.md`), они передаются в тот же вызов — `src/core/alerts.js` сам откроет «Add condition», выберет источник `Vol`, выставит `volume_condition` и впечатает значение через CDP-keystrokes. Результат — **один алерт с двумя условиями**, а не два отдельных. Пауза ~0.9 с между вызовами.
 4. При неудаче — один retry с задержкой 2 с; если повторно — `error` в отчёте.
 
 Выводит JSON `{ results: [{ ticker, created, skipped, errors }], summary }`.
