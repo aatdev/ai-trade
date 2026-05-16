@@ -22,6 +22,8 @@
 import fs from 'node:fs';
 import * as alerts from '../../../../src/core/alerts.js';
 import * as ui from '../../../../src/core/ui.js';
+import * as chart from '../../../../src/core/chart.js';
+import * as drawing from '../../../../src/core/drawing.js';
 import * as health from '../../../../src/core/health.js';
 import { evaluate } from '../../../../src/connection.js';
 
@@ -123,6 +125,53 @@ async function clickDeleteForMessage(messageText) {
   return confirmed;
 }
 
+function isMultiCondAlert(msg) {
+  return /\+\s*vol\s*[<>≤≥]/i.test(String(msg || ''));
+}
+
+function markerNeedle(ticker, msg) {
+  const m = String(msg || '').match(/Trigger\s+\$([\d.]+)/);
+  if (!m) return null;
+  return `${ticker} Trigger $${m[1]}`;
+}
+
+async function removeChartMarkers(ticker, alertsToDelete, result) {
+  const targets = alertsToDelete.filter((a) => isMultiCondAlert(a?.message));
+  if (!targets.length) return;
+  try {
+    await chart.setSymbol({ symbol: ticker });
+  } catch (e) {
+    result.errors.push({ step: 'marker_setSymbol', error: String(e?.message || e) });
+    return;
+  }
+  await sleep(600);
+  for (const a of targets) {
+    const needle = markerNeedle(ticker, a.message);
+    if (!needle) continue;
+    try {
+      const found = await drawing.findShapesByText({ substring: needle });
+      const shapes = found?.shapes || [];
+      if (!shapes.length) {
+        result.markers_not_found = result.markers_not_found || [];
+        result.markers_not_found.push({ message: a.message, needle });
+        continue;
+      }
+      for (const sh of shapes) {
+        try {
+          await drawing.removeOne({ entity_id: sh.id });
+          result.markers_removed = result.markers_removed || [];
+          result.markers_removed.push({ message: a.message, entity_id: sh.id });
+        } catch (e) {
+          result.errors.push({ step: 'marker_remove', entity_id: sh.id, error: String(e?.message || e) });
+        }
+      }
+    } catch (e) {
+      result.errors.push({ step: 'marker_find', message: a.message, error: String(e?.message || e) });
+    }
+    await sleep(150);
+  }
+}
+
 async function deleteForTicker(ticker, allAlerts, keepMessages) {
   const ours = allAlerts.filter((a) => (a?.message || '').startsWith(`${ticker}:`));
   const result = { ticker, deleted: [], kept: [], errors: [], not_found_in_ui: [] };
@@ -141,6 +190,11 @@ async function deleteForTicker(ticker, allAlerts, keepMessages) {
     result.note = keepMessages ? 'устаревших алертов нет' : 'нечего удалять';
     return result;
   }
+
+  // Companion chart markers for multi-condition alerts are drawn as horizontal
+  // lines tagged with `TICKER Trigger $X.XX` — remove them before deleting the
+  // alerts themselves so cleanup is symmetric.
+  await removeChartMarkers(ticker, toDelete, result);
 
   for (const a of toDelete) {
     const r = await clickDeleteForMessage(a.message);
@@ -206,6 +260,8 @@ async function main() {
     deleted: results.reduce((a, r) => a + r.deleted.length, 0),
     kept: results.reduce((a, r) => a + r.kept.length, 0),
     not_found_in_ui: results.reduce((a, r) => a + r.not_found_in_ui.length, 0),
+    markers_removed: results.reduce((a, r) => a + ((r.markers_removed || []).length), 0),
+    markers_not_found: results.reduce((a, r) => a + ((r.markers_not_found || []).length), 0),
     errors: results.reduce((a, r) => a + r.errors.length, 0),
   };
 

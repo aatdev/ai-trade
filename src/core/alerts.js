@@ -10,6 +10,7 @@
  * `Input.insertText` after focusing the field.
  */
 import { evaluate, getClient } from '../connection.js';
+import { drawMultiConditionMarker } from './alert_markers.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -530,7 +531,7 @@ async function clickMainCreate() {
   `);
 }
 
-export async function create({ condition, price, volume, message, price_condition, volume_condition }) {
+export async function create({ condition, price, volume, message, price_condition, volume_condition, direction }) {
   if (price == null && volume == null) {
     throw new Error('Either "price" or "volume" must be provided.');
   }
@@ -601,6 +602,12 @@ export async function create({ condition, price, volume, message, price_conditio
       createdAlert = listed.alerts[0];
     }
   } catch {}
+
+  // Companion chart marker for multi-condition alerts only (price + volume).
+  if (createRes?.ok && price != null && volume != null) {
+    const dir = direction || (price_condition && /down/i.test(price_condition) ? 'SHORT' : 'LONG');
+    result.chart_marker = await drawMultiConditionMarker({ price, message, direction: dir });
+  }
 
   if (message) {
     if (result.steps.message_filled?.ok) {

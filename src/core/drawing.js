@@ -101,3 +101,35 @@ export async function clearAll() {
   await evaluate(`${apiPath}.removeAllShapes()`);
   return { success: true, action: 'all_shapes_removed' };
 }
+
+export async function findShapesByText({ substring }) {
+  if (!substring) return { success: true, count: 0, shapes: [] };
+  const apiPath = await getChartApi();
+  const needle = JSON.stringify(String(substring));
+  const shapes = await evaluate(`
+    (function() {
+      var api = ${apiPath};
+      var needle = ${needle};
+      var out = [];
+      var all = api.getAllShapes();
+      for (var i = 0; i < all.length; i++) {
+        var s = all[i];
+        try {
+          var shape = api.getShapeById(s.id);
+          if (!shape) continue;
+          var props = null;
+          try { props = shape.getProperties(); } catch(e) {
+            try { props = shape.properties(); } catch(e2) {}
+          }
+          var text = props && (props.text || props.title || (props.childs && props.childs.text)) || '';
+          if (typeof text !== 'string') text = String(text || '');
+          if (text.indexOf(needle) !== -1) {
+            out.push({ id: s.id, name: s.name, text: text });
+          }
+        } catch(e) {}
+      }
+      return out;
+    })()
+  `);
+  return { success: true, count: shapes?.length || 0, shapes: shapes || [] };
+}

@@ -17,6 +17,7 @@ import fs from 'node:fs';
 import * as alerts from '../../../../src/core/alerts.js';
 import * as chart from '../../../../src/core/chart.js';
 import * as health from '../../../../src/core/health.js';
+import { reconcileMarker } from '../../../../src/core/alert_markers.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -46,6 +47,7 @@ async function createOneAlert(spec, attempt = 1) {
       price: spec.price,
       price_condition: spec.price_condition,
       message: spec.message,
+      direction: spec.direction,
     };
     if (spec.volume != null) {
       params.volume = spec.volume;
@@ -63,7 +65,14 @@ async function createOneAlert(spec, attempt = 1) {
 }
 
 async function processTicker(sig, { dedupe }) {
-  const result = { ticker: sig.ticker, direction: sig.direction, created: [], skipped: [], errors: [] };
+  const result = {
+    ticker: sig.ticker,
+    direction: sig.direction,
+    created: [],
+    skipped: [],
+    errors: [],
+    markers: { created: [], skipped: [], errors: [] },
+  };
 
   try {
     await chart.setSymbol({ symbol: sig.ticker });
@@ -95,7 +104,7 @@ async function processTicker(sig, { dedupe }) {
       result.skipped.push({ level: spec.level, reason: 'already exists' });
       continue;
     }
-    const r = await createOneAlert(spec);
+    const r = await createOneAlert({ ...spec, direction: sig.direction });
     if (r.ok) {
       const created = { level: spec.level, price: spec.price, message: spec.message };
       if (spec.volume != null) {
@@ -107,6 +116,28 @@ async function processTicker(sig, { dedupe }) {
       result.errors.push({ level: spec.level, price: spec.price, error: r.error || 'create failed' });
     }
     await sleep(900);
+  }
+
+  // Reconcile chart markers for multi-condition Trigger alerts: dedupe by
+  // message skips alerts that already exist in TradingView, so the marker
+  // mechanism in alerts.create never fires for them. Re-check the chart and
+  // draw any missing companion lines so the trigger price stays visible.
+  const triggerSpecs = (sig.alerts || []).filter((a) => a.level === 'Trigger' && a.volume != null);
+  for (const t of triggerSpecs) {
+    const r = await reconcileMarker({
+      ticker: sig.ticker,
+      price: t.price,
+      message: t.message,
+      direction: sig.direction,
+    });
+    if (r.action === 'created') {
+      result.markers.created.push({ price: t.price, text: r.text });
+    } else if (r.action === 'skipped') {
+      result.markers.skipped.push({ price: t.price, reason: r.reason });
+    } else {
+      result.markers.errors.push({ price: t.price, error: r.error });
+    }
+    await sleep(300);
   }
 
   return result;
@@ -133,6 +164,9 @@ async function main() {
     created: results.reduce((a, r) => a + r.created.length, 0),
     skipped: results.reduce((a, r) => a + r.skipped.length, 0),
     errors: results.reduce((a, r) => a + r.errors.length, 0),
+    markers_created: results.reduce((a, r) => a + (r.markers?.created.length || 0), 0),
+    markers_skipped: results.reduce((a, r) => a + (r.markers?.skipped.length || 0), 0),
+    markers_errors: results.reduce((a, r) => a + (r.markers?.errors.length || 0), 0),
   };
 
   process.stdout.write(JSON.stringify({ results, summary }, null, 2) + '\n');
