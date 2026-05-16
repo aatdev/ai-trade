@@ -1,6 +1,6 @@
 ---
 name: ticker-analysis
-description: Полный комплексный анализ одной акции по тикеру — новостной фон, фундаментал и технический анализ через TradingView MCP — с итоговым сводным отчётом, конкретными точками входа на покупку/продажу и автоматическим обновлением (sync/diff) триггеров (алертов) в TradingView для приоритетного сценария через скил `signals-alerts`. Use whenever the user asks to analyze a single ticker ("проанализируй AAPL", "сделай аналитику по TSLA", "дай полный разбор NVDA", "analyze MSFT", "что делать с PLTR", "стоит ли покупать BSX", "разбор тикера X"). Координирует уже установленные скилы market-news-analyst, us-stock-analysis (fundamental), technical-analyst, chart-analysis и signals-alerts, читает живой график через mcp__tradingview__* и сохраняет четыре markdown-файла плюс daily/weekly скриншоты в `results/analysys/TICKER/YYYY-MM-DD/`, после чего синхронизирует алерты на Trigger / Stop / T1 / T2 / T3 для приоритетного сценария (старые удаляются, изменённые пересоздаются, совпадающие — остаются нетронутыми).
+description: Полный комплексный анализ одной акции по тикеру — новостной фон, фундаментал и технический анализ через TradingView MCP — с итоговым сводным отчётом, конкретными точками входа на покупку/продажу и автоматическим обновлением (sync/diff) триггеров (алертов) в TradingView для приоритетного сценария через скил `signals-alerts`. Use whenever the user asks to analyze a single ticker ("проанализируй AAPL", "сделай аналитику по TSLA", "дай полный разбор NVDA", "analyze MSFT", "что делать с PLTR", "стоит ли покупать BSX", "разбор тикера X"). Координирует уже установленные скилы market-news-analyst, us-stock-analysis (fundamental), technical-analyst, chart-analysis и signals-alerts, читает живой график через mcp__tradingview__* и сохраняет четыре markdown-файла плюс daily/weekly скриншоты в `results/analysis/TICKER/YYYY-MM-DD/`, после чего синхронизирует алерты на Trigger / Stop / T1 / T2 / T3 для приоритетного сценария (старые удаляются, изменённые пересоздаются, совпадающие — остаются нетронутыми).
 ---
 
 # Ticker Analysis — Сводный анализ одной акции
@@ -22,10 +22,10 @@ description: Полный комплексный анализ одной акц�
 
 ## Структура результата
 
-Всё сохраняется в `results/analysys/TICKER/YYYY-MM-DD/`, где TICKER — это тикер в верхнем регистре без префикса биржи (BSX, не NYSE:BSX), а дата — текущая дата из контекста сессии.
+Всё сохраняется в `results/analysis/TICKER/YYYY-MM-DD/`, где TICKER — это тикер в верхнем регистре без префикса биржи (BSX, не NYSE:BSX), а дата — текущая дата из контекста сессии.
 
 ```
-results/analysys/TICKER/YYYY-MM-DD/
+results/analysis/TICKER/YYYY-MM-DD/
 ├── news.md           # новостной фон, ранжированный по импакту
 ├── fundamental.md    # финансы, мультипликаторы, оценка vs peers
 ├── technical.md      # weekly + daily ТА (тренд, уровни, индикаторы)
@@ -34,7 +34,7 @@ results/analysys/TICKER/YYYY-MM-DD/
 └── TICKER_weekly.png # скриншот недельного графика с индикаторами
 ```
 
-Эта структура — реальный шаблон, уже используемый в репо (см. `results/analysys/BSX/2026-05-15/`). Следуй ему.
+Эта структура — реальный шаблон, уже используемый в репо (см. `results/analysis/BSX/2026-05-15/`). Следуй ему.
 
 Дополнительно: финальный сигнал (BUY/HOLD/SELL + entry/stop) дозаписывается в общий журнал `results/analysis/signals.md` — см. раздел «Сохранение сигнала». После этого скил `signals-alerts` в режиме `sync` приводит набор алертов в TradingView Desktop к плану из журнала — 4–5 алертов на Trigger / Stop / T1 / T2 / T3 приоритетного сценария, с дедупликацией по `message` и удалением только устаревших уровней — см. раздел «Обновление алертов».
 
@@ -44,7 +44,7 @@ results/analysys/TICKER/YYYY-MM-DD/
 
 1. Извлеки тикер из запроса. Нормализуй: `BSX`, не `bsx`/`Boston Scientific`/`NYSE:BSX`.
 2. Возьми дату из системного контекста (`Today's date is YYYY-MM-DD` в claudeMd). Это `DATE`.
-3. Создай каталог: `mkdir -p results/analysys/TICKER/DATE`.
+3. Создай каталог: `mkdir -p results/analysis/TICKER/DATE`.
 4. Создай задачи через TaskCreate (3 параллельные ветки + сводка + журнал + sync алертов):
    - Сбор новостей
    - Фундаментальный анализ
@@ -211,7 +211,7 @@ results/analysys/TICKER/YYYY-MM-DD/
 
 ### Шаг 4. Сводный отчёт → `report.md` (главный файл)
 
-Это самый важный артефакт. Его структура — копия `results/analysys/BSX/2026-05-15/report.md`.
+Это самый важный артефакт. Его структура — копия `results/analysis/BSX/2026-05-15/report.md`.
 
 ```markdown
 # TICKER — сводный анализ (YYYY-MM-DD)
@@ -275,7 +275,7 @@ results/analysys/TICKER/YYYY-MM-DD/
 
 ### Шаг 5. Сохранение сигнала → `results/analysis/signals.md`
 
-После того как `report.md` готов, **обязательно** дозапиши краткую строку сигнала в общий журнал `results/analysis/signals.md` (обрати внимание: путь `analysis`, не `analysys` — это общий журнал, не папка отчёта).
+После того как `report.md` готов, **обязательно** дозапиши краткую строку сигнала в общий журнал `results/analysis/signals.md`.
 
 Этот журнал — **источник правды** для следующего шага: скил `signals-alerts` читает именно его (`parse_signals.mjs`), парсит приоритетный сценарий и приводит набор алертов в TradingView к плану. Поэтому сначала journal-write, потом alerts-sync.
 
@@ -295,7 +295,7 @@ results/analysys/TICKER/YYYY-MM-DD/
 - **Горизонт:** 1–2 нед (T1) / 1–3 мес (T2–T3)
 - **Альтернатива (Short):** close < $XX.XX → entry $XX.XX, stop $XX.XX, T1/T2/T3 $XX/$XX/$XX  ← опционально; парсер её игнорирует (по ключевому слову «Альтернатив»)
 - **Главный риск:** [одна строка]
-- **Полный отчёт:** [`results/analysys/TICKER/YYYY-MM-DD/report.md`](./../analysys/TICKER/YYYY-MM-DD/report.md)
+- **Полный отчёт:** [`results/analysis/TICKER/YYYY-MM-DD/report.md`](./../analysis/TICKER/YYYY-MM-DD/report.md)
 ```
 
 **Критичные требования к формату** (иначе `parse_signals.mjs` положит сигнал в `skipped`):
@@ -443,7 +443,7 @@ node .claude/skills/signals-alerts/scripts/create_alerts.mjs \
 
 🔔 Алерты TradingView (sync): ✅ создано N, удалено M, без изм. K (Trigger / Stop / T1 / T2 / T3) — или ❌ не созданы (причина)
 
-📁 Полный отчёт: results/analysys/TICKER/DATE/report.md
+📁 Полный отчёт: results/analysis/TICKER/DATE/report.md
 ```
 
 Этот блок — **обязательная часть** ответа после всех `Write`-операций. Без него пользователь не получит мгновенной картины.
@@ -479,7 +479,7 @@ node .claude/skills/signals-alerts/scripts/create_alerts.mjs \
 
 ## Конвенции файлов и текста
 
-- Каталог результатов: `./results/analysys/TICKER/DATE/` (именно `analysys` — это исторически сложившееся имя в репо, не исправляй на `analysis`).
+- Каталог результатов: `./results/analysis/TICKER/DATE/`.
 - Тикер в имени файла — верхний регистр без префикса биржи: `BSX_daily.png`, не `NYSE_BSX_daily.png`.
 - Язык:
   - `news.md` — английский (методология market-news-analyst)
@@ -491,7 +491,7 @@ node .claude/skills/signals-alerts/scripts/create_alerts.mjs \
 `capture_screenshot` возвращает абсолютный путь к файлу в `screenshots/` каталоге репо с таймстампом. Тебе нужно переместить и переименовать его:
 
 ```bash
-mv "/path/to/screenshots/TIMESTAMP_chart.png" "results/analysys/TICKER/DATE/TICKER_weekly.png"
+mv "/path/to/screenshots/TIMESTAMP_chart.png" "results/analysis/TICKER/DATE/TICKER_weekly.png"
 ```
 
 Или использовать `cp` + `rm`, если важно сохранить исходник. Делай это сразу после каждого capture_screenshot.
@@ -500,7 +500,7 @@ mv "/path/to/screenshots/TIMESTAMP_chart.png" "results/analysys/TICKER/DATE/TICK
 
 Перед тем как сказать пользователю, что отчёт готов, проверь:
 
-- [ ] Все 4 .md файла существуют в `results/analysys/TICKER/DATE/`
+- [ ] Все 4 .md файла существуют в `results/analysis/TICKER/DATE/`
 - [ ] Оба скриншота (weekly, daily) лежат там же под правильными именами
 - [ ] В `report.md` есть **обе** таблицы сценариев (Long, Short) с конкретными числами entry/stop/T1/T2/T3
 - [ ] В `report.md` явно отмечено, какой сетап в приоритете
@@ -531,7 +531,7 @@ mv "/path/to/screenshots/TIMESTAMP_chart.png" "results/analysys/TICKER/DATE/TICK
 
 ## Пример эталонного отчёта
 
-Лучший живой образец — `results/analysys/BSX/2026-05-15/`. Если сомневаешься в формате какого-то файла, посмотри туда.
+Лучший живой образец — `results/analysis/BSX/2026-05-15/`. Если сомневаешься в формате какого-то файла, посмотри туда.
 
 ## Что НЕ делать
 
