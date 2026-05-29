@@ -62,7 +62,7 @@ This skill screens US stocks using William O'Neil's proven CANSLIM methodology, 
 ## Prerequisites
 
 **API Requirements:**
-- **FMP API key** — required only for the **FMP-only mode** (`screen_canslim.py`). The **TradingView mode** (`screen_canslim_tv.py`, see below) needs no FMP key: all components come from the live chart + `tv fundamentals`, with the I component falling back to Finviz.
+- **FMP API key** — required for the **FMP-only mode** (`screen_canslim.py`). The **TradingView mode** (`screen_canslim_tv.py`, see below) needs no FMP key for 6 of the 7 components (C, A, N, S, L, M); only the I component (institutional) needs a key and scores 0 without one.
   - Free tier: 250 calls/day, sufficient for 35 stocks; Starter tier $29.99/mo for 40+ stocks
   - Sign up: https://site.financialmodelingprep.com/developer/docs
   - Set via environment variable: `export FMP_API_KEY=your_key_here`
@@ -88,22 +88,27 @@ real universe scan burns the daily quota fast. `screen_canslim_tv.py` now routes
 TradingView Desktop chart — the `tv fundamentals` tool (TradingView scanner)
 supplies the financials that previously needed FMP:
 
-- **From TradingView** (no FMP quota): N (52-week high distance), S (up/down
-  volume), L (relative strength vs ^GSPC), M (^GSPC vs 50-day EMA + ^VIX),
-  **C (quarterly earnings/revenue), A (annual EPS/revenue growth)** — C/A come
-  from `fundamentals_get(history=true)` via the `tv fundamentals` CLI.
-- **From FMP** (optional): only I (institutional sponsorship), which the scanner
-  does not expose. **No FMP key → I falls back to Finviz automatically.**
+- **From TradingView** (no FMP quota): **6 of 7 components** — N (52-week high
+  distance), S (up/down volume), L (relative strength vs S&P 500), M (S&P 500 vs
+  50-day EMA + VIX), **C (quarterly earnings/revenue), A (annual EPS/revenue
+  growth)**. C/A come from `fundamentals_get(history=true)` via the `tv
+  fundamentals` CLI. Index tickers `^GSPC`/`^VIX` are auto-remapped to TradingView
+  `SP:SPX`/`TVC:VIX`.
+- **From FMP** (optional): only **I** (institutional sponsorship), which the
+  scanner does not expose. **Without an FMP key the I component scores 0**
+  (institutional data unavailable) — the other 6 components still score normally,
+  so composites run slightly low on that one axis. Supply a key for full
+  7-component CANSLIM; Finviz then enriches ownership% when FMP's is incomplete.
 
 **Prerequisite:** TradingView Desktop running with CDP on :9222. Verify with
-`tv brief` (or the `tv_health_check` MCP tool) before running. **An FMP key is
-no longer required** for the TradingView mode.
+`tv brief` (or the `tv_health_check` MCP tool) before running. **An FMP key is no
+longer required** — it only adds the I component.
 
-**Run (FMP key now optional — supply it only to use FMP for the I component):**
+**Run (FMP key now optional — supply it only to score the I component):**
 ```bash
 cd .claude/skills/canslim-screener/scripts
-python3 screen_canslim_tv.py --max-candidates 40 --top 20            # no FMP key
-python3 screen_canslim_tv.py --api-key $FMP_API_KEY --top 20         # I via FMP
+python3 screen_canslim_tv.py --max-candidates 40 --top 20            # no key: 6/7 components (I=0)
+python3 screen_canslim_tv.py --api-key $FMP_API_KEY --top 20         # full 7/7 incl. I
 ```
 
 `tv_client.py` is a hybrid drop-in for `FMPClient`: it serves `get_quote` /

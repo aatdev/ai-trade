@@ -50,6 +50,14 @@ BARS = 400
 # Seconds to wait after switching symbol before the chart's bars are ready.
 SETTLE = 2.0
 
+# The screener uses FMP index tickers (^GSPC, ^VIX) for the M/L components, but
+# TradingView doesn't recognize them — remap to TradingView symbols that return
+# daily bars. Real stock tickers pass through unchanged.
+INDEX_REMAP = {
+    "^GSPC": "SP:SPX",
+    "^VIX": "TVC:VIX",
+}
+
 
 class TVClient:
     def __init__(self, api_key: Optional[str] = None):
@@ -57,14 +65,15 @@ class TVClient:
         # TradingView scanner via `tv fundamentals` — no FMP quota. The internal
         # FMP client is only kept for I (institutional holders), which the
         # scanner fundamentals set does not expose. The FMP key is now OPTIONAL:
-        # with no key, fundamentals still flow from TradingView and I falls back
-        # to the Finviz path in the calculator.
+        # with no key, 6 of 7 components (C/A/N/S/L/M) still score from
+        # TradingView; only I is unavailable and scores 0.
         try:
             self._fmp = FMPClient(api_key=api_key)
         except ValueError:
             self._fmp = None
             print(
-                "  INFO: no FMP key — C/A from TradingView, I via Finviz fallback",
+                "  INFO: no FMP key — C/A/N/S/L/M from TradingView; "
+                "I (institutional) unavailable, scores 0",
                 file=sys.stderr,
             )
         self.cache: dict = {}
@@ -102,7 +111,8 @@ class TVClient:
         """Switch the chart to `symbol` on the daily timeframe and pull bars.
 
         Returns bars NEWEST FIRST in FMP-compatible dict form, or []."""
-        self._cli("symbol", symbol, parse=False)
+        tv_symbol = INDEX_REMAP.get(symbol, symbol)
+        self._cli("symbol", tv_symbol, parse=False)
         if not self._tf_set:
             self._cli("timeframe", "D", parse=False)
             self._tf_set = True
