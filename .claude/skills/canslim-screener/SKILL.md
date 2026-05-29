@@ -79,6 +79,38 @@ pip install requests beautifulsoup4 lxml
 
 ---
 
+## TradingView Mode (Hybrid — recommended when TradingView is running)
+
+The FMP free tier gates most symbols' price history, so a real universe scan
+burns the daily quota fast. `screen_canslim_tv.py` routes the **price-based**
+components through a live TradingView Desktop chart and keeps FMP only for the
+**fundamental** components:
+
+- **From TradingView** (no FMP quota): N (52-week high distance), S (up/down
+  volume), L (relative strength vs ^GSPC), M (^GSPC vs 50-day EMA + ^VIX).
+- **From FMP** (key still required, ~3 calls/stock instead of ~7): C (quarterly
+  earnings), A (annual growth), I (institutional sponsorship).
+
+**Prerequisite:** TradingView Desktop running with CDP on :9222. Verify with
+`tv brief` (or the `tv_health_check` MCP tool) before running.
+
+**Run (same flags as the FMP mode):**
+```bash
+cd .claude/skills/canslim-screener/scripts
+python3 screen_canslim_tv.py --api-key $FMP_API_KEY --max-candidates 40 --top 20
+```
+
+`tv_client.py` is a hybrid drop-in for `FMPClient`: it serves `get_quote` /
+`get_historical_prices` from the chart and delegates `get_profile` /
+`get_income_statement` / `get_institutional_holders` / `calculate_ema` to an
+internal `FMPClient`. The original FMP-only mode (`screen_canslim.py`) is
+unchanged and still available when TradingView is not running.
+
+> Note: the screener switches the chart symbol once per stock (≈2s settle), so a
+> 40-stock scan takes longer than the FMP path but is not quota-limited on price.
+
+---
+
 ## Output
 
 **Output Directory:** `reports/` (default) or custom via `--output-dir`

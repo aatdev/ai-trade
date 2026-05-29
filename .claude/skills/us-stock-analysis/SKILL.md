@@ -11,6 +11,27 @@ Perform comprehensive analysis of US stocks covering fundamental analysis (finan
 
 ## Data Sources
 
+### Technical data → TradingView MCP (preferred)
+
+When a live TradingView Desktop chart is available (CDP on :9222 — check with
+`mcp__tradingview__tv_health_check`), source **all technical/price data** from
+the chart instead of web search. It is real-time, exact, and quota-free:
+
+1. `mcp__tradingview__chart_set_symbol` + `chart_set_timeframe` (e.g. `D`, `W`) — point the chart at the ticker.
+2. `mcp__tradingview__data_get_ohlcv` with `summary=true` — price, 52-week range, volume profile.
+3. `mcp__tradingview__quote_get` — real-time last/OHLC/volume snapshot.
+4. `mcp__tradingview__data_get_study_values` — current values from visible indicators (RSI, MACD, moving averages, BB); add studies first with `mcp__tradingview__chart_manage_indicator` (full names, e.g. `"Relative Strength Index"`).
+5. `mcp__tradingview__capture_screenshot` (regions `chart`) — daily + weekly snapshots for the report.
+
+If TradingView is **not** reachable, fall back to web search for technical data
+as described below.
+
+### Fundamentals & news → web search
+
+Fundamentals (financial statements, key metrics, analyst ratings) and recent
+news are **not** available from the chart — always use web search tools for
+those, regardless of TradingView availability.
+
 Always use web search tools to gather current market data:
 
 **Primary Data to Fetch:**

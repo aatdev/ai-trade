@@ -23,6 +23,34 @@ Analyze historical price data to identify downtrend periods (peak-to-trough) and
 - FMP API key (set `FMP_API_KEY` environment variable or use `--api-key`)
 - Required packages: `requests`, `pandas`, `numpy` (standard data analysis stack)
 
+## TradingView Mode (Hybrid — recommended when TradingView is running)
+
+The per-symbol price history is what burns the FMP free-tier quota on a large
+universe. `analyze_downtrends_tv.py` sources that history from a live
+TradingView Desktop chart instead, while keeping FMP only for the universe list
++ market-cap classification (`fetch_stock_list` — a single cheap call the chart
+can't replace).
+
+**Prerequisite:** TradingView Desktop running with CDP on :9222 (`tv brief` to
+verify). FMP key still required for the universe list only.
+
+```bash
+cd .claude/skills/downtrend-duration-analyzer/scripts
+python3 analyze_downtrends_tv.py --api-key $FMP_API_KEY --sector "Technology" --lookback-years 5
+```
+
+`tv_prices.py#fetch_historical_prices_tv` returns the same DataFrame shape as the
+FMP fetcher, so the rest of the pipeline (peak/trough detection, HTML histogram)
+is unchanged. The original FMP-only `analyze_downtrends.py` still works when
+TradingView is not running. Each symbol triggers a chart switch (≈2s settle), so
+the TV path trades speed for no price quota — keep `--max-stocks` modest.
+
+> **History limit:** the `tv ohlcv` CLI caps at ~400 daily bars (its piped JSON
+> truncates past 64KB), so the TV path sees **≈18 months** of history per symbol
+> regardless of `--lookback-years`. For multi-year downtrend statistics use the
+> FMP mode (`analyze_downtrends.py`); use the TV mode for recent-correction scans
+> without burning quota.
+
 ## Workflow
 
 ### Step 1: Fetch Historical Price Data
