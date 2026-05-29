@@ -5,7 +5,7 @@ description: Read and control a live TradingView Desktop chart via the TradingVi
 
 # TradingView MCP — Tool Selection Guide
 
-78 tools for reading and controlling a live TradingView Desktop chart via CDP (port 9222).
+79 tools for reading and controlling a live TradingView Desktop chart via CDP (port 9222).
 
 ## Decision Tree — Which Tool When
 
@@ -28,6 +28,12 @@ Use `study_filter` parameter to target a specific indicator by name substring (e
 - `data_get_ohlcv` with `summary: true` → compact stats (high, low, range, change%, avg volume, last 5 bars)
 - `data_get_ohlcv` without summary → all bars (use `count` to limit, default 100)
 - `quote_get` → single latest price snapshot
+
+### "Give me fundamentals / financials"
+- `fundamentals_get` → company fundamentals for a stock: valuation multiples (P/E, P/S, P/B, EV/EBITDA, P/FCF), TTM income statement (revenue, gross/operating/net income, EBITDA), margins, ROE/ROA/ROIC, balance sheet (assets, debt, equity, cash, current/quick ratio, D/E), cash flow (FCF, operating CF, capex), dividends.
+  - Defaults to the active chart symbol; pass `symbol: "NYSE:VSCO"` for any other.
+  - `history: true` → adds annual (FY) and quarterly (FQ) time series for revenue, net income and diluted EPS, **most recent period first**.
+  - This is the **primary source for hard numeric fundamentals** — prefer it over web search for multiples/margins/financial-statement figures. Still use web search for narrative items the tool doesn't return: management guidance, segment breakdown, analyst ratings/price targets, beat/miss vs consensus.
 
 ### "Analyze my chart" (full report workflow)
 1. `quote_get` → current price
@@ -113,6 +119,8 @@ These tools can return large payloads. Follow these rules to avoid context bloat
 | `data_get_pine_boxes` | ~1-2 KB per study (deduplicated zones) |
 | `data_get_ohlcv` (summary) | ~500 bytes |
 | `data_get_ohlcv` (100 bars) | ~8 KB |
+| `fundamentals_get` (snapshot) | ~1 KB |
+| `fundamentals_get` (`history: true`) | ~2-3 KB |
 | `capture_screenshot` | ~300 bytes (returns file path, not image data) |
 
 ## Tool Conventions

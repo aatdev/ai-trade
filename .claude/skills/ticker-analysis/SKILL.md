@@ -107,14 +107,18 @@ results/analysis/TICKER/YYYY-MM-DD/
 
 ### Шаг 2. Фундаментальный анализ → `fundamental.md`
 
-Используй методологию скила **us-stock-analysis** (раздел «Fundamental Analysis»). Все данные тащи через `WebSearch`/`WebFetch` (Yahoo Finance, Seeking Alpha, инвесторский раздел самой компании, последний 10-Q/10-K).
+Используй методологию скила **us-stock-analysis** (раздел «Fundamental Analysis»).
+
+**Источник цифр — сначала TradingView MCP, потом web.** Жёсткие числовые фундаментал-метрики тащи через `mcp__tradingview__fundamentals_get` (символ уже на графике после market-news/technical шагов, либо передай `symbol`):
+- `fundamentals_get({ symbol, history: true })` даёт за один вызов: мультипликаторы (P/E, P/S, P/B, EV/EBITDA, P/FCF), TTM-выручку/прибыль/EBITDA, маржи, ROE/ROA/ROIC, баланс (долг, кэш, equity, current/quick ratio, D/E), денежный поток (FCF, операционный CF, capex), дивиденды + **годовые/квартальные ряды** выручки, чистой прибыли и diluted EPS (свежий период первым).
+- `WebSearch`/`WebFetch` (Yahoo Finance, Seeking Alpha, IR-раздел компании, последний 10-Q/10-K) оставь **только** для того, чего тул не отдаёт: гайденс, сегменты, beat/miss vs консенсус, аналитические рейтинги/таргеты, качественные риски.
 
 Что собрать:
-- последний квартал: выручка, EPS, маржа, гайденс — сравни с консенсусом и YoY
-- сегменты бизнеса (драйверы и слабые места)
-- баланс: долг, кэш, FCF, interest coverage, D/E
-- оценка: Fwd P/E, EV/EBITDA, PEG, P/B; сравнение с 2–4 ключевыми peers
-- риски (исковая нагрузка, регуляторика, ключевые продукты)
+- последний квартал: выручка, EPS, маржа (из `fundamentals_get` — TTM + квартальный ряд), гайденс и beat/miss (web) — сравни с консенсусом и YoY
+- сегменты бизнеса (драйверы и слабые места) — web
+- баланс: долг, кэш, FCF, D/E (`fundamentals_get`); interest coverage — web при необходимости
+- оценка: P/E, EV/EBITDA, P/B, P/FCF (`fundamentals_get`); Fwd P/E, PEG — web; сравнение с 2–4 ключевыми peers (вызови `fundamentals_get` по каждому peer)
+- риски (исковая нагрузка, регуляторика, ключевые продукты) — web
 
 **Формат `fundamental.md`** (русский — согласно `.claude/rules/language.md`):
 

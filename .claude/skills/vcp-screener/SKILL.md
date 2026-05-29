@@ -81,6 +81,14 @@ python3 skills/vcp-screener/scripts/screen_vcp.py \
 
 ### Step 3: Present Analysis
 
+The VCP scoring is **price/volume only** — it does not read fundamentals. For
+fundamental context on the shortlisted candidates (market cap, sector, P/E,
+margins, EPS/revenue growth), enrich them with the **`mcp__tradingview__fundamentals_get`**
+tool (or `tv fundamentals TICKER --history`) — one call per finalist. This
+replaces FMP for fundamentals and confirms the candidate is a real growth
+leader, not just a tight chart. Do **not** call it inside the scan loop over the
+full universe — only for the handful of finalists you present.
+
 For each top candidate, present:
 - **Quality** (`composite_score` / rating) — how well-formed is the VCP pattern?
 - **Execution State** (`execution_state`) — is it buyable now? (Pre-breakout / Breakout = actionable)
@@ -90,6 +98,7 @@ For each top candidate, present:
 - Trade setup: pivot price, stop-loss, risk percentage
 - Volume dry-up ratio and breakout_volume_score
 - Relative strength rank
+- **Fundamental check** (from `fundamentals_get`): market cap, sector, P/E, latest-quarter EPS/revenue growth — a true CANSLIM/Minervini leader should show accelerating earnings
 
 ### Step 4: Provide Actionable Guidance
 

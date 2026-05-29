@@ -26,22 +26,22 @@ the chart instead of web search. It is real-time, exact, and quota-free:
 If TradingView is **not** reachable, fall back to web search for technical data
 as described below.
 
-### Fundamentals & news → web search
+### Fundamentals → TradingView MCP first, then web search
 
-Fundamentals (financial statements, key metrics, analyst ratings) and recent
-news are **not** available from the chart — always use web search tools for
-those, regardless of TradingView availability.
+**Hard numeric fundamentals come from `mcp__tradingview__fundamentals_get`** (TradingView MCP) when TradingView is reachable — it's faster and more reliable than scraping web sources:
+- `fundamentals_get({ symbol: "NYSE:VSCO", history: true })` returns in one call: valuation multiples (P/E, P/S, P/B, EV/EBITDA, P/FCF), TTM income statement (revenue, gross/operating/net income, EBITDA), margins, ROE/ROA/ROIC, balance sheet (assets, debt, equity, cash, current/quick ratio, D/E), cash flow (FCF, operating CF, capex), dividends, plus annual (FY) and quarterly (FQ) series for revenue, net income and diluted EPS (most recent first).
+- For peer comparisons, call `fundamentals_get` once per peer ticker.
 
-Always use web search tools to gather current market data:
+**Use web search only for what the tool does not return:** analyst ratings & price targets, management guidance, segment/geographic breakdown, beat/miss vs consensus, recent news, and as a full fallback when TradingView is unavailable.
 
-**Primary Data to Fetch:**
-1. **Current stock price and trading data** (price, volume, 52-week range)
-2. **Financial statements** (income statement, balance sheet, cash flow)
-3. **Key metrics** (P/E, EPS, revenue, margins, debt ratios)
-4. **Analyst ratings and price targets**
-5. **Recent news and developments**
-6. **Peer/competitor data** (for comparisons)
-7. **Technical data** (moving averages, RSI, MACD when available)
+**Data to fetch (source noted per item):**
+1. **Current stock price and trading data** (price, volume, 52-week range) — `quote_get` or web
+2. **Financial statements** (income statement, balance sheet, cash flow) — primary via `fundamentals_get`
+3. **Key metrics** (P/E, EPS, revenue, margins, debt ratios) — primary via `fundamentals_get`
+4. **Analyst ratings and price targets** — web
+5. **Recent news and developments** — web
+6. **Peer/competitor data** (for comparisons) — `fundamentals_get` per peer + web for context
+7. **Technical data** (moving averages, RSI, MACD when available) — primary via `data_get_study_values`
 
 **Search Strategy:**
 - Use ticker symbol + specific data needed (e.g., "AAPL financial metrics 2024")
