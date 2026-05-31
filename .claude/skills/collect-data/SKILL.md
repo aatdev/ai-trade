@@ -16,6 +16,8 @@ Ask the user if not provided:
 
 If the user already mentioned a symbol and timeframe in their message, use those — don't ask again.
 
+**Fast path (daily timeframe only).** If the timeframe is `D`, check the metrics cache first: `node scripts/read_metrics.js {SYMBOL}`. Exit 0 → the snapshot (≤2 days old) already holds ema20/50/200, sma50/150/200, rsi14, macd, stoch, bb, atr14, returns, a price summary and fundamentals, AND the raw daily bars at `_cache.ohlcv.path` (`state/metrics/{SYMBOL}/ohlcv.json`). For a read-only request, return those without driving the chart. Exit 3 (missing/stale) or any non-daily timeframe → fall through to Step 2. Note: Step 2 still writes a fresh file to `./results/` — prefer it when the user explicitly wants an exported snapshot.
+
 ## Step 2: Run the script
 
 ```bash

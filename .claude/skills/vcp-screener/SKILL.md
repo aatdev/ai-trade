@@ -121,6 +121,16 @@ For each top candidate, present:
 2. **Trend Template** - 7-point Stage 2 filter with 260-day histories ~100 API calls
 3. **VCP Detection** - Pattern analysis, scoring, report generation (no additional API calls)
 
+**Metrics cache acceleration (TradingView mode).** When running through
+`tv_client.py`, all three phases read `state/metrics/TICKER/` (written by
+`scripts/collect_russell.js`) before touching the chart: a fresh snapshot
+(≤2 days) serves `get_quote` from `metrics.json` (Phase 1) **and the full daily
+bar series** from `ohlcv.json` (Phases 2–3: trend template + VCP detection), so
+a scan against a fully-populated fresh cache runs with no live TradingView at
+all. Stale/missing entries (or <200 cached bars) fall back to live transparently.
+Disable with `VCP_NO_CACHE=1`; refresh with
+`node scripts/collect_russell.js --source snp500 --update`.
+
 ## Output
 
 - `vcp_screener_YYYY-MM-DD_HHMMSS.json` - Structured results

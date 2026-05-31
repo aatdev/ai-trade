@@ -11,6 +11,20 @@ Perform comprehensive analysis of US stocks covering fundamental analysis (finan
 
 ## Data Sources
 
+### Fast path → metrics cache (check first)
+
+Before driving the chart, check the local cache: `node scripts/read_metrics.js TICKER`
+(from the repo root). Exit `0` means a fresh snapshot (≤2 days) is available in
+`state/metrics/TICKER/`, which already holds:
+- **indicators** (`metrics.json` → `indicators`): ema20/50/200, sma50/150/200, rsi14, macd, stoch, bb, atr14, returns;
+- **fundamentals** (`metrics.json` → `fundamentals`): same groups `fundamentals_get` returns, plus `history`;
+- **price summary** (`metrics.json` → `price`): last_close, year_high/low, pct_from_52w_high, avg_volume_50d;
+- **raw daily bars** at `_cache.ohlcv.path` (`state/metrics/TICKER/ohlcv.json`, oldest-first).
+
+Use these instead of attaching indicators to the chart / calling `fundamentals_get` /
+`data_get_ohlcv`. Exit `3` (missing or stale) → fall through to the live MCP path
+below. Screenshots are never cached — capture those live.
+
 ### Technical data → TradingView MCP (preferred)
 
 When a live TradingView Desktop chart is available (CDP on :9222 — check with

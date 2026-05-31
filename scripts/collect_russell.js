@@ -1,58 +1,73 @@
 #!/usr/bin/env node
 /**
- * Daily candles collector with OpenSearch storage.
+ * Daily metrics-cache collector (local files only — no external store).
  *
  * Reads a ticker universe (Russell 2000 by default, or S&P 500), fetches daily
- * bars per ticker, stores in OpenSearch with resume and incremental updates.
+ * bars per ticker from a live TradingView Desktop chart (CDP on :9222), and
+ * writes the per-ticker cache under state/metrics/TICKER/:
+ *   metrics.json — locally-computed indicators + TradingView fundamentals + price summary
+ *   ohlcv.json   — raw daily bars (OLDEST-FIRST)
+ * See scripts/lib/metrics_store.js for the schema and staleness rules.
+ *
+ * Resume/update state is derived from the cache itself (metrics.json's
+ * `collected_at` / `as_of_date`) — there is no separate state store.
  *
  * Universes (--source):
  *   russell  → state/russel2000.json  (default; JSON array, iShares export shape)
  *   snp500   → state/sp500.csv        (Wikipedia constituents CSV)
  *
- * OpenSearch indices:
- *   my_tw_tickers    — ticker metadata (one doc per ticker)
- *   my_tw_candles_1d — OHLCV candles (one doc per candle, id = TICKER_timestamp)
- *   my_tw_state      — download state (one doc per ticker)
- *
  * Usage:
  *   node scripts/collect_russell.js                   # collect Russell 2000, skip already done
  *   node scripts/collect_russell.js --source snp500   # collect S&P 500 instead
- *   node scripts/collect_russell.js --update          # refresh fresh bars (10-bar overlap)
- *   node scripts/collect_russell.js --from CRDO       # resume from specific ticker
+ *   node scripts/collect_russell.js --update          # refresh: fetch only missing days, merge
+ *   node scripts/collect_russell.js --from CRDO       # resume from a specific ticker
  *   node scripts/collect_russell.js --limit 50        # process only first N tickers
  *   node scripts/collect_russell.js --ticker AAPL     # single ticker
+ *   node scripts/collect_russell.js --no-fundamentals # skip the fundamentals fetch
  */
 
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { setSymbol, setTimeframe } from '../src/core/chart.js';
 import { getOhlcv, getQuote } from '../src/core/data.js';
+import { get as getFundamentals } from '../src/core/fundamentals.js';
 import { disconnect } from '../src/connection.js';
+import {
+  buildMetrics,
+  writeMetrics,
+  writeOhlcv,
+  mergeBars,
+  readOhlcvBars,
+  readMetrics,
+} from './lib/metrics_store.js';
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const OS_BASE = process.env.OPENSEARCH_URL ?? 'http://tw.spitch-dev.ai:9200';
 const BARS_FULL = 1000;
 const UPDATE_OVERLAP = 21; // safety overlap added to missing-days count
 const UPDATE_MIN = 10; // never fetch fewer than this in update mode
 const SLEEP_CHART = 2500; // ms to wait after symbol switch
 const SLEEP_BETWEEN = 800;
 
-const IDX_TICKERS = 'my_tw_tickers';
-const IDX_CANDLES = 'my_tw_candles_1d';
-const IDX_STATE = 'my_tw_state';
-
 // ─── Args ─────────────────────────────────────────────────────────────────────
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { update: false, from: null, limit: null, ticker: null, source: 'russell' };
+  const opts = {
+    update: false,
+    from: null,
+    limit: null,
+    ticker: null,
+    source: 'russell',
+    fundamentals: true,
+  };
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--update') opts.update = true;
     else if (args[i] === '--from') opts.from = args[++i];
     else if (args[i] === '--limit') opts.limit = parseInt(args[++i]);
     else if (args[i] === '--ticker') opts.ticker = args[++i];
     else if (args[i] === '--source') opts.source = args[++i];
+    else if (args[i] === '--no-fundamentals') opts.fundamentals = false;
   }
   return opts;
 }
@@ -61,15 +76,6 @@ function parseArgs() {
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
-}
-
-// TradingView returns bar.time in UNIX seconds
-function barDate(tsSec) {
-  return new Date(tsSec * 1000).toISOString().slice(0, 10);
-}
-
-function candleId(ticker, tsSec) {
-  return `${ticker}_${tsSec}`;
 }
 
 function todayDate() {
@@ -166,171 +172,6 @@ function loadUniverse(source) {
   return def.parse(readFileSync(path, 'utf-8'));
 }
 
-// ─── OpenSearch client ────────────────────────────────────────────────────────
-
-async function osRequest(method, path, body) {
-  const url = `${OS_BASE}${path}`;
-  const opts = {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-  };
-  if (body !== undefined) opts.body = typeof body === 'string' ? body : JSON.stringify(body);
-
-  const res = await fetch(url, opts);
-  const text = await res.text();
-
-  if (!res.ok && res.status !== 404 && res.status !== 409) {
-    throw new Error(`OpenSearch ${method} ${path} → ${res.status}: ${text.slice(0, 300)}`);
-  }
-  try {
-    return JSON.parse(text);
-  } catch {
-    return text;
-  }
-}
-
-async function osGet(path) {
-  return osRequest('GET', path);
-}
-async function osPut(path, body) {
-  return osRequest('PUT', path, body);
-}
-async function osPost(path, body) {
-  return osRequest('POST', path, body);
-}
-
-// ─── Index management ─────────────────────────────────────────────────────────
-
-async function ensureIndices() {
-  const tickerMapping = {
-    mappings: {
-      properties: {
-        ticker: { type: 'keyword' },
-        name: { type: 'text', fields: { keyword: { type: 'keyword' } } },
-        sector: { type: 'keyword' },
-        exchange: { type: 'keyword' },
-        asset_class: { type: 'keyword' },
-        location: { type: 'keyword' },
-        currency: { type: 'keyword' },
-        weight_pct: { type: 'float' },
-        market_value: { type: 'double' },
-        price: { type: 'float' },
-      },
-    },
-  };
-
-  const candleMapping = {
-    mappings: {
-      properties: {
-        ticker: { type: 'keyword' },
-        time: { type: 'long' },
-        date: { type: 'date', format: 'yyyy-MM-dd' },
-        open: { type: 'float' },
-        high: { type: 'float' },
-        low: { type: 'float' },
-        close: { type: 'float' },
-        volume: { type: 'long' },
-      },
-    },
-  };
-
-  const stateMapping = {
-    mappings: {
-      properties: {
-        ticker: { type: 'keyword' },
-        status: { type: 'keyword' }, // pending | done | failed | updating
-        bars_count: { type: 'integer' },
-        last_bar_time: { type: 'long' },
-        last_bar_date: { type: 'date', format: 'yyyy-MM-dd' },
-        last_collected_at: { type: 'date' },
-        error: { type: 'text' },
-      },
-    },
-  };
-
-  for (const [idx, mapping] of [
-    [IDX_TICKERS, tickerMapping],
-    [IDX_CANDLES, candleMapping],
-    [IDX_STATE, stateMapping],
-  ]) {
-    const exists = await osGet(`/${idx}`);
-    if (exists?.status === 404 || exists?.error?.type === 'index_not_found_exception') {
-      await osPut(`/${idx}`, mapping);
-      console.log(`  Created index: ${idx}`);
-    }
-  }
-}
-
-// ─── State helpers ────────────────────────────────────────────────────────────
-
-async function getState(ticker) {
-  const r = await osGet(`/${IDX_STATE}/_doc/${ticker}`);
-  return r?.found ? r._source : null;
-}
-
-async function saveState(ticker, fields) {
-  await osPost(`/${IDX_STATE}/_doc/${ticker}`, { ticker, ...fields });
-}
-
-// ─── Ticker metadata ──────────────────────────────────────────────────────────
-
-async function saveTicker(meta) {
-  const doc = {
-    ticker: meta.Ticker,
-    name: meta.Name,
-    sector: meta.Sector,
-    exchange: meta.Exchange,
-    asset_class: meta['Asset Class'],
-    location: meta.Location,
-    currency: meta.Currency,
-    weight_pct: parseFloat(meta['Weight (%)']) || 0,
-    market_value: parseFloat((meta['Market Value'] || '').replace(/,/g, '')) || 0,
-    price: parseFloat((meta.Price || '').replace(/,/g, '')) || 0,
-  };
-  await osPost(`/${IDX_TICKERS}/_doc/${meta.Ticker}`, doc);
-}
-
-// ─── Candles storage ──────────────────────────────────────────────────────────
-
-async function bulkUpsertCandles(ticker, bars) {
-  if (!bars.length) return 0;
-
-  const lines = [];
-  for (const bar of bars) {
-    const id = candleId(ticker, bar.time);
-    lines.push(JSON.stringify({ index: { _index: IDX_CANDLES, _id: id } }));
-    lines.push(
-      JSON.stringify({
-        ticker,
-        time: bar.time * 1000, // stored as ms, bar.time is seconds from TradingView
-        date: barDate(bar.time),
-        open: bar.open,
-        high: bar.high,
-        low: bar.low,
-        close: bar.close,
-        volume: bar.volume ?? 0,
-      })
-    );
-  }
-
-  const body = lines.join('\n') + '\n';
-  const r = await osRequest('POST', '/_bulk', body);
-  const errors = r?.items?.filter((i) => i.index?.error)?.length ?? 0;
-  if (errors) console.warn(`    Bulk errors: ${errors}`);
-  return bars.length - errors;
-}
-
-async function getLastCandleTime(ticker) {
-  const r = await osPost(`/${IDX_CANDLES}/_search`, {
-    size: 1,
-    query: { term: { ticker } },
-    sort: [{ time: 'desc' }],
-    _source: ['time'],
-  });
-  const hit = r?.hits?.hits?.[0];
-  return hit ? hit._source.time : null;
-}
-
 // ─── TradingView data ─────────────────────────────────────────────────────────
 
 async function fetchBars(symbol, count) {
@@ -344,67 +185,68 @@ async function fetchBars(symbol, count) {
   return { quote, bars: ohlcv.bars ?? [] };
 }
 
+// Fetch fundamentals for the symbol currently on the chart. The scanner endpoint
+// needs EXCHANGE:TICKER; reading the active chart (no symbol arg) resolves it.
+// Returns null on any failure — fundamentals are best-effort in the snapshot.
+async function fetchFundamentalsSafe() {
+  try {
+    return await getFundamentals({ history: true });
+  } catch {
+    return null;
+  }
+}
+
 // ─── Main loop ────────────────────────────────────────────────────────────────
 
 async function processTicker(ticker, meta, opts) {
-  const state = await getState(ticker);
   const today = todayDate();
+  const existing = readMetrics(ticker); // local cache is the source of truth
 
   // Decide how many bars to fetch
   let barsToFetch = BARS_FULL;
   let isUpdate = false;
 
-  if (state?.status === 'done') {
+  if (existing) {
     if (!opts.update) {
       process.stdout.write('skip\n');
       return 'skipped';
     }
 
     // Already refreshed today — nothing to do
-    const collectedDate = state.last_collected_at?.slice(0, 10);
-    if (collectedDate === today) {
+    if (existing.collected_at?.slice(0, 10) === today) {
       process.stdout.write('skip (today)\n');
       return 'skipped';
     }
 
     // Fetch only missing days (+ overlap); fall back to full if gap is too large
-    const missing = state.last_bar_date ? daysBetween(state.last_bar_date, today) : null;
+    const missing = existing.as_of_date ? daysBetween(existing.as_of_date, today) : null;
     if (missing != null && missing > 0 && missing + UPDATE_OVERLAP < BARS_FULL) {
       barsToFetch = Math.max(missing + UPDATE_OVERLAP, UPDATE_MIN);
     }
     isUpdate = true;
   }
 
-  // Fetch from TradingView
-  await saveState(ticker, {
-    status: isUpdate ? 'updating' : 'pending',
-    last_collected_at: new Date().toISOString(),
-  });
-
-  await saveTicker(meta);
-
+  // Fetch from TradingView (chart lands on `ticker`, so fundamentals resolve it).
   const { quote, bars } = await fetchBars(ticker, barsToFetch);
-
   if (!bars.length) throw new Error('No bars returned');
 
-  // On update: deduplicate against stored data by only inserting new candles.
-  // bulkUpsertCandles uses "index" action which overwrites by _id, so overlap
-  // bars are safely re-written with latest values.
-  const saved = await bulkUpsertCandles(ticker, bars);
+  // Merge the freshly-fetched bars into the stored series so --update (which
+  // pulls only missing days) extends rather than truncates it, then compute
+  // indicators from the FULL series — otherwise EMA200 etc. would be null on an
+  // incremental refresh.
+  const nowIso = new Date().toISOString();
+  const fullBars = mergeBars(readOhlcvBars(ticker), bars);
+  writeOhlcv(ticker, fullBars, { nowIso });
 
-  const lastBar = bars[bars.length - 1];
-  await saveState(ticker, {
-    status: 'done',
-    bars_count: saved,
-    last_bar_time: lastBar.time * 1000,
-    last_bar_date: barDate(lastBar.time),
-    last_collected_at: new Date().toISOString(),
-    error: null,
-  });
+  const fundamentals = opts.fundamentals ? await fetchFundamentalsSafe() : null;
+  const metrics = buildMetrics({ ticker, meta, quote, bars: fullBars, fundamentals, nowIso });
+  writeMetrics(metrics);
 
+  const lastBar = fullBars[fullBars.length - 1];
   const tag = isUpdate ? 'upd' : 'new';
   process.stdout.write(
-    `✓  [${tag}] bars=${saved}/${barsToFetch}  last=${barDate(lastBar.time)}  price=${quote.last ?? quote.close}\n`
+    `✓  [${tag}] bars=${fullBars.length} (+${bars.length} fetched)  last=${lastBar.date}  ` +
+      `price=${quote.last ?? quote.close}${fundamentals ? '  +f' : ''}\n`
   );
   return 'done';
 }
@@ -435,11 +277,10 @@ async function main() {
 
   const mode = opts.update ? 'UPDATE' : 'COLLECT';
   console.log(
-    `\nMode: ${mode} | Tickers: ${tickers.length} | Bars: ${opts.update ? 'auto (missing days + ' + UPDATE_OVERLAP + ' overlap)' : BARS_FULL}\n`
+    `\nMode: ${mode} | Tickers: ${tickers.length} | ` +
+      `Bars: ${opts.update ? 'auto (missing days + ' + UPDATE_OVERLAP + ' overlap)' : BARS_FULL} | ` +
+      `Fundamentals: ${opts.fundamentals ? 'on' : 'off'}\n`
   );
-
-  // Ensure indices exist
-  await ensureIndices();
 
   const stats = { done: 0, updated: 0, skipped: 0, failed: 0 };
 
@@ -455,11 +296,6 @@ async function main() {
       else stats.done++;
     } catch (err) {
       process.stdout.write(`✗  ${err.message}\n`);
-      await saveState(sym, {
-        status: 'failed',
-        error: err.message,
-        last_collected_at: new Date().toISOString(),
-      }).catch(() => {});
       stats.failed++;
     }
 

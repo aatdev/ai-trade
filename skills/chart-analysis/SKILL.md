@@ -47,6 +47,12 @@ Use drawing tools to mark up the chart:
 3. `quote_get` — get the current real-time price
 4. `symbol_info` — get symbol metadata (exchange, type, session)
 
+> **Fast path for the quantitative read (daily TF):** `node scripts/read_metrics.js TICKER`.
+> Exit `0` → a fresh snapshot (≤2 days) in `state/metrics/TICKER/` supplies
+> indicator values, a price summary and raw daily bars (`_cache.ohlcv.path`)
+> without re-reading the chart — use it for the numbers behind the annotations.
+> The screenshot (step 1) and any live drawing still happen on the chart.
+
 ## Step 6: Report
 
 Provide the analysis:

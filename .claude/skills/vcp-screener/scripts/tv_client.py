@@ -32,6 +32,20 @@ REPO_ROOT = os.path.abspath(
 )
 CLI = os.path.join(REPO_ROOT, "src", "cli", "index.js")
 
+# Fast path: a fresh state/metrics/TICKER.json snapshot (written by
+# scripts/collect_russell.js) serves the pre-filter quote without a chart switch.
+# The full VCP/volume analysis still pulls live bars (the cache has no raw bar
+# series). Stale (>2 days)/missing snapshots fall back to live. Disable with
+# VCP_NO_CACHE=1.
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts", "lib"))
+try:
+    import metrics_cache  # noqa: E402
+
+    _CACHE_OK = os.environ.get("VCP_NO_CACHE") not in ("1", "true", "yes")
+except ImportError:
+    metrics_cache = None
+    _CACHE_OK = False
+
 # How many daily bars to pull per symbol. 400 ~= 18 months, comfortably covers
 # the 200-day SMA (+22-day slope) and the 1-year (252d) relative-strength window.
 BARS = 400
@@ -130,6 +144,16 @@ class TVClient:
         cache_key = f"hist_{symbol}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        # Fast path: fresh state/metrics/TICKER/ohlcv.json (no chart switch).
+        # Require >=200 bars to mirror _fetch_bars' minimum-history skip.
+        if _CACHE_OK:
+            cb = metrics_cache.cached_ohlcv(symbol, min_bars=200)
+            if cb:
+                result = {"symbol": symbol, "historical": cb}
+                self.cache[cache_key] = result
+                return result
+
         bars = self._fetch_bars(symbol)
         if not bars:
             self.cache[cache_key] = None
@@ -145,6 +169,13 @@ class TVClient:
         cache_key = f"quote_{symbol}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        # Fast path: fresh metrics snapshot (skip the chart switch + bar pull).
+        if _CACHE_OK:
+            cq = metrics_cache.cached_quote(symbol)
+            if cq:
+                self.cache[cache_key] = cq
+                return cq
 
         hist = self.get_historical_prices(symbol)
         if not hist or not hist["historical"]:

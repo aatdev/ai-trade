@@ -40,10 +40,11 @@ The `tv` CLI (`src/cli/index.js` → `src/cli/router.js` → `src/cli/commands/*
 
 **Adding a new tool**: write the function in `src/core/<group>.js`, register it in `src/tools/<group>.js` with a Zod schema, add a CLI command in `src/cli/commands/<group>.js` that imports the same core function, and (if it's part of the public API) re-export from `src/core/index.js`.
 
-### Two extra subsystems
+### Extra subsystems
 
 - **Morning brief** (`src/core/morning.js` + `src/tools/morning.js`): reads `rules.json` (user's watchlist + bias criteria), runs `batch_run` over the watchlist, and persists sessions under `~/.tradingview-mcp/sessions/YYYY-MM-DD.json`. `rules.example.json` is the schema reference.
 - **Pine analyzer** (`src/core/pine.js`'s offline analyzer + `tests/pine_analyze.test.js`): static checks on Pine source without needing a live chart — that's why this suite is in the default `npm test`.
+- **Metrics cache** (`scripts/collect_russell.js` + `scripts/lib/{indicators,metrics_store}.js`, reader `scripts/lib/metrics_cache.py`): a per-ticker on-disk cache under `state/metrics/TICKER/` — `metrics.json` (indicators computed locally from bars + TradingView fundamentals + price summary) and `ohlcv.json` (raw daily bars). The collector walks a universe (`state/russel2000.json` / `state/sp500.csv`) and writes the cache; **no external store — local files only** (resume/update is derived from `metrics.json`'s `collected_at`/`as_of_date`, merging bars on `--update`). Skills read it as a fast path before driving the chart — `node scripts/read_metrics.js TICKER` (exit 0 fresh ≤2 days, exit 3 stale/missing → live fetch) or the Python reader — and the screeners (`canslim`/`vcp`), `downtrend-duration-analyzer`, and `scripts/scan_reversals.py` all consume it. See the `metrics_cache_system` memory for the full contract.
 
 ## TradingView MCP tool usage
 

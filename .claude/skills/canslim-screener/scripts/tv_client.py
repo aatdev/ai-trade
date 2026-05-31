@@ -43,6 +43,19 @@ REPO_ROOT = os.path.abspath(
 )
 CLI = os.path.join(REPO_ROOT, "src", "cli", "index.js")
 
+# Fast path: a fresh state/metrics/TICKER.json snapshot (written by
+# scripts/collect_russell.js) serves quote + fundamentals without a chart switch.
+# Stale (>2 days) or missing snapshots transparently fall back to the live chart.
+# Disable with CANSLIM_NO_CACHE=1.
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts", "lib"))
+try:
+    import metrics_cache  # noqa: E402
+
+    _CACHE_OK = os.environ.get("CANSLIM_NO_CACHE") not in ("1", "true", "yes")
+except ImportError:
+    metrics_cache = None
+    _CACHE_OK = False
+
 # How many daily bars to pull per symbol. 400 ~= 18 months, comfortably covers
 # the 50-day EMA, 90-day supply/demand window and the 1-year (252d) relative
 # strength window the L component needs.
@@ -166,6 +179,17 @@ class TVClient:
         cache_key = f"hist_{symbol}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        # Fast path: fresh state/metrics/TICKER/ohlcv.json (no chart switch).
+        # Require >=200 bars to mirror _fetch_bars' minimum-history skip; index
+        # symbols (^GSPC/^VIX) are not collected and miss the cache → live.
+        if _CACHE_OK and symbol not in INDEX_REMAP:
+            cb = metrics_cache.cached_ohlcv(symbol, min_bars=200)
+            if cb:
+                result = {"symbol": symbol, "historical": cb}
+                self.cache[cache_key] = result
+                return result
+
         bars = self._fetch_bars(symbol)
         if not bars:
             self.cache[cache_key] = None
@@ -181,6 +205,14 @@ class TVClient:
         cache_key = f"quote_{symbols}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        # Fast path: fresh metrics snapshot (skip the chart switch + bar pull).
+        if _CACHE_OK and symbols not in INDEX_REMAP:
+            cq = metrics_cache.cached_quote(symbols)
+            if cq:
+                quote = [cq]
+                self.cache[cache_key] = quote
+                return quote
 
         hist = self.get_historical_prices(symbols)
         if not hist or not hist["historical"]:
@@ -220,6 +252,13 @@ class TVClient:
         cache_key = f"fund_{symbol}"
         if cache_key in self.cache:
             return self.cache[cache_key]
+
+        # Fast path: fresh metrics snapshot carries the scanner fundamentals.
+        if _CACHE_OK:
+            cf = metrics_cache.cached_fundamentals(symbol)
+            if cf:
+                self.cache[cache_key] = cf
+                return cf
 
         # Put the chart on this symbol so `tv fundamentals` (no arg) reads it
         # with the correct exchange. get_quote is cached, so this is cheap.

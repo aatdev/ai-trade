@@ -19,6 +19,13 @@ This skill enables comprehensive technical analysis of weekly price charts. Anal
 
 ## Analysis Workflow
 
+> **Fast path — metrics cache.** When analyzing a ticker from live data (not a
+> user-supplied image), check `node scripts/read_metrics.js TICKER` first. Exit
+> `0` → a fresh snapshot (≤2 days) in `state/metrics/TICKER/` gives indicator
+> values (ema20/50/200, sma50/150/200, rsi14, macd, stoch, bb, atr14, returns), a
+> price summary, and raw daily bars (`_cache.ohlcv.path`) without driving the
+> chart. Exit `3` (missing/stale) → pull live via `mcp__tradingview__*`.
+
 ### Step 1: Receive Chart Images
 
 When the user provides one or more weekly chart images for analysis:

@@ -33,7 +33,15 @@ action: "screenshot"
 ```
 
 ### For Custom Analysis (per-symbol)
-Loop through symbols manually:
+
+> **Fast path — metrics cache.** For a daily-timeframe scan on US equities, check
+> `node scripts/read_metrics.js SYMBOL` per symbol before driving the chart. A
+> fresh snapshot (exit `0`, ≤2 days) in `state/metrics/SYMBOL/` already has the
+> indicator values (ema/sma/rsi/macd/stoch/bb/atr/returns), a price summary and
+> raw daily bars (`_cache.ohlcv.path`) — scan straight from those with zero chart
+> switches. Only symbols that miss/stale (exit `3`) need the live loop below.
+
+Loop through symbols manually (live path):
 1. `chart_set_symbol` + `chart_set_timeframe`
 2. `chart_manage_indicator` — add the study
 3. `data_get_ohlcv` — pull price data

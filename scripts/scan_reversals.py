@@ -2,8 +2,9 @@
 """
 Reversal pattern scanner — Undercut & Rally / Double Bottom
 
-Reads OHLCV from OpenSearch (my_tw_candles_1d) for tickers in my_tw_tickers,
-detects PLTR-Apr-2026-style reversals (mirror of reversal_hunter.pine):
+Reads OHLCV from the local metrics cache (state/metrics/TICKER/ohlcv.json,
+written by scripts/collect_russell.js) and detects PLTR-Apr-2026-style reversals
+(mirror of reversal_hunter.pine):
 
   1) Undercut prior pivot low (≤ N% below) OR double bottom touch (±M%)
   2) Capitulation candle: volume ≥ K×SMA, lower wick ≥ X% of range,
@@ -21,31 +22,39 @@ Usage:
   python3 scripts/scan_reversals.py --scan-last-n 1       # only latest bar
   python3 scripts/scan_reversals.py --min-weight 0.05     # skip tiny weights
   python3 scripts/scan_reversals.py --interval 3600       # re-scan every 1h
+  python3 scripts/scan_reversals.py --source snp500        # weight order from S&P 500
 
 Cron example (daily at 22:30 ET):
   30 22 * * 1-5  cd /path/to/repo && /usr/bin/python3 scripts/scan_reversals.py >> logs/scan.log 2>&1
 
-Env:
-  OPENSEARCH_URL   default http://alex:9200
 """
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import sys
 import time
-import urllib.error
-import urllib.request
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-# ─── Config ──────────────────────────────────────────────────────────────────
+# The metrics cache reader lives in scripts/lib (shared with the screeners).
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
+import metrics_cache  # noqa: E402
 
-OS_BASE = os.environ.get("OPENSEARCH_URL", "http://alex:9200")
-IDX_TICKERS = "my_tw_tickers"
-IDX_CANDLES = "my_tw_candles_1d"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+# Universe files (same shapes scripts/collect_russell.js reads) — used only to
+# rank tickers by index weight and honor --min-weight. Candles come from the cache.
+UNIVERSE_FILES = {
+    "russell": os.path.join(REPO_ROOT, "state", "russel2000.json"),
+    "snp500": os.path.join(REPO_ROOT, "state", "sp500.csv"),
+    "sp500": os.path.join(REPO_ROOT, "state", "sp500.csv"),
+}
+
+# ─── Config ──────────────────────────────────────────────────────────────────
 
 
 @dataclass
@@ -71,59 +80,93 @@ class Config:
     require_break_high: bool = True
 
 
-# ─── OpenSearch client (stdlib only) ─────────────────────────────────────────
+# ─── Local cache + universe ──────────────────────────────────────────────────
 
 
-def os_request(method: str, path: str, body=None, timeout: int = 30):
-    url = f"{OS_BASE}{path}"
-    data = None
-    headers = {}
-    if body is not None:
-        if isinstance(body, (dict, list)):
-            data = json.dumps(body).encode("utf-8")
-            headers["Content-Type"] = "application/json"
-        elif isinstance(body, str):
-            data = body.encode("utf-8")
-            headers["Content-Type"] = "application/x-ndjson"
-        else:
-            data = body
-    req = urllib.request.Request(url, data=data, method=method, headers=headers)
+def _load_universe_weights(source: str) -> dict[str, dict]:
+    """Map TICKER → {weight_pct, market_value, price} from a universe file.
+
+    Used only to rank tickers and honor --min-weight; missing/unknown source
+    yields an empty map (everything ranks at weight 0)."""
+    path = UNIVERSE_FILES.get(source)
+    if not path or not os.path.exists(path):
+        return {}
+    out: dict[str, dict] = {}
+    if path.endswith(".json"):
+        rows = json.load(open(path, encoding="utf-8"))
+        for r in rows:
+            sym = (r.get("Ticker") or "").strip()
+            if not sym:
+                continue
+            out[sym] = {
+                "weight_pct": _to_float(r.get("Weight (%)")),
+                "market_value": _to_float(str(r.get("Market Value", "")).replace(",", "")),
+                "price": _to_float(str(r.get("Price", "")).replace(",", "")),
+            }
+    else:  # Wikipedia S&P 500 CSV — has no weights
+        with open(path, encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                sym = (r.get("Symbol") or "").strip()
+                if sym:
+                    out[sym] = {"weight_pct": 0.0, "market_value": 0.0, "price": 0.0}
+    return out
+
+
+def _to_float(v) -> float:
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as r:
-            raw = r.read().decode("utf-8")
-            return json.loads(raw) if raw else None
-    except urllib.error.HTTPError as e:
-        if e.code in (404, 409):
-            try:
-                return json.loads(e.read().decode("utf-8") or "null")
-            except Exception:
-                return None
-        raise RuntimeError(f"OpenSearch {method} {path} → {e.code}: {e.read()[:300]!r}") from e
+        return float(v)
+    except (TypeError, ValueError):
+        return 0.0
 
 
-def fetch_tickers(limit: int | None = None, sort_by_weight: bool = True) -> list[dict]:
-    body = {
-        "size": min(limit or 10000, 10000),
-        "_source": ["ticker", "name", "sector", "exchange", "weight_pct",
-                    "market_value", "price"],
-    }
+def fetch_tickers(source: str, limit: int | None = None,
+                  sort_by_weight: bool = True) -> list[dict]:
+    """Tickers that have a cached ohlcv.json, enriched with universe weight.
+
+    The cache directory is the source of truth for *what* to scan (only collected
+    tickers have candles); the universe file only supplies ordering metadata."""
+    weights = _load_universe_weights(source)
+    metrics_dir = metrics_cache.METRICS_DIR
+    rows: list[dict] = []
+    if os.path.isdir(metrics_dir):
+        for name in os.listdir(metrics_dir):
+            if not os.path.exists(os.path.join(metrics_dir, name, "ohlcv.json")):
+                continue
+            m = metrics_cache.read_metrics(name) or {}
+            sym = m.get("ticker") or name
+            w = weights.get(sym, {})
+            rows.append({
+                "ticker": sym,
+                "name": m.get("name", sym),
+                "sector": m.get("sector"),
+                "weight_pct": w.get("weight_pct", 0.0),
+                "market_value": w.get("market_value", 0.0),
+                "price": w.get("price", 0.0),
+            })
     if sort_by_weight:
-        body["sort"] = [{"weight_pct": {"order": "desc"}}]
-    r = os_request("POST", f"/{IDX_TICKERS}/_search", body)
-    return [h["_source"] for h in (r.get("hits", {}).get("hits") or [])]
+        rows.sort(key=lambda t: (-(t.get("weight_pct") or 0.0), t["ticker"]))
+    return rows[:limit] if limit else rows
 
 
 def fetch_candles(ticker: str, count: int = 200) -> list[dict]:
-    body = {
-        "size": count,
-        "query": {"term": {"ticker": ticker}},
-        "sort": [{"time": {"order": "desc"}}],
-        "_source": ["time", "date", "open", "high", "low", "close", "volume"],
-    }
-    r = os_request("POST", f"/{IDX_CANDLES}/_search", body)
-    bars = [h["_source"] for h in (r.get("hits", {}).get("hits") or [])]
-    bars.sort(key=lambda b: b["time"])  # oldest first
-    return bars
+    """Last `count` daily bars (oldest-first) from state/metrics/TICKER/ohlcv.json."""
+    doc = metrics_cache.read_ohlcv(ticker)
+    bars = doc.get("bars") if doc else None
+    if not bars:
+        return []
+    bars = bars[-count:] if count and len(bars) > count else bars
+    return [
+        {
+            "time": b.get("time"),
+            "date": b.get("date"),
+            "open": b.get("open"),
+            "high": b.get("high"),
+            "low": b.get("low"),
+            "close": b.get("close"),
+            "volume": b.get("volume") or 0,
+        }
+        for b in bars
+    ]
 
 
 # ─── Indicators (Pine-equivalent) ────────────────────────────────────────────
@@ -388,11 +431,11 @@ def run_once(args, cfg: Config) -> int:
         tickers = [{"ticker": args.ticker.upper(), "name": "", "sector": "",
                     "weight_pct": 0}]
     else:
-        tickers = fetch_tickers(limit=args.limit)
+        tickers = fetch_tickers(args.source, limit=args.limit)
         if args.min_weight > 0:
             tickers = [t for t in tickers if (t.get("weight_pct") or 0) >= args.min_weight]
         if not args.quiet:
-            print(f"[{ts}] Loaded {len(tickers)} tickers from {IDX_TICKERS}")
+            print(f"[{ts}] Loaded {len(tickers)} cached tickers (weights from {args.source})")
 
     all_signals: list[dict] = []
     errors: list[dict] = []
@@ -453,12 +496,14 @@ def run_once(args, cfg: Config) -> int:
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Reversal pattern scanner (OpenSearch)",
+        description="Reversal pattern scanner (local metrics cache)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
     ap.add_argument("--limit", type=int, help="Cap on number of tickers")
     ap.add_argument("--ticker", help="Scan only one ticker")
+    ap.add_argument("--source", default="russell", choices=["russell", "snp500", "sp500"],
+                    help="Universe file for weight ordering / --min-weight (candles come from the cache)")
     ap.add_argument("--bars", type=int, default=200, help="Bars to load per ticker")
     ap.add_argument("--scan-last-n", type=int, default=3,
                     help="Bars at the right edge to test (1 = today only)")

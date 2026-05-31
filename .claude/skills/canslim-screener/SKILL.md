@@ -122,6 +122,17 @@ running.
 > Note: the screener switches the chart symbol once per stock (≈2s settle), so a
 > 40-stock scan takes longer than the FMP path but is not quota-limited on price.
 
+**Metrics cache acceleration.** `tv_client.py` checks `state/metrics/TICKER/`
+(written by `scripts/collect_russell.js`) before touching the chart. A fresh
+snapshot (≤2 days) serves **all of it** with zero chart switches:
+`get_quote` + scanner fundamentals (C/A, market cap) from `metrics.json`, and the
+**full daily bar series** (N/S/L price calculators) from `ohlcv.json`. With a
+fully-populated, fresh cache a 40-stock scan needs no live TradingView at all.
+Index series (`^GSPC`/`^VIX` for M/L) aren't collected, so they always pull live.
+Stale/missing entries fall back to the chart transparently. Disable with
+`CANSLIM_NO_CACHE=1`. Keep the cache fresh with `node scripts/collect_russell.js
+--update` (S&P 500: add `--source snp500`) before a scan.
+
 ---
 
 ## Output

@@ -45,11 +45,19 @@ is unchanged. The original FMP-only `analyze_downtrends.py` still works when
 TradingView is not running. Each symbol triggers a chart switch (≈2s settle), so
 the TV path trades speed for no price quota — keep `--max-stocks` modest.
 
-> **History limit:** the `tv ohlcv` CLI caps at ~400 daily bars (its piped JSON
-> truncates past 64KB), so the TV path sees **≈18 months** of history per symbol
-> regardless of `--lookback-years`. For multi-year downtrend statistics use the
-> FMP mode (`analyze_downtrends.py`); use the TV mode for recent-correction scans
-> without burning quota.
+> **History limit (live only):** the `tv ohlcv` CLI caps at ~400 daily bars (its
+> piped JSON truncates past 64KB), so a *live* TV fetch sees **≈18 months** per
+> symbol regardless of `--lookback-years`. For multi-year statistics over the
+> live path, use FMP mode (`analyze_downtrends.py`).
+
+**Metrics cache acceleration.** `tv_prices.py` checks `state/metrics/TICKER/ohlcv.json`
+(written by `scripts/collect_russell.js`) before switching the chart: a fresh
+snapshot (≤2 days) serves the daily bars with no chart access — and since the
+cache holds up to ~1500 bars (≈6 years), **it lifts the 18-month live limit**, so
+cached symbols support multi-year downtrend windows even in TV mode. Stale/missing
+entries fall back to the live ~400-bar path. Disable with `DOWNTREND_NO_CACHE=1`;
+populate with `node scripts/collect_russell.js` (Russell 2000) or
+`--source snp500`.
 
 ## Workflow
 
