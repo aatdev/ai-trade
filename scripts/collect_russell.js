@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 /**
- * Russell 2000 daily candles collector with OpenSearch storage.
+ * Daily candles collector with OpenSearch storage.
  *
- * Reads tickers from russel2000.json, fetches 500 daily bars per ticker,
- * stores in OpenSearch with resume and incremental update support.
+ * Reads a ticker universe (Russell 2000 by default, or S&P 500), fetches daily
+ * bars per ticker, stores in OpenSearch with resume and incremental updates.
+ *
+ * Universes (--source):
+ *   russell  → state/russel2000.json  (default; JSON array, iShares export shape)
+ *   snp500   → state/sp500.csv        (Wikipedia constituents CSV)
  *
  * OpenSearch indices:
  *   my_tw_tickers    — ticker metadata (one doc per ticker)
@@ -11,11 +15,12 @@
  *   my_tw_state      — download state (one doc per ticker)
  *
  * Usage:
- *   node scripts/collect_russell.js               # collect all, skip already done
- *   node scripts/collect_russell.js --update      # refresh fresh bars (10-bar overlap)
- *   node scripts/collect_russell.js --from CRDO   # resume from specific ticker
- *   node scripts/collect_russell.js --limit 50    # process only first N tickers
- *   node scripts/collect_russell.js --ticker AAPL # single ticker
+ *   node scripts/collect_russell.js                   # collect Russell 2000, skip already done
+ *   node scripts/collect_russell.js --source snp500   # collect S&P 500 instead
+ *   node scripts/collect_russell.js --update          # refresh fresh bars (10-bar overlap)
+ *   node scripts/collect_russell.js --from CRDO       # resume from specific ticker
+ *   node scripts/collect_russell.js --limit 50        # process only first N tickers
+ *   node scripts/collect_russell.js --ticker AAPL     # single ticker
  */
 
 import { readFileSync } from 'fs';
@@ -41,12 +46,13 @@ const IDX_STATE = 'my_tw_state';
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  const opts = { update: false, from: null, limit: null, ticker: null };
+  const opts = { update: false, from: null, limit: null, ticker: null, source: 'russell' };
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--update') opts.update = true;
     else if (args[i] === '--from') opts.from = args[++i];
     else if (args[i] === '--limit') opts.limit = parseInt(args[++i]);
     else if (args[i] === '--ticker') opts.ticker = args[++i];
+    else if (args[i] === '--source') opts.source = args[++i];
   }
   return opts;
 }
@@ -74,6 +80,90 @@ function daysBetween(fromDateStr, toDateStr) {
   const from = new Date(fromDateStr + 'T00:00:00Z');
   const to = new Date(toDateStr + 'T00:00:00Z');
   return Math.round((to - from) / 86400000);
+}
+
+// ─── Universe loading ─────────────────────────────────────────────────────────
+
+// Source name → file + parser. Both parsers return rows in the iShares-export
+// shape used downstream (meta.Ticker, meta.Name, meta.Sector, …).
+const SOURCES = {
+  russell: { file: 'state/russel2000.json', parse: parseRussellJson },
+  snp500: { file: 'state/sp500.csv', parse: parseSnp500Csv },
+};
+SOURCES.sp500 = SOURCES.snp500; // alias
+
+function parseRussellJson(text) {
+  return JSON.parse(text);
+}
+
+// Minimal RFC-4180 CSV parser (handles quoted fields with embedded commas).
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else inQuotes = false;
+      } else field += c;
+    } else if (c === '"') inQuotes = true;
+    else if (c === ',') {
+      row.push(field);
+      field = '';
+    } else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(field);
+      field = '';
+      if (row.length > 1 || row[0] !== '') rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  if (field !== '' || row.length) {
+    row.push(field);
+    if (row.length > 1 || row[0] !== '') rows.push(row);
+  }
+  return rows;
+}
+
+// Wikipedia S&P 500 constituents CSV → iShares-export shape.
+function parseSnp500Csv(text) {
+  const rows = parseCsv(text);
+  const header = rows.shift().map((h) => h.trim());
+  const col = (name) => header.indexOf(name);
+  const iSym = col('Symbol');
+  const iName = col('Security');
+  const iSector = col('GICS Sector');
+  const iLoc = col('Headquarters Location');
+  return rows
+    .filter((r) => r[iSym]?.trim())
+    .map((r) => ({
+      // Wikipedia uses dotted class tickers (BRK.B); TradingView accepts them as-is.
+      Ticker: r[iSym].trim(),
+      Name: (r[iName] ?? '').trim(),
+      Sector: (r[iSector] ?? '').trim(),
+      'Asset Class': 'Equity',
+      Location: (r[iLoc] ?? '').trim(),
+      Exchange: '',
+      Currency: 'USD',
+      'Weight (%)': '',
+      'Market Value': '',
+      Price: '',
+    }));
+}
+
+function loadUniverse(source) {
+  const def = SOURCES[source];
+  if (!def) {
+    console.error(`Unknown --source "${source}". Available: ${Object.keys(SOURCES).join(', ')}`);
+    process.exit(1);
+  }
+  const path = resolve(def.file);
+  return def.parse(readFileSync(path, 'utf-8'));
 }
 
 // ─── OpenSearch client ────────────────────────────────────────────────────────
@@ -323,9 +413,8 @@ async function main() {
   const opts = parseArgs();
 
   // Load tickers
-  const russelPath = resolve('state/russel2000.json');
-  const allTickers = JSON.parse(readFileSync(russelPath, 'utf-8'));
-  console.log(`Loaded ${allTickers.length} tickers from russel2000.json`);
+  const allTickers = loadUniverse(opts.source);
+  console.log(`Loaded ${allTickers.length} tickers from ${SOURCES[opts.source].file}`);
 
   // Apply --ticker filter
   let tickers = opts.ticker ? allTickers.filter((t) => t.Ticker === opts.ticker) : allTickers;
