@@ -54,4 +54,10 @@ metadata:
 4. Confirm dialog → `button` с текстом `Delete`.
 5. sleep ~0.8s между алертами.
 
+**Почему `delete_alerts.mjs --keep-from-plan` отдаёт `not_found_in_ui` (подтверждено 2026-05-31):** скрипт `signals-alerts/scripts/delete_alerts.mjs` ищет `[data-name="alert-item-description"]` в DOM, но НЕ переключает под-вкладку и НЕ скроллит список. Две ловушки:
+1. **Log vs Alerts sub-tab.** Виджет алертов (right-toolbar `button[data-name="alerts"]`) имеет ДВЕ внутренние под-вкладки — `Alerts` и `Log` (`button.segmentedControlBase-gC6hmGPw` в теле `.widgetbar-page.active`). По умолчанию часто активна `Log` → «No alerts triggered yet», и `alert-item-description` рендерится 0 штук. Сначала кликнуть под-вкладку с textContent==='Alerts'.
+2. **Виртуализация + алфавитная сортировка.** Список рендерит ~24 строки за раз; остальные не в DOM. Сортировка по символу (0VR3, ABT… JBL… XAUUSD). Off-screen алерты (напр. JBL в середине) скрипт не находит → `not_found_in_ui`. Нужно найти скролл-контейнер (предок `alert-item-description` с `scrollHeight>clientHeight`), выставить `scrollTop` к нужной секции, **отдельным ui_evaluate-вызовом** дождаться перерисовки (синхронный цикл со scrollTop не перерисовывает), затем найти описание по точному тексту → подняться до `[data-name="alert-delete-button"]` → click → confirm `Delete`.
+
+Ручное удаление через `mcp__tradingview__ui_evaluate` по этой схеме сработало надёжно, когда скрипт давал `not_found_in_ui`. `mcp__tradingview__alert_delete` поддерживает только `delete_all` (нет удаления по `alert_id`) — для точечной чистки бесполезен. Создание алертов (`create_alerts.mjs` / `alert_create`) работает независимо — оно идёт через Create-диалог, не через список.
+
 **Важное замечание про сервер:** после изменений в `src/core/alerts.js` MCP-сервер не подхватит код без рестарта (Node ESM-кеш). Тестировать можно через прямой запуск Node-скрипта импортирующего core/alerts.js — CDP-соединение singleton переподключится автоматически.
