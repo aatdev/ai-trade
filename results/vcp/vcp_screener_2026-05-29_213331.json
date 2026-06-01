@@ -1,0 +1,1874 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-29 21:33:31",
+    "universe_description": "Custom (12 stocks)",
+    "max_candidates": 100,
+    "ext_threshold": 8.0,
+    "tuning_params": {
+      "min_contractions": 2,
+      "t1_depth_min": 10.0,
+      "breakout_volume_ratio": 1.5,
+      "trend_min_score": 85.0,
+      "atr_multiplier": 1.5,
+      "contraction_ratio": 0.7,
+      "min_contraction_days": 5,
+      "lookback_days": 120,
+      "max_sma200_extension": 50.0,
+      "wide_and_loose_threshold": 15.0,
+      "strict": false
+    },
+    "funnel": {
+      "universe": 12,
+      "pre_filter_passed": 12,
+      "trend_template_passed": 11,
+      "vcp_candidates": 11
+    },
+    "api_stats": {
+      "cache_entries": 25,
+      "api_calls_made": 27,
+      "rate_limit_reached": false
+    }
+  },
+  "results": [
+    {
+      "symbol": "BNY",
+      "company_name": "BNY",
+      "sector": "Unknown",
+      "price": 139.27,
+      "market_cap": 0,
+      "composite_score": 62.0,
+      "quality_rating": "Developing VCP",
+      "rating": "Developing VCP",
+      "rating_description": "VCP forming but not yet actionable",
+      "guidance": "Watchlist - wait for tighter contraction near pivot",
+      "valid_vcp": false,
+      "execution_state": "Early-post-breakout",
+      "execution_state_reasons": [
+        "+2.5% above pivot (volume unconfirmed)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 19.1,
+      "distance_from_pivot_pct": 2.45,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 30,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 100,
+      "trend_template": {
+        "score": 100,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 6.95,
+        "sma200_distance_pct": 19.13,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $139.27 vs SMA150 $120.61 / SMA200 $116.91"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $120.61 vs SMA200 $116.91"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $116.91 vs 22d ago $113.02"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $139.27 vs SMA50 $130.22"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "59.3% above 52w low $87.41 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "1.7% below 52w high $141.65 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 80 (need > 70)"
+          }
+        },
+        "sma50": 130.22,
+        "sma150": 120.61,
+        "sma200": 116.91,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 30,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 92,
+            "high_price": 139.15,
+            "high_date": "2026-04-21",
+            "low_idx": 98,
+            "low_price": 130.9,
+            "low_date": "2026-04-29",
+            "depth_pct": 5.93,
+            "duration_days": 6
+          },
+          {
+            "label": "T2",
+            "high_idx": 100,
+            "high_price": 135.94,
+            "high_date": "2026-05-01",
+            "low_idx": 105,
+            "low_price": 130.16,
+            "low_date": "2026-05-08",
+            "depth_pct": 4.25,
+            "duration_days": 5
+          }
+        ],
+        "num_contractions": 2,
+        "pivot_price": 135.94,
+        "pattern_duration_days": 13,
+        "validation": {
+          "valid": false,
+          "issues": [
+            "T1 depth too shallow (5.9%, need >= 10.0%)",
+            "T2 (4.2%) does not contract vs T1 (5.9%), ratio=0.72 (need <= 0.7)",
+            "Pattern too short (13 days, need >= 15)"
+          ],
+          "contraction_ratios": [
+            0.717
+          ],
+          "t1_depth": 5.93
+        },
+        "atr_value": 2.8695,
+        "atr_compression_ratio": 1.074,
+        "wide_and_loose": false,
+        "right_side_range_ratio": 4.243,
+        "error": null
+      },
+      "volume_pattern": {
+        "score": 50,
+        "dry_up_ratio": 0.895,
+        "avg_volume_50d": 3753818,
+        "avg_volume_recent_10d": 3361387,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 3,
+        "down_volume_days_20d": 4,
+        "net_accumulation": -1,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 3935164,
+          "zone_a_ratio": 1.048,
+          "zone_b_avg_volume": 3361387,
+          "zone_b_ratio": 0.895,
+          "zone_c_volume": 2037329,
+          "zone_c_ratio": 0.543
+        },
+        "contraction_volume_trend": {
+          "declining": true,
+          "contraction_volumes": [
+            5267429,
+            3935164
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 90,
+        "distance_from_pivot_pct": 2.45,
+        "pivot_price": 135.94,
+        "stop_loss_price": 128.86,
+        "risk_pct": 7.47,
+        "trade_status": "ABOVE PIVOT (within 3%)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 40,
+        "rs_rank_estimate": 80,
+        "weighted_rs": 14.42,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 16.94,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 6.56
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 27.62,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 15.45
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 32.6,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 15.51
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 56.84,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 28.01
+          }
+        ],
+        "error": null,
+        "rs_percentile": 18
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "JBL",
+      "company_name": "JBL",
+      "sector": "Unknown",
+      "price": 363.58,
+      "market_cap": 0,
+      "composite_score": 54.5,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-1.4% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 45.8,
+      "distance_from_pivot_pct": -1.37,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 90,
+      "trend_template": {
+        "score": 90,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": -10,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 13.65,
+        "sma200_distance_pct": 45.75,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $363.58 vs SMA150 $262.39 / SMA200 $249.45"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $262.39 vs SMA200 $249.45"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $249.45 vs 22d ago $235.21"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $363.58 vs SMA50 $319.92"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "120.8% above 52w low $164.69 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "4.8% below 52w high $381.94 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 99 (need > 70)"
+          }
+        },
+        "sma50": 319.92,
+        "sma150": 262.39,
+        "sma200": 249.45,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 106,
+            "high_price": 368.63,
+            "high_date": "2026-05-11",
+            "low_idx": 112,
+            "low_price": 321.92,
+            "low_date": "2026-05-19",
+            "depth_pct": 12.67,
+            "duration_days": 6
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 368.63,
+        "atr_value": 14.4946,
+        "atr_compression_ratio": 1.051,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.928,
+        "avg_volume_50d": 1139258,
+        "avg_volume_recent_10d": 1056720,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 4,
+        "down_volume_days_20d": 6,
+        "net_accumulation": -2,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 1864195,
+          "zone_a_ratio": 1.636,
+          "zone_b_avg_volume": 1056720,
+          "zone_b_ratio": 0.928,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            1864195
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 90,
+        "distance_from_pivot_pct": -1.37,
+        "pivot_price": 368.63,
+        "stop_loss_price": 318.7,
+        "risk_pct": 12.34,
+        "trade_status": "AT PIVOT (within 2%)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 70,
+        "rs_rank_estimate": 99,
+        "weighted_rs": 53.09,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 37.21,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 26.83
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 78.24,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 66.08
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 74.88,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 57.79
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 116.75,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 87.93
+          }
+        ],
+        "error": null,
+        "rs_percentile": 73
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "FDX",
+      "company_name": "FDX",
+      "sector": "Unknown",
+      "price": 410.55,
+      "market_cap": 0,
+      "composite_score": 54.2,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Early-post-breakout",
+      "execution_state_reasons": [
+        "+2.7% above pivot (volume unconfirmed)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 33.6,
+      "distance_from_pivot_pct": 2.72,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 95,
+      "trend_template": {
+        "score": 95,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": -5,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 9.07,
+        "sma200_distance_pct": 33.64,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $410.55 vs SMA150 $332.07 / SMA200 $307.20"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $332.07 vs SMA200 $307.20"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $307.20 vs 22d ago $290.06"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $410.55 vs SMA50 $376.42"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "91.1% above 52w low $214.82 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "0.8% below 52w high $413.87 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 90 (need > 70)"
+          }
+        },
+        "sma50": 376.42,
+        "sma150": 332.07,
+        "sma200": 307.2,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 92,
+            "high_price": 399.67,
+            "high_date": "2026-04-21",
+            "low_idx": 97,
+            "low_price": 382.27,
+            "low_date": "2026-04-28",
+            "depth_pct": 4.35,
+            "duration_days": 5
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 399.67,
+        "atr_value": 10.2121,
+        "atr_compression_ratio": 0.944,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.823,
+        "avg_volume_50d": 1763082,
+        "avg_volume_recent_10d": 1450978,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 3,
+        "down_volume_days_20d": 2,
+        "net_accumulation": 1,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 1599100,
+          "zone_a_ratio": 0.907,
+          "zone_b_avg_volume": 1450978,
+          "zone_b_ratio": 0.823,
+          "zone_c_volume": 673894,
+          "zone_c_ratio": 0.382
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            1599100
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 90,
+        "distance_from_pivot_pct": 2.72,
+        "pivot_price": 399.67,
+        "stop_loss_price": 378.45,
+        "risk_pct": 7.82,
+        "trade_status": "ABOVE PIVOT (within 3%)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 60,
+        "rs_rank_estimate": 90,
+        "weighted_rs": 29.83,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 6.09,
+            "sp500_return_pct": 10.37,
+            "relative_pct": -4.29
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 49.91,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 37.74
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 76.8,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 59.71
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 89.06,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 60.24
+          }
+        ],
+        "error": null,
+        "rs_percentile": 45
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "SATS",
+      "company_name": "SATS",
+      "sector": "Unknown",
+      "price": 127.69,
+      "market_cap": 0,
+      "composite_score": 53.8,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-3.5% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 31.4,
+      "distance_from_pivot_pct": -3.45,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 100,
+      "trend_template": {
+        "score": 100,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 2.63,
+        "sma200_distance_pct": 31.4,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $127.69 vs SMA150 $108.10 / SMA200 $97.18"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $108.10 vs SMA200 $97.18"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $97.18 vs 22d ago $86.27"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $127.69 vs SMA50 $124.41"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "757.0% above 52w low $14.90 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "13.3% below 52w high $147.25 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 99 (need > 70)"
+          }
+        },
+        "sma50": 124.41,
+        "sma150": 108.1,
+        "sma200": 97.18,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 27,
+            "high_price": 132.25,
+            "high_date": "2026-01-15",
+            "low_idx": 33,
+            "low_price": 118.5,
+            "low_date": "2026-01-26",
+            "depth_pct": 10.4,
+            "duration_days": 6
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 132.25,
+        "atr_value": 8.8089,
+        "atr_compression_ratio": 1.319,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 20,
+        "dry_up_ratio": 1.059,
+        "avg_volume_50d": 7113812,
+        "avg_volume_recent_10d": 7531026,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 2,
+        "down_volume_days_20d": 5,
+        "net_accumulation": -3,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 1228077,
+          "zone_a_ratio": 0.173,
+          "zone_b_avg_volume": 7531026,
+          "zone_b_ratio": 1.059,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            1228077
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 75,
+        "distance_from_pivot_pct": -3.45,
+        "pivot_price": 132.25,
+        "stop_loss_price": 117.31,
+        "risk_pct": 8.13,
+        "trade_status": "NEAR PIVOT (2-5% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 90,
+        "rs_rank_estimate": 99,
+        "weighted_rs": 135.89,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 10.53,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 0.15
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 79.85,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 67.68
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 117.31,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 100.22
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 540.05,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 511.23
+          }
+        ],
+        "error": null,
+        "rs_percentile": 94
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "MRK",
+      "company_name": "MRK",
+      "sector": "Unknown",
+      "price": 118.68,
+      "market_cap": 0,
+      "composite_score": 53.5,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-0.3% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 15.1,
+      "distance_from_pivot_pct": -0.27,
+      "weakest_component": "Relative Strength",
+      "weakest_score": 20,
+      "strongest_component": "Pivot Proximity",
+      "strongest_score": 90,
+      "trend_template": {
+        "score": 85.8,
+        "raw_score": 85.8,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 2.27,
+        "sma200_distance_pct": 15.12,
+        "criteria_passed": 6,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $118.68 vs SMA150 $109.37 / SMA200 $103.09"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $109.37 vs SMA200 $103.09"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $103.09 vs 22d ago $99.47"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $118.68 vs SMA50 $116.04"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "57.4% above 52w low $75.40 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "5.2% below 52w high $125.14 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": false,
+            "detail": "RS Rank: 60 (need > 70)"
+          }
+        },
+        "sma50": 116.04,
+        "sma150": 109.37,
+        "sma200": 103.09,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 30,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 56,
+            "high_price": 124,
+            "high_date": "2026-02-27",
+            "low_idx": 61,
+            "low_price": 113.82,
+            "low_date": "2026-03-06",
+            "depth_pct": 8.21,
+            "duration_days": 5
+          },
+          {
+            "label": "T2",
+            "high_idx": 63,
+            "high_price": 119,
+            "high_date": "2026-03-10",
+            "low_idx": 71,
+            "low_price": 112.72,
+            "low_date": "2026-03-20",
+            "depth_pct": 5.28,
+            "duration_days": 8
+          }
+        ],
+        "num_contractions": 2,
+        "pivot_price": 119,
+        "pattern_duration_days": 15,
+        "validation": {
+          "valid": false,
+          "issues": [
+            "T1 depth too shallow (8.2%, need >= 10.0%)"
+          ],
+          "contraction_ratios": [
+            0.643
+          ],
+          "t1_depth": 8.21
+        },
+        "atr_value": 2.8609,
+        "atr_compression_ratio": 1.1,
+        "wide_and_loose": false,
+        "right_side_range_ratio": 4.242,
+        "error": null
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.942,
+        "avg_volume_50d": 9410766,
+        "avg_volume_recent_10d": 8863898,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 2,
+        "down_volume_days_20d": 2,
+        "net_accumulation": 0,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 18347543,
+          "zone_a_ratio": 1.95,
+          "zone_b_avg_volume": 8863898,
+          "zone_b_ratio": 0.942,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            12575280,
+            18347543
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 90,
+        "distance_from_pivot_pct": -0.27,
+        "pivot_price": 119,
+        "stop_loss_price": 111.59,
+        "risk_pct": 5.97,
+        "trade_status": "AT PIVOT (within 2%)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 20,
+        "rs_rank_estimate": 60,
+        "weighted_rs": 4.44,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": -4.15,
+            "sp500_return_pct": 10.37,
+            "relative_pct": -14.52
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 12.32,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 0.16
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 41.17,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 24.08
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 55.81,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 26.99
+          }
+        ],
+        "error": null,
+        "rs_percentile": 9
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "KLAC",
+      "company_name": "KLAC",
+      "sector": "Unknown",
+      "price": 1934.49,
+      "market_cap": 0,
+      "composite_score": 52.8,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-6.1% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 43.4,
+      "distance_from_pivot_pct": -6.1,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 95,
+      "trend_template": {
+        "score": 95,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": -5,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 11.66,
+        "sma200_distance_pct": 43.39,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $1934.49 vs SMA150 $1467.35 / SMA200 $1349.13"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $1467.35 vs SMA200 $1349.13"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $1349.13 vs 22d ago $1248.15"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $1934.49 vs SMA50 $1732.47"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "161.3% above 52w low $740.44 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "6.1% below 52w high $2060.08 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 99 (need > 70)"
+          }
+        },
+        "sma50": 1732.47,
+        "sma150": 1467.35,
+        "sma200": 1349.13,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [],
+        "num_contractions": 0,
+        "pivot_price": 2060.08,
+        "atr_value": 83.2897,
+        "atr_compression_ratio": 1.117,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.957,
+        "avg_volume_50d": 970475,
+        "avg_volume_recent_10d": 928814,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 4,
+        "down_volume_days_20d": 5,
+        "net_accumulation": -1,
+        "error": null
+      },
+      "pivot_proximity": {
+        "score": 60,
+        "distance_from_pivot_pct": -6.1,
+        "pivot_price": 2060.08,
+        "stop_loss_price": null,
+        "risk_pct": null,
+        "trade_status": "APPROACHING (5-8% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 80,
+        "rs_rank_estimate": 99,
+        "weighted_rs": 62.04,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 26.89,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 16.52
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 68.82,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 56.66
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 117.63,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 100.54
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 148.81,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 119.99
+          }
+        ],
+        "error": null,
+        "rs_percentile": 82
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "CNC",
+      "company_name": "CNC",
+      "sector": "Unknown",
+      "price": 59.15,
+      "market_cap": 0,
+      "composite_score": 50.8,
+      "quality_rating": "Weak VCP",
+      "rating": "Weak VCP",
+      "rating_description": "Some VCP characteristics but incomplete",
+      "guidance": "Monitor only - pattern needs more development",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-2.6% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 49.1,
+      "distance_from_pivot_pct": -2.65,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 80,
+      "trend_template": {
+        "score": 80,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": -20,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 29.41,
+        "sma200_distance_pct": 49.13,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $59.15 vs SMA150 $41.98 / SMA200 $39.66"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $41.98 vs SMA200 $39.66"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $39.66 vs 22d ago $36.39"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $59.15 vs SMA50 $45.71"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "135.9% above 52w low $25.07 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "2.6% below 52w high $60.76 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 90 (need > 70)"
+          }
+        },
+        "sma50": 45.71,
+        "sma150": 41.98,
+        "sma200": 39.66,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [],
+        "num_contractions": 0,
+        "pivot_price": 60.76,
+        "atr_value": 1.7714,
+        "atr_compression_ratio": 0.966,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 60,
+        "dry_up_ratio": 0.634,
+        "avg_volume_50d": 6255059,
+        "avg_volume_recent_10d": 3967754,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 2,
+        "down_volume_days_20d": 2,
+        "net_accumulation": 0,
+        "error": null
+      },
+      "pivot_proximity": {
+        "score": 75,
+        "distance_from_pivot_pct": -2.65,
+        "pivot_price": 60.76,
+        "stop_loss_price": null,
+        "risk_pct": null,
+        "trade_status": "NEAR PIVOT (2-5% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 50,
+        "rs_rank_estimate": 90,
+        "weighted_rs": 28.95,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 31.8,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 21.43
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 49.14,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 36.98
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 105.1,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 88.01
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 5.76,
+            "sp500_return_pct": 28.82,
+            "relative_pct": -23.07
+          }
+        ],
+        "error": null,
+        "rs_percentile": 36
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "CAT",
+      "company_name": "CAT",
+      "sector": "Unknown",
+      "price": 871.86,
+      "market_cap": 0,
+      "composite_score": 48.5,
+      "quality_rating": "No VCP",
+      "rating": "No VCP",
+      "rating_description": "Does not qualify as a VCP setup",
+      "guidance": "Not actionable as VCP",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-6.4% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 37.2,
+      "distance_from_pivot_pct": -6.39,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 100,
+      "trend_template": {
+        "score": 100,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 7.04,
+        "sma200_distance_pct": 37.18,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $871.86 vs SMA150 $694.11 / SMA200 $635.56"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $694.11 vs SMA200 $635.56"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $635.56 vs 22d ago $584.20"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $871.86 vs SMA50 $814.54"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "156.8% above 52w low $339.50 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "6.4% below 52w high $931.35 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 99 (need > 70)"
+          }
+        },
+        "sma50": 814.54,
+        "sma150": 694.11,
+        "sma200": 635.56,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 104,
+            "high_price": 931.35,
+            "high_date": "2026-05-07",
+            "low_idx": 112,
+            "low_price": 845.55,
+            "low_date": "2026-05-19",
+            "depth_pct": 9.21,
+            "duration_days": 8
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 931.35,
+        "atr_value": 27.9792,
+        "atr_compression_ratio": 1.046,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 20,
+        "dry_up_ratio": 1.019,
+        "avg_volume_50d": 2423509,
+        "avg_volume_recent_10d": 2470262,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 4,
+        "down_volume_days_20d": 6,
+        "net_accumulation": -2,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 3485858,
+          "zone_a_ratio": 1.438,
+          "zone_b_avg_volume": 2470262,
+          "zone_b_ratio": 1.019,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            3485858
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 60,
+        "distance_from_pivot_pct": -6.39,
+        "pivot_price": 931.35,
+        "stop_loss_price": 837.09,
+        "risk_pct": 3.99,
+        "trade_status": "APPROACHING (5-8% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 70,
+        "rs_rank_estimate": 99,
+        "weighted_rs": 52.15,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 17.37,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 7.0
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 53.87,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 41.71
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 101.51,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 84.42
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 149.47,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 120.64
+          }
+        ],
+        "error": null,
+        "rs_percentile": 64
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "VRT",
+      "company_name": "VRT",
+      "sector": "Unknown",
+      "price": 314.18,
+      "market_cap": 0,
+      "composite_score": 48.0,
+      "quality_rating": "No VCP",
+      "rating": "No VCP",
+      "rating_description": "Does not qualify as a VCP setup",
+      "guidance": "Not actionable as VCP",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-17.3% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 48.7,
+      "distance_from_pivot_pct": -17.31,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 100,
+      "trend_template": {
+        "score": 100,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 2.23,
+        "sma200_distance_pct": 48.71,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $314.18 vs SMA150 $233.23 / SMA200 $211.27"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $233.23 vs SMA200 $211.27"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $211.27 vs 22d ago $189.07"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $314.18 vs SMA50 $307.33"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "200.0% above 52w low $104.71 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "17.3% below 52w high $379.94 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 99 (need > 70)"
+          }
+        },
+        "sma50": 307.33,
+        "sma150": 233.23,
+        "sma200": 211.27,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [],
+        "num_contractions": 0,
+        "pivot_price": 379.935,
+        "atr_value": 19.4916,
+        "atr_compression_ratio": 1.145,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.799,
+        "avg_volume_50d": 7368996,
+        "avg_volume_recent_10d": 5884653,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 0,
+        "down_volume_days_20d": 2,
+        "net_accumulation": -2,
+        "error": null
+      },
+      "pivot_proximity": {
+        "score": 10,
+        "distance_from_pivot_pct": -17.31,
+        "pivot_price": 379.94,
+        "stop_loss_price": null,
+        "risk_pct": null,
+        "trade_status": "FAR FROM PIVOT (>15% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 90,
+        "rs_rank_estimate": 99,
+        "weighted_rs": 76.72,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 23.26,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 12.89
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 85.28,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 73.12
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 142.97,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 125.88
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 187.66,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 158.84
+          }
+        ],
+        "error": null,
+        "rs_percentile": 91
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "PWR",
+      "company_name": "PWR",
+      "sector": "Unknown",
+      "price": 713.72,
+      "market_cap": 0,
+      "composite_score": 47.5,
+      "quality_rating": "No VCP",
+      "rating": "No VCP",
+      "rating_description": "Does not qualify as a VCP setup",
+      "guidance": "Not actionable as VCP",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-9.5% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 42.4,
+      "distance_from_pivot_pct": -9.51,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 95,
+      "trend_template": {
+        "score": 95,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": -5,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 9.42,
+        "sma200_distance_pct": 42.45,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $713.72 vs SMA150 $535.03 / SMA200 $501.04"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $535.03 vs SMA200 $501.04"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $501.04 vs 22d ago $463.33"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $713.72 vs SMA50 $652.29"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "112.1% above 52w low $336.57 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "9.5% below 52w high $788.75 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 95 (need > 70)"
+          }
+        },
+        "sma50": 652.29,
+        "sma150": 535.03,
+        "sma200": 501.04,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 103,
+            "high_price": 788.75,
+            "high_date": "2026-05-06",
+            "low_idx": 112,
+            "low_price": 690.79,
+            "low_date": "2026-05-19",
+            "depth_pct": 12.42,
+            "duration_days": 9
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 788.75,
+        "atr_value": 28.1994,
+        "atr_compression_ratio": 1.141,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 40,
+        "dry_up_ratio": 0.953,
+        "avg_volume_50d": 1112937,
+        "avg_volume_recent_10d": 1060077,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 6,
+        "down_volume_days_20d": 6,
+        "net_accumulation": 0,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 1517642,
+          "zone_a_ratio": 1.364,
+          "zone_b_avg_volume": 1060077,
+          "zone_b_ratio": 0.953,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            1517642
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 45,
+        "distance_from_pivot_pct": -9.51,
+        "pivot_price": 788.75,
+        "stop_loss_price": 683.88,
+        "risk_pct": 4.18,
+        "trade_status": "DEVELOPING (8-10% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 60,
+        "rs_rank_estimate": 95,
+        "weighted_rs": 46.0,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 26.75,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 16.38
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 58.56,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 46.39
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 87.05,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 69.96
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 109.72,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 80.9
+          }
+        ],
+        "error": null,
+        "rs_percentile": 55
+      },
+      "entry_ready": false
+    },
+    {
+      "symbol": "CMI",
+      "company_name": "CMI",
+      "sector": "Unknown",
+      "price": 648.06,
+      "market_cap": 0,
+      "composite_score": 41.8,
+      "quality_rating": "No VCP",
+      "rating": "No VCP",
+      "rating_description": "Does not qualify as a VCP setup",
+      "guidance": "Not actionable as VCP",
+      "valid_vcp": false,
+      "execution_state": "Pre-breakout",
+      "execution_state_reasons": [
+        "-9.7% below pivot (forming pattern)"
+      ],
+      "pattern_type": "VCP-adjacent",
+      "wide_and_loose": false,
+      "state_cap_applied": false,
+      "cap_reason": null,
+      "sma200_distance_pct": 23.7,
+      "distance_from_pivot_pct": -9.74,
+      "weakest_component": "Contraction Quality",
+      "weakest_score": 0,
+      "strongest_component": "Trend Template (Stage 2)",
+      "strongest_score": 100,
+      "trend_template": {
+        "score": 100,
+        "raw_score": 100,
+        "passed": true,
+        "extended_penalty": 0,
+        "sma200_penalty": 0,
+        "sma50_distance_pct": 3.46,
+        "sma200_distance_pct": 23.72,
+        "criteria_passed": 7,
+        "criteria_total": 7,
+        "criteria": {
+          "c1_price_above_sma150_200": {
+            "passed": true,
+            "detail": "Price $648.06 vs SMA150 $561.06 / SMA200 $523.82"
+          },
+          "c2_sma150_above_sma200": {
+            "passed": true,
+            "detail": "SMA150 $561.06 vs SMA200 $523.82"
+          },
+          "c3_sma200_trending_up": {
+            "passed": true,
+            "detail": "SMA200 today $523.82 vs 22d ago $489.73"
+          },
+          "c4_price_above_sma50": {
+            "passed": true,
+            "detail": "Price $648.06 vs SMA50 $626.37"
+          },
+          "c5_25pct_above_52w_low": {
+            "passed": true,
+            "detail": "110.5% above 52w low $307.90 (need >= 25%)"
+          },
+          "c6_within_25pct_52w_high": {
+            "passed": true,
+            "detail": "9.8% below 52w high $718.08 (need <= 25%)"
+          },
+          "c7_rs_rank_above_70": {
+            "passed": true,
+            "detail": "RS Rank: 90 (need > 70)"
+          }
+        },
+        "sma50": 626.37,
+        "sma150": 561.06,
+        "sma200": 523.82,
+        "error": null
+      },
+      "vcp_pattern": {
+        "score": 0,
+        "valid_vcp": false,
+        "contractions": [
+          {
+            "label": "T1",
+            "high_idx": 109,
+            "high_price": 717.96,
+            "high_date": "2026-05-14",
+            "low_idx": 115,
+            "low_price": 628.09,
+            "low_date": "2026-05-22",
+            "depth_pct": 12.52,
+            "duration_days": 6
+          }
+        ],
+        "num_contractions": 1,
+        "pivot_price": 717.96,
+        "atr_value": 23.2829,
+        "atr_compression_ratio": 1.227,
+        "wide_and_loose": false,
+        "right_side_range_ratio": null,
+        "error": "Fewer than 2 contractions found"
+      },
+      "volume_pattern": {
+        "score": 20,
+        "dry_up_ratio": 1.114,
+        "avg_volume_50d": 859054,
+        "avg_volume_recent_10d": 957259,
+        "breakout_volume_detected": false,
+        "breakout_volume_score": 0,
+        "up_volume_days_20d": 6,
+        "down_volume_days_20d": 7,
+        "net_accumulation": -1,
+        "error": null,
+        "zone_analysis": {
+          "zone_a_avg_volume": 1332488,
+          "zone_a_ratio": 1.551,
+          "zone_b_avg_volume": 957259,
+          "zone_b_ratio": 1.114,
+          "zone_c_volume": null,
+          "zone_c_ratio": null
+        },
+        "contraction_volume_trend": {
+          "declining": false,
+          "contraction_volumes": [
+            1332488
+          ]
+        }
+      },
+      "pivot_proximity": {
+        "score": 45,
+        "distance_from_pivot_pct": -9.74,
+        "pivot_price": 717.96,
+        "stop_loss_price": 621.81,
+        "risk_pct": 4.05,
+        "trade_status": "DEVELOPING (8-10% below)",
+        "error": null
+      },
+      "relative_strength": {
+        "score": 40,
+        "rs_rank_estimate": 90,
+        "weighted_rs": 27.23,
+        "period_details": [
+          {
+            "period_days": 63,
+            "weight": 0.4,
+            "stock_return_pct": 10.99,
+            "sp500_return_pct": 10.37,
+            "relative_pct": 0.62
+          },
+          {
+            "period_days": 126,
+            "weight": 0.2,
+            "stock_return_pct": 30.94,
+            "sp500_return_pct": 12.16,
+            "relative_pct": 18.77
+          },
+          {
+            "period_days": 189,
+            "weight": 0.2,
+            "stock_return_pct": 61.45,
+            "sp500_return_pct": 17.09,
+            "relative_pct": 44.36
+          },
+          {
+            "period_days": 252,
+            "weight": 0.2,
+            "stock_return_pct": 100.61,
+            "sp500_return_pct": 28.82,
+            "relative_pct": 71.79
+          }
+        ],
+        "error": null,
+        "rs_percentile": 27
+      },
+      "entry_ready": false
+    }
+  ],
+  "summary": {
+    "total": 11,
+    "textbook": 0,
+    "strong": 0,
+    "good": 0,
+    "developing": 1,
+    "weak": 10
+  },
+  "sector_distribution": {
+    "Unknown": 11
+  }
+}

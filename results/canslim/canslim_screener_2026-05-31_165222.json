@@ -1,0 +1,3227 @@
+{
+  "metadata": {
+    "generated_at": "2026-05-31 16:52:22 UTC",
+    "phase": "3 (7 components - FULL CANSLIM)",
+    "components_included": [
+      "C",
+      "A",
+      "N",
+      "S",
+      "L",
+      "I",
+      "M"
+    ],
+    "candidates_analyzed": 30,
+    "universe_size": 30,
+    "market_condition": {
+      "trend": "strong_uptrend",
+      "M_score": 90,
+      "warning": null
+    }
+  },
+  "results": [
+    {
+      "symbol": "ANET",
+      "company_name": "Arista Networks Inc",
+      "sector": "Electronic Technology",
+      "price": 159.47,
+      "market_cap": 200805046015.00003,
+      "composite_score": 63.5,
+      "rating": "Above Average",
+      "rating_description": "Meets thresholds, one component weak",
+      "guidance": "Buy on pullback, conservative sizing (5-8% of portfolio)",
+      "weakest_component": "I",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 26.2,
+        "latest_qtr_revenue_growth": 35.1,
+        "latest_eps": 0.803,
+        "year_ago_eps": 0.6362,
+        "latest_revenue": 2709000000,
+        "year_ago_revenue": 2004800000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +26.2%, Revenue +35.1%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 80,
+        "eps_cagr_3yr": 37.1,
+        "revenue_cagr_3yr": 27.1,
+        "stability": "stable",
+        "eps_values": [
+          1.07,
+          1.65,
+          2.23,
+          2.75
+        ],
+        "revenue_values": [
+          4381310000,
+          5860168000,
+          7003146000,
+          9005700000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Strong - 37.1% CAGR, well above CANSLIM 25% threshold (stable)",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -11.3,
+        "current_price": 159.47,
+        "week_52_high": 179.8,
+        "week_52_low": 83.858,
+        "breakout_detected": false,
+        "current_volume": 15393768,
+        "avg_volume": 9559696.46,
+        "volume_ratio": 1.61,
+        "interpretation": "Acceptable - Within 15% of high (-11.3% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8782784707225566,
+        "accumulation_detected": false,
+        "avg_up_volume": 8456158,
+        "avg_down_volume": 9628106,
+        "up_days_count": 32,
+        "down_days_count": 27,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.88x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 95,
+        "stock_52w_performance": 61.88,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 31.13,
+        "rs_rank_estimate": 95,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +61.9% (+31.1% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "I"
+        ],
+        "recommendation": "watchlist",
+        "reason": "One component below threshold: I"
+      }
+    },
+    {
+      "symbol": "MS",
+      "company_name": "Morgan Stanley",
+      "sector": "Finance",
+      "price": 208,
+      "market_cap": 328075261719,
+      "composite_score": 56.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "I",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 32.2,
+        "latest_qtr_revenue_growth": 13.7,
+        "latest_eps": 3.4334,
+        "year_ago_eps": 2.5981,
+        "latest_revenue": 33082000000,
+        "year_ago_revenue": 29094000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +32.2%, Revenue +13.7%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 30,
+        "eps_cagr_3yr": 18.4,
+        "revenue_cagr_3yr": 22.0,
+        "stability": "erratic",
+        "eps_values": [
+          6.15,
+          5.18,
+          7.95,
+          10.21
+        ],
+        "revenue_values": [
+          65990000000,
+          92218000000,
+          107397000000,
+          119717000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Below threshold - 18.4% CAGR insufficient (<25% required)",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -0.0,
+        "current_price": 208,
+        "week_52_high": 208.08,
+        "week_52_low": 126.35,
+        "breakout_detected": false,
+        "current_volume": 8256932,
+        "avg_volume": 6065531.16,
+        "volume_ratio": 1.36,
+        "interpretation": "Acceptable - Within 15% of high (-0.0% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.048595979381432,
+        "accumulation_detected": false,
+        "avg_up_volume": 6323747,
+        "avg_down_volume": 6030680,
+        "up_days_count": 38,
+        "down_days_count": 21,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.05x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 95,
+        "stock_52w_performance": 75.85,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 45.11,
+        "rs_rank_estimate": 95,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +75.9% (+45.1% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "NUE",
+      "company_name": "Nucor Corporation",
+      "sector": "Non-Energy Minerals",
+      "price": 250,
+      "market_cap": 56935237885,
+      "composite_score": 53.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 80,
+        "latest_qtr_eps_growth": 381.8,
+        "latest_qtr_revenue_growth": 21.3,
+        "latest_eps": 3.2272,
+        "year_ago_eps": 0.6698,
+        "latest_revenue": 9496000000,
+        "year_ago_revenue": 7830000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Strong - Well above CANSLIM threshold (EPS +381.8%, Revenue +21.3%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -36.1,
+        "revenue_cagr_3yr": -7.8,
+        "stability": "erratic",
+        "eps_values": [
+          28.79,
+          18.0,
+          8.46,
+          7.52
+        ],
+        "revenue_values": [
+          41512467000,
+          34713501000,
+          30734000000,
+          32494000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -36.1% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -0.6,
+        "current_price": 250,
+        "week_52_high": 251.3876,
+        "week_52_low": 106.211,
+        "breakout_detected": false,
+        "current_volume": 3388048,
+        "avg_volume": 1531677.64,
+        "volume_ratio": 2.21,
+        "interpretation": "Acceptable - Within 15% of high (-0.6% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.1322007126653413,
+        "accumulation_detected": false,
+        "avg_up_volume": 1544084,
+        "avg_down_volume": 1363790,
+        "up_days_count": 40,
+        "down_days_count": 19,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.13x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 95,
+        "stock_52w_performance": 76.48,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 45.73,
+        "rs_rank_estimate": 95,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +76.5% (+45.7% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "STLD",
+      "company_name": "Steel Dynamics, Inc.",
+      "sector": "Non-Energy Minerals",
+      "price": 260.15,
+      "market_cap": 37516954829,
+      "composite_score": 51.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 80,
+        "latest_qtr_eps_growth": 92.8,
+        "latest_qtr_revenue_growth": 19.1,
+        "latest_eps": 2.7762,
+        "year_ago_eps": 1.4399,
+        "latest_revenue": 5204858000,
+        "year_ago_revenue": 4369195000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Strong - Well above CANSLIM threshold (EPS +92.8%, Revenue +19.1%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -27.5,
+        "revenue_cagr_3yr": -6.5,
+        "stability": "erratic",
+        "eps_values": [
+          20.92,
+          14.64,
+          9.84,
+          7.99
+        ],
+        "revenue_values": [
+          22260774000,
+          18795316000,
+          17540390000,
+          18176581000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -27.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -1.1,
+        "current_price": 260.15,
+        "week_52_high": 263.09,
+        "week_52_low": 119.89,
+        "breakout_detected": false,
+        "current_volume": 2119296,
+        "avg_volume": 1172460.88,
+        "volume_ratio": 1.81,
+        "interpretation": "Acceptable - Within 15% of high (-1.1% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9739906647455431,
+        "accumulation_detected": false,
+        "avg_up_volume": 1152910,
+        "avg_down_volume": 1183697,
+        "up_days_count": 36,
+        "down_days_count": 23,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.97x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 100,
+        "stock_52w_performance": 102.23,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 71.48,
+        "rs_rank_estimate": 99,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +102.2% (+71.5% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "NEM",
+      "company_name": "Newmont Corporation",
+      "sector": "Non-Energy Minerals",
+      "price": 109.81,
+      "market_cap": 117227963155.00002,
+      "composite_score": 51.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 100,
+        "latest_qtr_eps_growth": 78.8,
+        "latest_qtr_revenue_growth": 47.5,
+        "latest_eps": 3.0009,
+        "year_ago_eps": 1.6779,
+        "latest_revenue": 7183000000,
+        "year_ago_revenue": 4871000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Exceptional - Explosive earnings acceleration (EPS +78.8%, Revenue +47.5%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "error": "Negative or zero EPS in year None - cannot calculate CAGR",
+        "eps_cagr_3yr": null,
+        "revenue_cagr_3yr": null,
+        "stability": "unknown",
+        "eps_values": null,
+        "interpretation": "Negative EPS - not a CANSLIM candidate"
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -18.6,
+        "current_price": 109.81,
+        "week_52_high": 134.88,
+        "week_52_low": 51.8,
+        "breakout_detected": false,
+        "current_volume": 14673500,
+        "avg_volume": 8970772.64,
+        "volume_ratio": 1.64,
+        "interpretation": "Weak - Lacks momentum (-18.6% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9243351697941568,
+        "accumulation_detected": false,
+        "avg_up_volume": 8748212,
+        "avg_down_volume": 9464329,
+        "up_days_count": 33,
+        "down_days_count": 26,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.92x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 100,
+        "stock_52w_performance": 90.18,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 59.43,
+        "rs_rank_estimate": 99,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +90.2% (+59.4% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "AMZN",
+      "company_name": "Amazon.com, Inc.",
+      "sector": "Retail Trade",
+      "price": 270.64,
+      "market_cap": 2911304238825,
+      "composite_score": 50.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 80,
+        "latest_qtr_eps_growth": 75.3,
+        "latest_qtr_revenue_growth": 16.6,
+        "latest_eps": 2.7823,
+        "year_ago_eps": 1.5869,
+        "latest_revenue": 181519000000,
+        "year_ago_revenue": 155667000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Strong - Well above CANSLIM threshold (EPS +75.3%, Revenue +16.6%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "error": "Negative or zero EPS in year None - cannot calculate CAGR",
+        "eps_cagr_3yr": null,
+        "revenue_cagr_3yr": null,
+        "stability": "unknown",
+        "eps_values": null,
+        "interpretation": "Negative EPS - not a CANSLIM candidate"
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -2.8,
+        "current_price": 270.64,
+        "week_52_high": 278.56,
+        "week_52_low": 196,
+        "breakout_detected": false,
+        "current_volume": 54749561,
+        "avg_volume": 44851095.72,
+        "volume_ratio": 1.22,
+        "interpretation": "Acceptable - Within 15% of high (-2.8% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.1461190781636874,
+        "accumulation_detected": false,
+        "avg_up_volume": 47001204,
+        "avg_down_volume": 41009006,
+        "up_days_count": 34,
+        "down_days_count": 25,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.15x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 80,
+        "stock_52w_performance": 46.52,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 15.77,
+        "rs_rank_estimate": 80,
+        "days_analyzed": 400,
+        "interpretation": "Strong Performer - 52-week return +46.5% (+15.8% vs S&P 500). Outperforming market significantly",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "ROK",
+      "company_name": "Rockwell Automation, Inc.",
+      "sector": "Producer Manufacturing",
+      "price": 451.06,
+      "market_cap": 50191230456,
+      "composite_score": 50.5,
+      "rating": "Average",
+      "rating_description": "Marginal CANSLIM candidate",
+      "guidance": "Watchlist only, consider 3-5% if high conviction",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 39.9,
+        "latest_qtr_revenue_growth": 11.8,
+        "latest_eps": 3.0995,
+        "year_ago_eps": 2.2154,
+        "latest_revenue": 2239000000,
+        "year_ago_revenue": 2002000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +39.9%, Revenue +11.8%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -1.3,
+        "revenue_cagr_3yr": 2.4,
+        "stability": "erratic",
+        "eps_values": [
+          7.96,
+          11.95,
+          8.28,
+          7.67
+        ],
+        "revenue_values": [
+          7759700000,
+          9052000000,
+          8262000000,
+          8343000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -1.3% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -2.7,
+        "current_price": 451.06,
+        "week_52_high": 463.485,
+        "week_52_low": 305.4401,
+        "breakout_detected": false,
+        "current_volume": 1110324,
+        "avg_volume": 784663.58,
+        "volume_ratio": 1.42,
+        "interpretation": "Acceptable - Within 15% of high (-2.7% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0433950048442573,
+        "accumulation_detected": false,
+        "avg_up_volume": 838757,
+        "avg_down_volume": 803873,
+        "up_days_count": 28,
+        "down_days_count": 31,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.04x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 95,
+        "stock_52w_performance": 69.29,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 38.54,
+        "rs_rank_estimate": 95,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +69.3% (+38.5% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "ON",
+      "company_name": "ON Semiconductor Corporation",
+      "sector": "Electronic Technology",
+      "price": 120.62,
+      "market_cap": 47271364848,
+      "composite_score": 47.5,
+      "rating": "Below Average",
+      "rating_description": "Fails one or more key thresholds",
+      "guidance": "Monitor, do not buy",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 92.7,
+        "latest_qtr_revenue_growth": 4.7,
+        "latest_eps": -0.0848,
+        "year_ago_eps": -1.1538,
+        "latest_revenue": 1513300000,
+        "year_ago_revenue": 1445700000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +92.7%, Revenue +4.7%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -59.0,
+        "revenue_cagr_3yr": -10.4,
+        "stability": "erratic",
+        "eps_values": [
+          4.25,
+          4.89,
+          3.63,
+          0.29
+        ],
+        "revenue_values": [
+          8326200000,
+          8253000000,
+          7082300000,
+          5995400000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -59.0% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -6.6,
+        "current_price": 120.62,
+        "week_52_high": 129.13,
+        "week_52_low": 41.49,
+        "breakout_detected": false,
+        "current_volume": 11273804,
+        "avg_volume": 11051880.3,
+        "volume_ratio": 1.02,
+        "interpretation": "Acceptable - Within 15% of high (-6.6% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0705527474186565,
+        "accumulation_detected": false,
+        "avg_up_volume": 10695269,
+        "avg_down_volume": 9990418,
+        "up_days_count": 37,
+        "down_days_count": 22,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.07x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 95,
+        "stock_52w_performance": 77.46,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 46.71,
+        "rs_rank_estimate": 95,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +77.5% (+46.7% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: C, A, I"
+      }
+    },
+    {
+      "symbol": "KLAC",
+      "company_name": "KLA Corporation",
+      "sector": "Electronic Technology",
+      "price": 1921.71,
+      "market_cap": 251028201937.00003,
+      "composite_score": 45.5,
+      "rating": "Below Average",
+      "rating_description": "Fails one or more key thresholds",
+      "guidance": "Monitor, do not buy",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 11.6,
+        "latest_qtr_revenue_growth": 11.5,
+        "latest_eps": 9.1157,
+        "year_ago_eps": 8.165,
+        "latest_revenue": 3413007000,
+        "year_ago_revenue": 3060349000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +11.6%, Revenue +11.5%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 11.5,
+        "revenue_cagr_3yr": 9.7,
+        "stability": "erratic",
+        "eps_values": [
+          21.92,
+          24.15,
+          20.28,
+          30.37
+        ],
+        "revenue_values": [
+          9201195000,
+          10464219000,
+          9793873000,
+          12148696000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 11.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -6.7,
+        "current_price": 1921.71,
+        "week_52_high": 2060.08,
+        "week_52_low": 740.44,
+        "breakout_detected": false,
+        "current_volume": 1145940,
+        "avg_volume": 984793.52,
+        "volume_ratio": 1.16,
+        "interpretation": "Acceptable - Within 15% of high (-6.7% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.854295120924957,
+        "accumulation_detected": false,
+        "avg_up_volume": 923286,
+        "avg_down_volume": 1080758,
+        "up_days_count": 34,
+        "down_days_count": 25,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.85x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 100,
+        "stock_52w_performance": 189.14,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 158.39,
+        "rs_rank_estimate": 99,
+        "days_analyzed": 400,
+        "interpretation": "Market Leader - 52-week return +189.1% (+158.4% vs S&P 500). Strong momentum, prime CANSLIM candidate",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: C, A, I"
+      }
+    },
+    {
+      "symbol": "AAPL",
+      "company_name": "Apple Inc.",
+      "sector": "Electronic Technology",
+      "price": 312.06,
+      "market_cap": 4583336416465.999,
+      "composite_score": 43.5,
+      "rating": "Below Average",
+      "rating_description": "Fails one or more key thresholds",
+      "guidance": "Monitor, do not buy",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 22.0,
+        "latest_qtr_revenue_growth": 16.6,
+        "latest_eps": 2.0086,
+        "year_ago_eps": 1.6458,
+        "latest_revenue": 111184000000,
+        "year_ago_revenue": 95359000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +22.0%, Revenue +16.6%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 6.9,
+        "revenue_cagr_3yr": 1.8,
+        "stability": "erratic",
+        "eps_values": [
+          6.11,
+          6.13,
+          6.08,
+          7.46
+        ],
+        "revenue_values": [
+          394328000000,
+          383285000000,
+          391035000000,
+          416161000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 6.9% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -0.9,
+        "current_price": 312.06,
+        "week_52_high": 315,
+        "week_52_low": 195.07,
+        "breakout_detected": false,
+        "current_volume": 70026752,
+        "avg_volume": 46098720.82,
+        "volume_ratio": 1.52,
+        "interpretation": "Acceptable - Within 15% of high (-0.9% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0240334288759858,
+        "accumulation_detected": false,
+        "avg_up_volume": 44835740,
+        "avg_down_volume": 43783473,
+        "up_days_count": 34,
+        "down_days_count": 25,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.02x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 60,
+        "stock_52w_performance": 35.23,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 4.48,
+        "rs_rank_estimate": 60,
+        "days_analyzed": 400,
+        "interpretation": "Above Average - 52-week return +35.2% (+4.5% vs S&P 500). Slight outperformance",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: A, I"
+      }
+    },
+    {
+      "symbol": "RTX",
+      "company_name": "RTX Corporation",
+      "sector": "Electronic Technology",
+      "price": 179.66,
+      "market_cap": 241945135523,
+      "composite_score": 38.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 32.9,
+        "latest_qtr_revenue_growth": 8.7,
+        "latest_eps": 1.5089,
+        "year_ago_eps": 1.1355,
+        "latest_revenue": 22076000000,
+        "year_ago_revenue": 20306000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +32.9%, Revenue +8.7%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 12.4,
+        "revenue_cagr_3yr": 9.7,
+        "stability": "erratic",
+        "eps_values": [
+          3.5,
+          2.23,
+          3.55,
+          4.96
+        ],
+        "revenue_values": [
+          67074000000,
+          68920000000,
+          80738000000,
+          88603000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 12.4% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -16.2,
+        "current_price": 179.66,
+        "week_52_high": 214.5,
+        "week_52_low": 131.9,
+        "breakout_detected": false,
+        "current_volume": 8757169,
+        "avg_volume": 5367433.64,
+        "volume_ratio": 1.63,
+        "interpretation": "Weak - Lacks momentum (-16.2% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9410332558109087,
+        "accumulation_detected": false,
+        "avg_up_volume": 5204935,
+        "avg_down_volume": 5531085,
+        "up_days_count": 26,
+        "down_days_count": 33,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.94x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 80,
+        "stock_52w_performance": 41.23,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": 10.48,
+        "rs_rank_estimate": 80,
+        "days_analyzed": 400,
+        "interpretation": "Strong Performer - 52-week return +41.2% (+10.5% vs S&P 500). Outperforming market significantly",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: C, A, I"
+      }
+    },
+    {
+      "symbol": "WFC",
+      "company_name": "Wells Fargo & Company",
+      "sector": "Finance",
+      "price": 77.54,
+      "market_cap": 237287092997,
+      "composite_score": 38.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "I",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 15.4,
+        "latest_qtr_revenue_growth": 4.9,
+        "latest_eps": 1.6038,
+        "year_ago_eps": 1.3897,
+        "latest_revenue": 31434000000,
+        "year_ago_revenue": 29975000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +15.4%, Revenue +4.9%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 60,
+        "eps_cagr_3yr": 25.8,
+        "revenue_cagr_3yr": 16.9,
+        "stability": "stable",
+        "eps_values": [
+          3.14,
+          4.83,
+          5.37,
+          6.26
+        ],
+        "revenue_values": [
+          77834000000,
+          116219000000,
+          126275000000,
+          124235000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Acceptable - 25.8% CAGR meets CANSLIM minimum (stable)",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -20.7,
+        "current_price": 77.54,
+        "week_52_high": 97.76,
+        "week_52_low": 71.93,
+        "breakout_detected": false,
+        "current_volume": 22327065,
+        "avg_volume": 17181605.0,
+        "volume_ratio": 1.3,
+        "interpretation": "Weak - Lacks momentum (-20.7% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9413369034940404,
+        "accumulation_detected": false,
+        "avg_up_volume": 16926173,
+        "avg_down_volume": 17980994,
+        "up_days_count": 33,
+        "down_days_count": 26,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.94x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 20,
+        "stock_52w_performance": 20.11,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -10.64,
+        "rs_rank_estimate": 25,
+        "days_analyzed": 400,
+        "interpretation": "Laggard - 52-week return +20.1% (-10.6% vs S&P 500). Underperforming market - caution",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=20). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "AXP",
+      "company_name": "American Express Company",
+      "sector": "Finance",
+      "price": 316.47,
+      "market_cap": 215935841709,
+      "composite_score": 37.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "I",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 17.8,
+        "latest_qtr_revenue_growth": 10.2,
+        "latest_eps": 4.2828,
+        "year_ago_eps": 3.6353,
+        "latest_revenue": 20889000000,
+        "year_ago_revenue": 18950000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +17.8%, Revenue +10.2%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 40,
+        "eps_cagr_3yr": 16.0,
+        "revenue_cagr_3yr": 13.1,
+        "stability": "stable",
+        "eps_values": [
+          9.84,
+          11.21,
+          14.02,
+          15.38
+        ],
+        "revenue_values": [
+          55621000000,
+          67373000000,
+          74188000000,
+          80484000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Below threshold - 16.0% CAGR insufficient (<25% required)",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -18.3,
+        "current_price": 316.47,
+        "week_52_high": 387.49,
+        "week_52_low": 286.15,
+        "breakout_detected": false,
+        "current_volume": 4531023,
+        "avg_volume": 3235543.46,
+        "volume_ratio": 1.4,
+        "interpretation": "Weak - Lacks momentum (-18.3% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0827099280481849,
+        "accumulation_detected": false,
+        "avg_up_volume": 3451854,
+        "avg_down_volume": 3188161,
+        "up_days_count": 29,
+        "down_days_count": 30,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.08x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 20,
+        "stock_52w_performance": 16.68,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -14.07,
+        "rs_rank_estimate": 25,
+        "days_analyzed": 400,
+        "interpretation": "Laggard - 52-week return +16.7% (-14.1% vs S&P 500). Underperforming market - caution",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=20). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "PEG",
+      "company_name": "Public Service Enterprise Group Inc",
+      "sector": "Utilities",
+      "price": 78.65,
+      "market_cap": 39192979746,
+      "composite_score": 36.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "L",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 25.8,
+        "latest_qtr_revenue_growth": 21.3,
+        "latest_eps": 1.482,
+        "year_ago_eps": 1.178,
+        "latest_revenue": 4201000000,
+        "year_ago_revenue": 3463000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +25.8%, Revenue +21.3%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 40,
+        "eps_cagr_3yr": 27.0,
+        "revenue_cagr_3yr": 2.1,
+        "stability": "erratic",
+        "eps_values": [
+          2.06,
+          5.13,
+          3.54,
+          4.21
+        ],
+        "revenue_values": [
+          11548000000,
+          9670000000,
+          10263000000,
+          12276000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Below threshold - 27.0% CAGR insufficient (<25% required)",
+        "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -13.8,
+        "current_price": 78.65,
+        "week_52_high": 91.255,
+        "week_52_low": 76.05,
+        "breakout_detected": false,
+        "current_volume": 4909304,
+        "avg_volume": 2870255.34,
+        "volume_ratio": 1.71,
+        "interpretation": "Acceptable - Within 15% of high (-13.8% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9921669658924787,
+        "accumulation_detected": false,
+        "avg_up_volume": 2793468,
+        "avg_down_volume": 2815522,
+        "up_days_count": 30,
+        "down_days_count": 29,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.99x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -13.31,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -44.06,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -13.3% (-44.1% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "CB",
+      "company_name": "Chubb Limited",
+      "sector": "Finance",
+      "price": 311.73,
+      "market_cap": 120907635548.00002,
+      "composite_score": 35.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "L",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 78.8,
+        "latest_qtr_revenue_growth": 9.8,
+        "latest_eps": 5.8794,
+        "year_ago_eps": 3.2891,
+        "latest_revenue": 14747000000,
+        "year_ago_revenue": 13435000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +78.8%, Revenue +9.8%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 50,
+        "eps_cagr_3yr": 27.5,
+        "revenue_cagr_3yr": 11.6,
+        "stability": "stable",
+        "eps_values": [
+          12.39,
+          21.8,
+          22.7,
+          25.68
+        ],
+        "revenue_values": [
+          42975000000,
+          49997000000,
+          55885000000,
+          59786000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Acceptable - 27.5% CAGR meets CANSLIM minimum (stable)",
+        "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -9.8,
+        "current_price": 311.73,
+        "week_52_high": 345.67,
+        "week_52_low": 264.1,
+        "breakout_detected": false,
+        "current_volume": 3970848,
+        "avg_volume": 1625304.08,
+        "volume_ratio": 2.44,
+        "interpretation": "Acceptable - Within 15% of high (-9.8% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8618780779884769,
+        "accumulation_detected": false,
+        "avg_up_volume": 1514813,
+        "avg_down_volume": 1757572,
+        "up_days_count": 26,
+        "down_days_count": 33,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.86x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": 5.67,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -25.08,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return +5.7% (-25.1% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "ISRG",
+      "company_name": "Intuitive Surgical, Inc.",
+      "sector": "Health Technology",
+      "price": 424.64,
+      "market_cap": 150391714329,
+      "composite_score": 34.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "L",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 60,
+        "latest_qtr_eps_growth": 19.2,
+        "latest_qtr_revenue_growth": 23.0,
+        "latest_eps": 2.2832,
+        "year_ago_eps": 1.9155,
+        "latest_revenue": 2770800000,
+        "year_ago_revenue": 2253400000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Acceptable - Meets CANSLIM minimum 18% threshold (EPS +19.2%, Revenue +23.0%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 60,
+        "eps_cagr_3yr": 29.2,
+        "revenue_cagr_3yr": 17.4,
+        "stability": "stable",
+        "eps_values": [
+          3.65,
+          5.03,
+          6.42,
+          7.87
+        ],
+        "revenue_values": [
+          6222200000,
+          7124100000,
+          8352100000,
+          10064700000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Acceptable - 29.2% CAGR meets CANSLIM minimum (stable)",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 20,
+        "distance_from_high_pct": -29.7,
+        "current_price": 424.64,
+        "week_52_high": 603.88,
+        "week_52_low": 414.3,
+        "breakout_detected": false,
+        "current_volume": 3441380,
+        "avg_volume": 2149215.72,
+        "volume_ratio": 1.6,
+        "interpretation": "Poor - Too far from highs, overhead resistance (-29.7% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9674404022845438,
+        "accumulation_detected": false,
+        "avg_up_volume": 2038877,
+        "avg_down_volume": 2107496,
+        "up_days_count": 28,
+        "down_days_count": 31,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.97x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -17.16,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -47.9,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -17.2% (-47.9% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "N",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "EQIX",
+      "company_name": "Equinix, Inc.",
+      "sector": "Finance",
+      "price": 1068.04,
+      "market_cap": 105334650299.99998,
+      "composite_score": 34.3,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "I",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 20.0,
+        "latest_qtr_revenue_growth": 9.8,
+        "latest_eps": 4.2035,
+        "year_ago_eps": 3.504,
+        "latest_revenue": 2444000000,
+        "year_ago_revenue": 2225000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +20.0%, Revenue +9.8%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 24,
+        "eps_cagr_3yr": 21.5,
+        "revenue_cagr_3yr": 8.3,
+        "stability": "erratic",
+        "eps_values": [
+          7.67,
+          10.31,
+          8.5,
+          13.76
+        ],
+        "revenue_values": [
+          7264657000,
+          8188136000,
+          8748000000,
+          9217000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 21.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -5.4,
+        "current_price": 1068.04,
+        "week_52_high": 1128.68,
+        "week_52_low": 710.52,
+        "breakout_detected": false,
+        "current_volume": 943916,
+        "avg_volume": 563211.76,
+        "volume_ratio": 1.68,
+        "interpretation": "Acceptable - Within 15% of high (-5.4% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8505049905480673,
+        "accumulation_detected": false,
+        "avg_up_volume": 528967,
+        "avg_down_volume": 621945,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.85x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 20,
+        "stock_52w_performance": 19.85,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -10.9,
+        "rs_rank_estimate": 25,
+        "days_analyzed": 400,
+        "interpretation": "Laggard - 52-week return +19.8% (-10.9% vs S&P 500). Underperforming market - caution",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=20). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "BAC",
+      "company_name": "Bank of America Corp",
+      "sector": "Finance",
+      "price": 51.6,
+      "market_cap": 366184050303.99994,
+      "composite_score": 33.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 23.7,
+        "latest_qtr_revenue_growth": -0.8,
+        "latest_eps": 1.107,
+        "year_ago_eps": 0.8949,
+        "latest_revenue": 48417000000,
+        "year_ago_revenue": 48816000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +23.7%, Revenue +-0.8%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 6.2,
+        "revenue_cagr_3yr": 18.1,
+        "stability": "erratic",
+        "eps_values": [
+          3.19,
+          3.08,
+          3.19,
+          3.81
+        ],
+        "revenue_values": [
+          117852000000,
+          175003000000,
+          195865000000,
+          194259000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 6.2% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -10.3,
+        "current_price": 51.6,
+        "week_52_high": 57.55,
+        "week_52_low": 43.36,
+        "breakout_detected": false,
+        "current_volume": 57930560,
+        "avg_volume": 36205215.82,
+        "volume_ratio": 1.6,
+        "interpretation": "Acceptable - Within 15% of high (-10.3% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9669356818376641,
+        "accumulation_detected": false,
+        "avg_up_volume": 37217243,
+        "avg_down_volume": 38489885,
+        "up_days_count": 35,
+        "down_days_count": 23,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.97x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 40,
+        "stock_52w_performance": 21.87,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -8.88,
+        "rs_rank_estimate": 40,
+        "days_analyzed": 400,
+        "interpretation": "Average - 52-week return +21.9% (-8.9% vs S&P 500). Matching or slightly lagging market",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Multiple components below threshold: C, A, L, I"
+      }
+    },
+    {
+      "symbol": "PLD",
+      "company_name": "Prologis, Inc.",
+      "sector": "Finance",
+      "price": 143.47,
+      "market_cap": 136587890554.00002,
+      "composite_score": 32.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 65.2,
+        "latest_qtr_revenue_growth": 7.4,
+        "latest_eps": 1.048,
+        "year_ago_eps": 0.6344,
+        "latest_revenue": 2297723000,
+        "year_ago_revenue": 2139665000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +65.2%, Revenue +7.4%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -4.9,
+        "revenue_cagr_3yr": 13.7,
+        "stability": "erratic",
+        "eps_values": [
+          4.13,
+          3.21,
+          4.01,
+          3.56
+        ],
+        "revenue_values": [
+          5973692000,
+          8023469000,
+          8201610000,
+          8790127000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -4.9% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -3.0,
+        "current_price": 143.47,
+        "week_52_high": 147.93,
+        "week_52_low": 103.41,
+        "breakout_detected": false,
+        "current_volume": 7951336,
+        "avg_volume": 3478569.26,
+        "volume_ratio": 2.29,
+        "interpretation": "Acceptable - Within 15% of high (-3.0% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0202511123591647,
+        "accumulation_detected": false,
+        "avg_up_volume": 3518126,
+        "avg_down_volume": 3448294,
+        "up_days_count": 28,
+        "down_days_count": 31,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.02x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 20,
+        "stock_52w_performance": 18.74,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -12.01,
+        "rs_rank_estimate": 25,
+        "days_analyzed": 400,
+        "interpretation": "Laggard - 52-week return +18.7% (-12.0% vs S&P 500). Underperforming market - caution",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=20). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "LIN",
+      "company_name": "Linde plc",
+      "sector": "Process Industries",
+      "price": 497.69,
+      "market_cap": 230231155154,
+      "composite_score": 32.3,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "L",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 13.4,
+        "latest_qtr_revenue_growth": 8.2,
+        "latest_eps": 3.9822,
+        "year_ago_eps": 3.5128,
+        "latest_revenue": 8781000000,
+        "year_ago_revenue": 8112000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +13.4%, Revenue +8.2%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 34,
+        "eps_cagr_3yr": 21.1,
+        "revenue_cagr_3yr": 0.6,
+        "stability": "stable",
+        "eps_values": [
+          8.23,
+          12.59,
+          13.62,
+          14.61
+        ],
+        "revenue_values": [
+          33364000000,
+          32854000000,
+          33005000000,
+          33986000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Below threshold - 21.1% CAGR insufficient (<25% required)",
+        "quality_warning": "Revenue CAGR significantly lags EPS CAGR - growth may be buyback-driven rather than organic",
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -4.5,
+        "current_price": 497.69,
+        "week_52_high": 521.28,
+        "week_52_low": 387.78,
+        "breakout_detected": false,
+        "current_volume": 4482086,
+        "avg_volume": 2209348.32,
+        "volume_ratio": 2.03,
+        "interpretation": "Acceptable - Within 15% of high (-4.5% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9419390887532274,
+        "accumulation_detected": false,
+        "avg_up_volume": 2163323,
+        "avg_down_volume": 2296670,
+        "up_days_count": 27,
+        "down_days_count": 32,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.94x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": 4.24,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -26.5,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return +4.2% (-26.5% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "USB",
+      "company_name": "U.S. Bancorp",
+      "sector": "Finance",
+      "price": 54.85,
+      "market_cap": 85143641917.99998,
+      "composite_score": 29.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 15.2,
+        "latest_qtr_revenue_growth": 4.9,
+        "latest_eps": 1.1839,
+        "year_ago_eps": 1.0276,
+        "latest_revenue": 10615000000,
+        "year_ago_revenue": 10119000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +15.2%, Revenue +4.9%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 7.7,
+        "revenue_cagr_3yr": 15.5,
+        "stability": "erratic",
+        "eps_values": [
+          3.69,
+          3.27,
+          3.79,
+          4.62
+        ],
+        "revenue_values": [
+          27402000000,
+          40029000000,
+          42402000000,
+          42226000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 7.7% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -10.4,
+        "current_price": 54.85,
+        "week_52_high": 61.19,
+        "week_52_low": 42.55,
+        "breakout_detected": false,
+        "current_volume": 13124656,
+        "avg_volume": 9198418.02,
+        "volume_ratio": 1.43,
+        "interpretation": "Acceptable - Within 15% of high (-10.4% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8794700767185591,
+        "accumulation_detected": false,
+        "avg_up_volume": 8842847,
+        "avg_down_volume": 10054745,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.88x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 20,
+        "stock_52w_performance": 13.02,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -17.73,
+        "rs_rank_estimate": 25,
+        "days_analyzed": 400,
+        "interpretation": "Laggard - 52-week return +13.0% (-17.7% vs S&P 500). Underperforming market - caution",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=20). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "MET",
+      "company_name": "MetLife, Inc.",
+      "sector": "Finance",
+      "price": 82.69,
+      "market_cap": 53205787881.99999,
+      "composite_score": 28.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 35.9,
+        "latest_qtr_revenue_growth": 2.7,
+        "latest_eps": 1.7386,
+        "year_ago_eps": 1.2795,
+        "latest_revenue": 19074000000,
+        "year_ago_revenue": 18569000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +35.9%, Revenue +2.7%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -9.2,
+        "revenue_cagr_3yr": 3.9,
+        "stability": "erratic",
+        "eps_values": [
+          6.3,
+          1.81,
+          5.94,
+          4.71
+        ],
+        "revenue_values": [
+          68770000000,
+          66905000000,
+          70986000000,
+          77084000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -9.2% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -3.0,
+        "current_price": 82.69,
+        "week_52_high": 85.29,
+        "week_52_low": 67.33,
+        "breakout_detected": false,
+        "current_volume": 6938693,
+        "avg_volume": 3470613.66,
+        "volume_ratio": 2.0,
+        "interpretation": "Acceptable - Within 15% of high (-3.0% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.0174396700702437,
+        "accumulation_detected": false,
+        "avg_up_volume": 3567951,
+        "avg_down_volume": 3506794,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.02x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -1.71,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -32.46,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -1.7% (-32.5% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "COST",
+      "company_name": "Costco Wholesale Corporation",
+      "sector": "Retail Trade",
+      "price": 956.32,
+      "market_cap": 424273787732,
+      "composite_score": 27.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "L",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 15.2,
+        "latest_qtr_revenue_growth": 11.6,
+        "latest_eps": 4.93,
+        "year_ago_eps": 4.2787,
+        "latest_revenue": 70527000000,
+        "year_ago_revenue": 63205000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +15.2%, Revenue +11.6%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 10,
+        "eps_cagr_3yr": 11.5,
+        "revenue_cagr_3yr": 6.6,
+        "stability": "stable",
+        "eps_values": [
+          13.14,
+          14.16,
+          16.56,
+          18.21
+        ],
+        "revenue_values": [
+          226954000000,
+          242290000000,
+          254453000000,
+          275235000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 11.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -12.8,
+        "current_price": 956.32,
+        "week_52_high": 1096.5,
+        "week_52_low": 844.06,
+        "breakout_detected": false,
+        "current_volume": 7034527,
+        "avg_volume": 1998336.5,
+        "volume_ratio": 3.52,
+        "interpretation": "Acceptable - Within 15% of high (-12.8% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8889332186694736,
+        "accumulation_detected": false,
+        "avg_up_volume": 1838074,
+        "avg_down_volume": 2067730,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.89x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": 6.36,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -24.39,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return +6.4% (-24.4% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "ED",
+      "company_name": "Consolidated Edison, Inc.",
+      "sector": "Utilities",
+      "price": 105.63,
+      "market_cap": 38927793747.00001,
+      "composite_score": 25.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 12.6,
+        "latest_qtr_revenue_growth": 6.2,
+        "latest_eps": 2.5357,
+        "year_ago_eps": 2.2516,
+        "latest_revenue": 5095000000,
+        "year_ago_revenue": 4798000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +12.6%, Revenue +6.2%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 6.5,
+        "revenue_cagr_3yr": 2.6,
+        "stability": "erratic",
+        "eps_values": [
+          4.67,
+          7.21,
+          5.24,
+          5.64
+        ],
+        "revenue_values": [
+          15665000000,
+          14646000000,
+          15256000000,
+          16918000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 6.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -9.1,
+        "current_price": 105.63,
+        "week_52_high": 116.23,
+        "week_52_low": 94.96,
+        "breakout_detected": false,
+        "current_volume": 8332948,
+        "avg_volume": 2212229.2,
+        "volume_ratio": 3.77,
+        "interpretation": "Acceptable - Within 15% of high (-9.1% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9636601974049255,
+        "accumulation_detected": false,
+        "avg_up_volume": 2115269,
+        "avg_down_volume": 2195036,
+        "up_days_count": 24,
+        "down_days_count": 35,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.96x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -1.65,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -32.4,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -1.6% (-32.4% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "TMO",
+      "company_name": "Thermo Fisher Scientific Inc.",
+      "sector": "Health Technology",
+      "price": 492.51,
+      "market_cap": 183027288873.99997,
+      "composite_score": 25.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 11.3,
+        "latest_qtr_revenue_growth": 6.2,
+        "latest_eps": 4.4263,
+        "year_ago_eps": 3.9762,
+        "latest_revenue": 11005000000,
+        "year_ago_revenue": 10364000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +11.3%, Revenue +6.2%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 0.2,
+        "revenue_cagr_3yr": -0.3,
+        "stability": "erratic",
+        "eps_values": [
+          17.64,
+          15.45,
+          16.54,
+          17.74
+        ],
+        "revenue_values": [
+          44915000000,
+          42857000000,
+          42879000000,
+          44556000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 0.2% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -23.5,
+        "current_price": 492.51,
+        "week_52_high": 643.99,
+        "week_52_low": 385.46,
+        "breakout_detected": false,
+        "current_volume": 4184392,
+        "avg_volume": 2237286.24,
+        "volume_ratio": 1.87,
+        "interpretation": "Weak - Lacks momentum (-23.5% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.1059374615223354,
+        "accumulation_detected": false,
+        "avg_up_volume": 2360707,
+        "avg_down_volume": 2134575,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.11x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -14.57,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -45.32,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -14.6% (-45.3% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "STZ",
+      "company_name": "Constellation Brands, Inc. Class A",
+      "sector": "Consumer Non-Durables",
+      "price": 138.82,
+      "market_cap": 23904232918.000004,
+      "composite_score": 25.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "A",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 40,
+        "latest_qtr_eps_growth": 155.7,
+        "latest_qtr_revenue_growth": -11.3,
+        "latest_eps": 1.1619,
+        "year_ago_eps": -2.086,
+        "latest_revenue": 1920200000,
+        "year_ago_revenue": 2164000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Below threshold - Insufficient growth (EPS +155.7%, Revenue +-11.3%)",
+        "quality_warning": "Revenue growth significantly lags EPS growth - investigate earnings quality (potential buyback-driven)",
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "error": "Negative or zero EPS in year None - cannot calculate CAGR",
+        "eps_cagr_3yr": null,
+        "revenue_cagr_3yr": null,
+        "stability": "unknown",
+        "eps_values": null,
+        "interpretation": "Negative EPS - not a CANSLIM candidate"
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -23.1,
+        "current_price": 138.82,
+        "week_52_high": 180.41,
+        "week_52_low": 126.45,
+        "breakout_detected": false,
+        "current_volume": 2456242,
+        "avg_volume": 2085590.48,
+        "volume_ratio": 1.18,
+        "interpretation": "Weak - Lacks momentum (-23.1% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 60,
+        "up_down_ratio": 1.021152271036721,
+        "accumulation_detected": false,
+        "avg_up_volume": 2042453,
+        "avg_down_volume": 2000145,
+        "up_days_count": 25,
+        "down_days_count": 34,
+        "interpretation": "Neutral/Weak Accumulation (ratio: 1.02x) - Slightly positive volume trend."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -42.5,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -73.25,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -42.5% (-73.2% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "AMGN",
+      "company_name": "Amgen Inc.",
+      "sector": "Health Technology",
+      "price": 336.79,
+      "market_cap": 181768346787,
+      "composite_score": 19.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "C",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 0,
+        "latest_qtr_eps_growth": 4.6,
+        "latest_qtr_revenue_growth": 6.9,
+        "latest_eps": 3.3438,
+        "year_ago_eps": 3.1978,
+        "latest_revenue": 8654000000,
+        "year_ago_revenue": 8093000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Weak - Does not meet CANSLIM criteria (EPS +4.6%, Revenue +6.9%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 5.5,
+        "revenue_cagr_3yr": 12.1,
+        "stability": "erratic",
+        "eps_values": [
+          12.11,
+          12.49,
+          7.56,
+          14.23
+        ],
+        "revenue_values": [
+          26092000000,
+          28010000000,
+          33232000000,
+          36741000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 5.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 60,
+        "distance_from_high_pct": -13.9,
+        "current_price": 336.79,
+        "week_52_high": 391.29,
+        "week_52_low": 267.83,
+        "breakout_detected": false,
+        "current_volume": 2954439,
+        "avg_volume": 2675028.86,
+        "volume_ratio": 1.1,
+        "interpretation": "Acceptable - Within 15% of high (-13.9% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9945539433863094,
+        "accumulation_detected": false,
+        "avg_up_volume": 2608313,
+        "avg_down_volume": 2622596,
+        "up_days_count": 29,
+        "down_days_count": 30,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.99x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": 6.95,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -23.8,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return +7.0% (-23.8% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "PRU",
+      "company_name": "Prudential Financial, Inc.",
+      "sector": "Finance",
+      "price": 100.64,
+      "market_cap": 34922079788,
+      "composite_score": 16.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "C",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 0,
+        "latest_qtr_eps_growth": -14.0,
+        "latest_qtr_revenue_growth": 15.3,
+        "latest_eps": 1.6829,
+        "year_ago_eps": 1.9573,
+        "latest_revenue": 15526000000,
+        "year_ago_revenue": 13470000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Weak - Does not meet CANSLIM criteria (EPS -14.0%, Revenue +15.3%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "error": "Negative or zero EPS in year None - cannot calculate CAGR",
+        "eps_cagr_3yr": null,
+        "revenue_cagr_3yr": null,
+        "stability": "unknown",
+        "eps_values": null,
+        "interpretation": "Negative EPS - not a CANSLIM candidate"
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -16.0,
+        "current_price": 100.64,
+        "week_52_high": 119.76,
+        "week_52_low": 91.89,
+        "breakout_detected": false,
+        "current_volume": 3715913,
+        "avg_volume": 2223359.06,
+        "volume_ratio": 1.67,
+        "interpretation": "Weak - Lacks momentum (-16.0% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9023711435737298,
+        "accumulation_detected": false,
+        "avg_up_volume": 2139706,
+        "avg_down_volume": 2371204,
+        "up_days_count": 31,
+        "down_days_count": 28,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.90x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -19.59,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -50.34,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -19.6% (-50.3% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "MCD",
+      "company_name": "McDonald's Corporation",
+      "sector": "Consumer Services",
+      "price": 279.2,
+      "market_cap": 198373244611,
+      "composite_score": 16.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "C",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 0,
+        "latest_qtr_eps_growth": 6.9,
+        "latest_qtr_revenue_growth": 9.4,
+        "latest_eps": 2.7793,
+        "year_ago_eps": 2.601,
+        "latest_revenue": 6517000000,
+        "year_ago_revenue": 5956000000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Weak - Does not meet CANSLIM criteria (EPS +6.9%, Revenue +9.4%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": 12.8,
+        "revenue_cagr_3yr": 5.1,
+        "stability": "erratic",
+        "eps_values": [
+          8.33,
+          11.56,
+          11.39,
+          11.95
+        ],
+        "revenue_values": [
+          23182600000,
+          25493700000,
+          25920000000,
+          26885000000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - 12.8% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 40,
+        "distance_from_high_pct": -18.3,
+        "current_price": 279.2,
+        "week_52_high": 341.75,
+        "week_52_low": 271.975,
+        "breakout_detected": false,
+        "current_volume": 4906052,
+        "avg_volume": 3707737.56,
+        "volume_ratio": 1.32,
+        "interpretation": "Weak - Lacks momentum (-18.3% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.9705173835859822,
+        "accumulation_detected": false,
+        "avg_up_volume": 3494311,
+        "avg_down_volume": 3600462,
+        "up_days_count": 24,
+        "down_days_count": 35,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.97x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -6.49,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -37.24,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -6.5% (-37.2% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    },
+    {
+      "symbol": "GIS",
+      "company_name": "General Mills, Inc.",
+      "sector": "Consumer Non-Durables",
+      "price": 33.81,
+      "market_cap": 18043762556.999996,
+      "composite_score": 13.5,
+      "rating": "Weak",
+      "rating_description": "Does not meet CANSLIM criteria",
+      "guidance": "Avoid",
+      "weakest_component": "C",
+      "weakest_score": 0,
+      "c_component": {
+        "score": 0,
+        "latest_qtr_eps_growth": -50.0,
+        "latest_qtr_revenue_growth": -8.4,
+        "latest_eps": 0.5641,
+        "year_ago_eps": 1.1272,
+        "latest_revenue": 4436700000,
+        "year_ago_revenue": 4842200000,
+        "latest_qtr_date": null,
+        "year_ago_qtr_date": null,
+        "interpretation": "Weak - Does not meet CANSLIM criteria (EPS -50.0%, Revenue -8.4%)",
+        "quality_warning": null,
+        "error": null
+      },
+      "a_component": {
+        "score": 0,
+        "eps_cagr_3yr": -2.5,
+        "revenue_cagr_3yr": 0.9,
+        "stability": "erratic",
+        "eps_values": [
+          4.42,
+          4.31,
+          4.31,
+          4.1
+        ],
+        "revenue_values": [
+          18992800000,
+          20094200000,
+          19857200000,
+          19486600000
+        ],
+        "years_analyzed": 4,
+        "interpretation": "Weak - -2.5% CAGR does not meet CANSLIM criteria",
+        "quality_warning": null,
+        "error": null
+      },
+      "n_component": {
+        "score": 20,
+        "distance_from_high_pct": -38.7,
+        "current_price": 33.81,
+        "week_52_high": 55.19,
+        "week_52_low": 32.64,
+        "breakout_detected": false,
+        "current_volume": 16522016,
+        "avg_volume": 9605435.7,
+        "volume_ratio": 1.72,
+        "interpretation": "Poor - Too far from highs, overhead resistance (-38.7% from high)",
+        "error": null
+      },
+      "s_component": {
+        "score": 40,
+        "up_down_ratio": 0.8717140109796876,
+        "accumulation_detected": false,
+        "avg_up_volume": 8952056,
+        "avg_down_volume": 10269488,
+        "up_days_count": 24,
+        "down_days_count": 35,
+        "interpretation": "Neutral/Weak Distribution (ratio: 0.87x) - Slightly negative volume trend. Monitor closely."
+      },
+      "l_component": {
+        "score": 0,
+        "stock_52w_performance": -50.7,
+        "sp500_52w_performance": 30.75,
+        "relative_performance": -81.45,
+        "rs_rank_estimate": 10,
+        "days_analyzed": 400,
+        "interpretation": "Weak - 52-week return -50.7% (-81.4% vs S&P 500). Significant underperformance - avoid",
+        "quality_warning": null,
+        "error": null
+      },
+      "i_component": {
+        "score": 0,
+        "error": "No institutional holder data"
+      },
+      "m_component": {
+        "score": 90,
+        "trend": "strong_uptrend",
+        "sp500_price": 7580.05,
+        "sp500_ema_50": 7186.1797102604205,
+        "distance_from_ema_pct": 5.48,
+        "vix_level": 15.31,
+        "interpretation": "Strong bull market - Aggressive buying recommended (S&P 500 +5.5% from 50-EMA, VIX 15.3)",
+        "warning": null,
+        "error": null
+      },
+      "threshold_check": {
+        "passes_all": false,
+        "failed_components": [
+          "C",
+          "A",
+          "N",
+          "L",
+          "I"
+        ],
+        "recommendation": "avoid",
+        "reason": "Stock significantly underperforming market (L=0). CANSLIM requires market leaders."
+      }
+    }
+  ],
+  "summary": {
+    "total_stocks": 30,
+    "exceptional": 0,
+    "strong": 0,
+    "above_average": 0,
+    "average": 1,
+    "below_average": 29
+  }
+}
