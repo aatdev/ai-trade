@@ -2,8 +2,9 @@
 """
 Reversal pattern scanner — Undercut & Rally / Double Bottom
 
-Reads OHLCV from the local metrics cache (state/metrics/TICKER/ohlcv.json,
-written by scripts/collect_russell.js) and detects PLTR-Apr-2026-style reversals
+Reads OHLCV from the metrics cache (OpenSearch my_tw_candles_1d, or the local
+state/metrics/TICKER/ohlcv.json fallback — both written by
+scripts/collect_russell.js) and detects PLTR-Apr-2026-style reversals
 (mirror of reversal_hunter.pine):
 
   1) Undercut prior pivot low (≤ N% below) OR double bottom touch (±M%)
@@ -121,28 +122,25 @@ def _to_float(v) -> float:
 
 def fetch_tickers(source: str, limit: int | None = None,
                   sort_by_weight: bool = True) -> list[dict]:
-    """Tickers that have a cached ohlcv.json, enriched with universe weight.
+    """Tickers that have a cached snapshot, enriched with universe weight.
 
-    The cache directory is the source of truth for *what* to scan (only collected
-    tickers have candles); the universe file only supplies ordering metadata."""
+    The cache (OpenSearch, or the local state/metrics/ directory as fallback) is
+    the source of truth for *what* to scan (only collected tickers have candles);
+    the universe file only supplies ordering metadata."""
     weights = _load_universe_weights(source)
-    metrics_dir = metrics_cache.METRICS_DIR
     rows: list[dict] = []
-    if os.path.isdir(metrics_dir):
-        for name in os.listdir(metrics_dir):
-            if not os.path.exists(os.path.join(metrics_dir, name, "ohlcv.json")):
-                continue
-            m = metrics_cache.read_metrics(name) or {}
-            sym = m.get("ticker") or name
-            w = weights.get(sym, {})
-            rows.append({
-                "ticker": sym,
-                "name": m.get("name", sym),
-                "sector": m.get("sector"),
-                "weight_pct": w.get("weight_pct", 0.0),
-                "market_value": w.get("market_value", 0.0),
-                "price": w.get("price", 0.0),
-            })
+    for name in metrics_cache.list_tickers():
+        m = metrics_cache.read_metrics(name) or {}
+        sym = m.get("ticker") or name
+        w = weights.get(sym, {})
+        rows.append({
+            "ticker": sym,
+            "name": m.get("name", sym),
+            "sector": m.get("sector"),
+            "weight_pct": w.get("weight_pct", 0.0),
+            "market_value": w.get("market_value", 0.0),
+            "price": w.get("price", 0.0),
+        })
     if sort_by_weight:
         rows.sort(key=lambda t: (-(t.get("weight_pct") or 0.0), t["ticker"]))
     return rows[:limit] if limit else rows

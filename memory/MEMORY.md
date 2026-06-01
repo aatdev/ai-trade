@@ -1,4 +1,4 @@
 - [Создание алертов в TradingView](feedback_create_alerts.md) — штатный alert_create сломан (хэшированные CSS-классы), использовать ui_click + ui_evaluate с фильтром по offsetParent
 - [VCP-скринер на данных TradingView](tv_backed_vcp_screener.md) — обход платного/гейтящего FMP: screen_vcp_tv.py + tv_client.py гонят скринер на свечах из живого графика
 - [Фундаментал из TradingView](tv_fundamentals_procedure.md) — scanner.tradingview.com/symbol fetch изнутри залогиненной страницы; scripts/tv_fundamentals.mjs
-- [Кэш метрик state/metrics](metrics_cache_system.md) — collect_russell.js пишет в TICKER/ {metrics.json: индикаторы+фундаментал+цена; ohlcv.json: сырые бары}; скилы (анализаторы+скринеры+downtrend) читают свежий (≤2д) кэш вместо живого графика, иначе fallback на TW
+- [Кэш метрик (OpenSearch + state/metrics)](metrics_cache_system.md) — ДУАЛЬНОЕ хранилище: collect_russell.js пишет и в OpenSearch (my_tw_metrics + my_tw_candles_1d), и в файлы TICKER/{metrics.json,ohlcv.json}; ридеры OS-first→файл→live; ловушка ms/sec в свечах

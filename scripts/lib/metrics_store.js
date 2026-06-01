@@ -43,8 +43,8 @@ export const STALE_DAYS = 2;
 // 1500 daily bars ≈ 6 years — more than any calculator window needs.
 export const MAX_OHLCV_BARS = 1500;
 
-/** Filesystem-safe ticker token (BRK.B → BRK_B). */
-function safeToken(ticker) {
+/** Filesystem-safe ticker token (BRK.B → BRK_B). Also used as the OpenSearch _id. */
+export function safeToken(ticker) {
   return String(ticker).replace(/[^A-Za-z0-9._-]/g, '_');
 }
 

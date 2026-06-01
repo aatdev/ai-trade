@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 /**
- * Daily metrics-cache collector (local files only — no external store).
+ * Daily metrics-cache collector (dual-written: local files + OpenSearch).
  *
  * Reads a ticker universe (Russell 2000 by default, or S&P 500), fetches daily
  * bars per ticker from a live TradingView Desktop chart (CDP on :9222), and
  * writes the per-ticker cache under state/metrics/TICKER/:
  *   metrics.json — locally-computed indicators + TradingView fundamentals + price summary
  *   ohlcv.json   — raw daily bars (OLDEST-FIRST)
+ * The same snapshot is mirrored to OpenSearch (indices my_tw_metrics +
+ * my_tw_candles_1d) — see scripts/lib/opensearch.js. The OpenSearch push is
+ * best-effort: if the server is unreachable the run continues with files only.
  * See scripts/lib/metrics_store.js for the schema and staleness rules.
  *
  * Resume/update state is derived from the cache itself (metrics.json's
- * `collected_at` / `as_of_date`) — there is no separate state store.
+ * `collected_at` / `as_of_date`) — there is no separate state store. Disable the
+ * OpenSearch path with METRICS_OPENSEARCH=0; override the URL with OPENSEARCH_URL.
  *
  * Universes (--source):
  *   russell  → state/russel2000.json  (default; JSON array, iShares export shape)
@@ -40,6 +44,7 @@ import {
   readOhlcvBars,
   readMetrics,
 } from './lib/metrics_store.js';
+import * as os from './lib/opensearch.js';
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -242,11 +247,15 @@ async function processTicker(ticker, meta, opts) {
   const metrics = buildMetrics({ ticker, meta, quote, bars: fullBars, fundamentals, nowIso });
   writeMetrics(metrics);
 
+  // Mirror to OpenSearch (best-effort; falls through to files-only if unreachable).
+  await os.writeMetrics(metrics);
+  await os.writeCandles(ticker, fullBars, nowIso);
+
   const lastBar = fullBars[fullBars.length - 1];
   const tag = isUpdate ? 'upd' : 'new';
   process.stdout.write(
     `✓  [${tag}] bars=${fullBars.length} (+${bars.length} fetched)  last=${lastBar.date}  ` +
-      `price=${quote.last ?? quote.close}${fundamentals ? '  +f' : ''}\n`
+      `price=${quote.last ?? quote.close}${fundamentals ? '  +f' : ''}${os.osActive() ? '  +os' : ''}\n`
   );
   return 'done';
 }
@@ -279,8 +288,12 @@ async function main() {
   console.log(
     `\nMode: ${mode} | Tickers: ${tickers.length} | ` +
       `Bars: ${opts.update ? 'auto (missing days + ' + UPDATE_OVERLAP + ' overlap)' : BARS_FULL} | ` +
-      `Fundamentals: ${opts.fundamentals ? 'on' : 'off'}\n`
+      `Fundamentals: ${opts.fundamentals ? 'on' : 'off'} | ` +
+      `OpenSearch: ${os.OS_ENABLED ? os.OS_BASE : 'off'}\n`
   );
+
+  // Create the OpenSearch indices up front (no-op if they exist or the server is down).
+  await os.ensureIndices();
 
   const stats = { done: 0, updated: 0, skipped: 0, failed: 0 };
 
