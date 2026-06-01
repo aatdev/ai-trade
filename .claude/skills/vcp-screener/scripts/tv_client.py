@@ -226,6 +226,43 @@ class TVClient:
             return sum(prices) / len(prices) if prices else 0
         return sum(prices[:period]) / period
 
+    def get_sp500_constituents(self) -> Optional[list[dict]]:
+        """Return S&P 500 constituents from the local state/sp500.csv snapshot.
+
+        Mirrors FMPClient.get_sp500_constituents (which hits the FMP REST API).
+        FMP's free tier gates that endpoint, so we read the same Wikipedia-derived
+        CSV that scripts/collect_russell.js walks. Returns [{symbol, name, sector}].
+        Symbols keep their dotted form (BRK.B) — matches the metrics cache dirs.
+        """
+        cache_key = "sp500_constituents"
+        if cache_key in self.cache:
+            return self.cache[cache_key]
+
+        csv_path = os.path.join(REPO_ROOT, "state", "sp500.csv")
+        if not os.path.exists(csv_path):
+            print(f"  WARN: {csv_path} not found", file=sys.stderr)
+            return None
+
+        import csv as _csv
+
+        constituents = []
+        with open(csv_path, newline="", encoding="utf-8") as fh:
+            for row in _csv.DictReader(fh):
+                sym = (row.get("Symbol") or "").strip()
+                if not sym:
+                    continue
+                constituents.append(
+                    {
+                        "symbol": sym,
+                        "name": (row.get("Security") or sym).strip(),
+                        "sector": (row.get("GICS Sector") or "Unknown").strip(),
+                    }
+                )
+        if not constituents:
+            return None
+        self.cache[cache_key] = constituents
+        return constituents
+
     def get_api_stats(self) -> dict:
         return {
             "cache_entries": len(self.cache),

@@ -57,7 +57,7 @@ Detailed tool-selection decision tree, context-management rules, and per-tool ou
 
 ## Saving reports
 
-All reports are saved to `./results/analysys/Tiker/Date`.
+All reports are saved to `./results/analysis/Tiker/Date`.
 
 
 ## Response language

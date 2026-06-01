@@ -7,6 +7,6 @@ temp_*
 discovery-log.json
 /skills-lock.json
 .idea/
-results/
 tmp/
 venv/
+state/metrics
