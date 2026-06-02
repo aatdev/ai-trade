@@ -130,7 +130,9 @@ class TVClient:
         Applies index_remap before the switch (e.g. ^GSPC -> SP:SPX). Returns
         bars NEWEST FIRST in FMP-compatible dict form, or []."""
         tv_symbol = self.index_remap.get(symbol, symbol)
-        self._cli("symbol", tv_symbol, parse=False)
+        # --nowait skips setSymbol's ~10s DOM readiness wait; our own settle sleep
+        # (plus the retry below) covers load time, so we don't pay that timeout.
+        self._cli("symbol", tv_symbol, "--nowait", parse=False)
         if not self._tf_set:
             self._cli("timeframe", "D", parse=False)
             self._tf_set = True

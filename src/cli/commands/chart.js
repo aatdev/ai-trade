@@ -9,9 +9,15 @@ register('state', {
 
 register('symbol', {
   description: 'Get or set the chart symbol',
+  options: {
+    nowait: {
+      type: 'boolean',
+      description: 'Skip the ~10s DOM readiness wait (caller polls/settles itself)',
+    },
+  },
   handler: async (opts, positionals) => {
     const sym = positionals[0];
-    if (sym) return core.setSymbol({ symbol: sym });
+    if (sym) return core.setSymbol({ symbol: sym, wait: !opts.nowait });
     const state = await core.getState();
     return { success: true, symbol: state.symbol, resolution: state.resolution };
   },
