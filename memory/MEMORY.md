@@ -2,4 +2,5 @@
 - [VCP-скринер на данных TradingView](tv_backed_vcp_screener.md) — обход платного/гейтящего FMP: screen_vcp_tv.py + tv_client.py гонят скринер на свечах из живого графика
 - [Фундаментал из TradingView](tv_fundamentals_procedure.md) — scanner.tradingview.com/symbol fetch изнутри залогиненной страницы; scripts/tv_fundamentals.mjs
 - [Кэш метрик (OpenSearch + state/metrics)](metrics_cache_system.md) — ДУАЛЬНОЕ хранилище: collect_russell.js пишет и в OpenSearch (my_tw_metrics + my_tw_candles_1d), и в файлы TICKER/{metrics.json,ohlcv.json}; ридеры OS-first→файл→live; ловушка ms/sec в свечах
+- [Внутренний WS chart-api TradingView](tv_ws_chartapi_protocol.md) — снятый протокол ChartApiInstance (createSession/resolveSymbol/createSeries) для detached-сбора свечей; задел для параллельного коллектора. Уже сделано #1: setSymbol{wait:false} + ожидание по модели → коллектор ~10× быстрее
 - [claude-trading-skills без FMP](cts_tv_data_layer.md) — 9 скринеров переведены на TV-backed tv_client (база+metrics_cache+подкласс в каждом scripts/); правка скила = одна строка импорта; недостающие методы (profile/vix-term/treasury/earnings-calendar) реализованы поверх TV

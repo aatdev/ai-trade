@@ -35,7 +35,7 @@ import { resolve } from 'path';
 import { setSymbol, setTimeframe } from '../src/core/chart.js';
 import { getOhlcv, getQuote } from '../src/core/data.js';
 import { get as getFundamentals } from '../src/core/fundamentals.js';
-import { disconnect } from '../src/connection.js';
+import { disconnect, evaluate } from '../src/connection.js';
 import {
   buildMetrics,
   writeMetrics,
@@ -51,8 +51,14 @@ import * as os from './lib/opensearch.js';
 const BARS_FULL = 1000;
 const UPDATE_OVERLAP = 21; // safety overlap added to missing-days count
 const UPDATE_MIN = 10; // never fetch fewer than this in update mode
-const SLEEP_CHART = 2500; // ms to wait after symbol switch
-const SLEEP_BETWEEN = 800;
+// Adaptive readiness (replaces the old fixed 2500ms/1000ms sleeps): poll the data
+// model directly until the requested symbol's daily bars have loaded and the bar
+// count is stable. Resolves in ~150–600ms typically instead of a flat 2.5s, and
+// guards against reading the PREVIOUS symbol's bars (the count-stability + symbol
+// match is a correctness check the fixed sleep never had).
+const READY_TIMEOUT = 12000; // ms hard cap waiting for a symbol to load
+const READY_POLL = 150; // ms between readiness polls
+const SLEEP_BETWEEN = 0; // adaptive wait already paces the loop; no fixed gap needed
 
 // ─── Args ─────────────────────────────────────────────────────────────────────
 
@@ -179,11 +185,61 @@ function loadUniverse(source) {
 
 // ─── TradingView data ─────────────────────────────────────────────────────────
 
+// Poll the chart data model until `symbol`'s daily bars are loaded and stable.
+// Returns the last observed state; `.ready` is false on timeout (caller proceeds
+// best-effort, same as the old fixed-sleep path). `symbolInfoName` is the exact
+// resolved ticker (e.g. "MSFT") — matching it guards against reading the previous
+// symbol's bars before the switch has landed.
+async function waitForSymbolData(symbol) {
+  const want = symbol.toUpperCase();
+  const start = Date.now();
+  let lastSize = -1;
+  let stable = 0;
+  let last = null;
+  while (Date.now() - start < READY_TIMEOUT) {
+    const st = await evaluate(`
+      (function () {
+        try {
+          var cw = window.TradingViewApi._activeChartWidgetWV.value();
+          var ms = cw._chartWidget.model().mainSeries();
+          var si = null; try { si = ms.symbolInfo(); } catch (e) {}
+          var bars = ms.bars();
+          return {
+            chartSymbol: cw.symbol(),
+            name: si ? (si.name || si.full_name || si.pro_name || '') : '',
+            resolution: cw.resolution(),
+            size: bars && bars.size ? bars.size() : 0,
+          };
+        } catch (e) { return null; }
+      })()
+    `);
+    last = st;
+    if (st && st.size > 0) {
+      const sym = (st.name || st.chartSymbol || '').toUpperCase();
+      const matches = sym === want || sym.endsWith(':' + want) || sym.endsWith(' ' + want);
+      if (matches && st.resolution === '1D') {
+        if (st.size === lastSize) {
+          if (++stable >= 1) return { ready: true, ...st };
+        } else stable = 0;
+        lastSize = st.size;
+      }
+    }
+    await sleep(READY_POLL);
+  }
+  return { ready: false, ...(last || {}) };
+}
+
 async function fetchBars(symbol, count) {
-  await setSymbol({ symbol });
-  await sleep(SLEEP_CHART);
-  await setTimeframe({ timeframe: 'D' });
-  await sleep(1000);
+  await setSymbol({ symbol, wait: false }); // skip the ~10s DOM wait; we poll the model below
+  let st = await waitForSymbolData(symbol);
+
+  // First ticker (or any symbol that loaded on a non-daily resolution) needs the
+  // timeframe set to D once; thereafter setSymbol preserves the resolution, so we
+  // skip the redundant per-ticker setTimeframe + its old 1000ms sleep.
+  if (st.resolution !== '1D') {
+    await setTimeframe({ timeframe: 'D' });
+    st = await waitForSymbolData(symbol);
+  }
 
   const [quote, ohlcv] = await Promise.all([getQuote({}), getOhlcv({ count })]);
 
@@ -312,7 +368,7 @@ async function main() {
       stats.failed++;
     }
 
-    if (i < tickers.length - 1) await sleep(SLEEP_BETWEEN);
+    if (SLEEP_BETWEEN && i < tickers.length - 1) await sleep(SLEEP_BETWEEN);
   }
 
   console.log(`\n${'━'.repeat(50)}`);

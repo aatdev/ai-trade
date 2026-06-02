@@ -28,7 +28,11 @@ export async function getState() {
   return { success: true, ...state };
 }
 
-export async function setSymbol({ symbol }) {
+// `wait: false` skips the DOM-heuristic readiness poll. The default DOM wait can
+// burn the full timeout when its `[class*="bar"]`/header signals don't stabilize;
+// callers with a faster, model-based readiness check (e.g. the metrics collector)
+// pass wait:false and poll the data model themselves — ~150ms vs ~10s.
+export async function setSymbol({ symbol, wait = true }) {
   await evaluateAsync(`
     (function() {
       var chart = ${CHART_API};
@@ -38,7 +42,7 @@ export async function setSymbol({ symbol }) {
       });
     })()
   `);
-  const ready = await waitForChartReady(symbol);
+  const ready = wait ? await waitForChartReady(symbol) : null;
   return { success: true, symbol, chart_ready: ready };
 }
 
